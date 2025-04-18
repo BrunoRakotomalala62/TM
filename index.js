@@ -68,8 +68,10 @@ app.get('/chat/chatbot', (req, res) => {
 app.post('/api/chat', (req, res) => {
   const { message } = req.body;
   
-  // Créer un fichier temporaire avec le message de l'utilisateur
-  const tempInput = `INSERT_INPUT_HERE=${message}`;
+  if (!process.env.GEMINI_API_KEY) {
+    console.error("Erreur: La clé API Gemini n'est pas définie");
+    return res.status(500).send("Désolé, le chatbot n'est pas correctement configuré. Veuillez définir la variable d'environnement GEMINI_API_KEY.");
+  }
   
   // Exécuter le script Gemini avec le message de l'utilisateur
   const geminiScript = path.join(__dirname, 'pilot', 'gemini.js');
@@ -77,13 +79,17 @@ app.post('/api/chat', (req, res) => {
     const fs = require('fs');
     const content = fs.readFileSync('${geminiScript}', 'utf8');
     const modifiedContent = content.replace('INSERT_INPUT_HERE', \`${message}\`);
-    console.log(modifiedContent);
-  " | node --input-type=module`;
+    fs.writeFileSync('/tmp/gemini_temp.js', modifiedContent);
+  " && GEMINI_API_KEY=${process.env.GEMINI_API_KEY} node --input-type=module /tmp/gemini_temp.js`;
   
   exec(command, (error, stdout, stderr) => {
     if (error) {
       console.error(`Erreur d'exécution: ${error}`);
       return res.status(500).send("Désolé, une erreur s'est produite lors du traitement de votre demande.");
+    }
+    
+    if (stderr) {
+      console.error(`Erreur standard: ${stderr}`);
     }
     
     res.send(stdout || "Je n'ai pas de réponse pour le moment.");

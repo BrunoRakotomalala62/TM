@@ -8,31 +8,42 @@ import {
 } from '@google/genai';
 
 async function main() {
-  const ai = new GoogleGenAI({
-    apiKey: process.env.GEMINI_API_KEY,
-  });
-  const config = {
-    responseMimeType: 'text/plain',
-  };
-  const model = 'gemini-2.0-flash';
-  const contents = [
-    {
-      role: 'user',
-      parts: [
-        {
-          text: `INSERT_INPUT_HERE`,
-        },
-      ],
-    },
-  ];
+  // Vérifier si la clé API est disponible
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) {
+    console.error("Erreur: La clé API Gemini n'est pas définie. Veuillez définir la variable d'environnement GEMINI_API_KEY.");
+    return;
+  }
 
-  const response = await ai.models.generateContentStream({
-    model,
-    config,
-    contents,
-  });
-  for await (const chunk of response) {
-    console.log(chunk.text);
+  try {
+    const ai = new GoogleGenAI({
+      apiKey: apiKey,
+    });
+    
+    const config = {
+      responseMimeType: 'text/plain',
+    };
+    
+    const model = ai.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    
+    const userInput = `INSERT_INPUT_HERE`;
+    
+    const generationConfig = {
+      temperature: 0.7,
+      topK: 40,
+      topP: 0.95,
+      maxOutputTokens: 1000,
+    };
+    
+    const result = await model.generateContent({
+      contents: [{ role: 'user', parts: [{ text: userInput }] }],
+      generationConfig,
+    });
+    
+    const response = result.response;
+    console.log(response.text());
+  } catch (error) {
+    console.error("Erreur lors de la communication avec l'API Gemini:", error.message);
   }
 }
 
