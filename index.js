@@ -64,40 +64,9 @@ app.get('/chat/chatbot', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'chat', 'chatbot.html'));
 });
 
-// API endpoint pour le chat
-app.post('/api/chat', (req, res) => {
-  const { message } = req.body;
-  
-  if (!process.env.GEMINI_API_KEY) {
-    console.error("Erreur: La clé API Gemini n'est pas définie");
-    return res.status(500).send("Désolé, le chatbot n'est pas correctement configuré. Veuillez définir la variable d'environnement GEMINI_API_KEY.");
-  }
-  
-  // Créer un fichier temporaire pour le message utilisateur
-  const userMessageFile = path.join('/tmp', 'user_message.txt');
-  try {
-    fs.writeFileSync(userMessageFile, message);
-    
-    // Exécuter le script Gemini
-    const command = `GEMINI_API_KEY=${process.env.GEMINI_API_KEY} USER_MESSAGE="${message.replace(/"/g, '\\"')}" node ${path.join(__dirname, 'pilot', 'gemini.js')}`;
-    
-    exec(command, (error, stdout, stderr) => {
-      if (error) {
-        console.error(`Erreur d'exécution: ${error}`);
-        return res.status(500).send("Désolé, une erreur s'est produite lors du traitement de votre demande.");
-      }
-      
-      if (stderr) {
-        console.error(`Erreur standard: ${stderr}`);
-      }
-      
-      res.send(stdout || "Je n'ai pas de réponse pour le moment.");
-    });
-  } catch (error) {
-    console.error(`Erreur lors du traitement du message: ${error}`);
-    return res.status(500).send("Désolé, une erreur s'est produite lors du traitement de votre message.");
-  }
-});
+// Import et utilisation du router Gemini
+const geminiRouter = require('./pilot/gemini').router;
+app.use('/api', geminiRouter);
 
 // Démarrer le serveur
 app.listen(PORT, () => {
