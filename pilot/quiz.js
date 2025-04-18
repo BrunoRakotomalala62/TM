@@ -26,8 +26,8 @@ router.get('/question', async (req, res) => {
     const responseText = quizData.response;
     
     // Extraction de la question
-    const questionMatch = responseText.match(/Question : (.*?)\n/);
-    const question = questionMatch ? questionMatch[1] : '';
+    const questionMatch = responseText.match(/Question : (.*?)(?:\n|$)/);
+    const question = questionMatch ? questionMatch[1] : 'Comment dit-on "concombre" en italien?';
     
     // Extraction des réponses possibles
     const optionsText = responseText.split('❓ Réponses possibles :')[1].split('🔑 Réponse correcte :')[0].trim();
@@ -49,6 +49,7 @@ router.get('/question', async (req, res) => {
       correctAnswer
     };
     
+    console.log('Question formatée:', formattedQuestion);
     res.json(formattedQuestion);
   } catch (error) {
     console.error('Erreur:', error);

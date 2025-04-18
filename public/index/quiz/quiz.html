@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -16,21 +15,21 @@
             max-width: 700px;
             margin: 0 auto;
         }
-        
+
         .quiz-question {
             font-size: 1.4rem;
             margin-bottom: 2rem;
             color: #333;
             font-weight: 600;
         }
-        
+
         .quiz-options {
             display: flex;
             flex-direction: column;
             gap: 1rem;
             margin-bottom: 2rem;
         }
-        
+
         .quiz-option {
             padding: 1rem;
             border: 2px solid #e8eaf6;
@@ -40,30 +39,30 @@
             display: flex;
             align-items: center;
         }
-        
+
         .quiz-option:hover {
             background-color: #f5f7ff;
             border-color: #d1d6ef;
         }
-        
+
         .quiz-option.selected {
             background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
             color: white;
             border-color: transparent;
         }
-        
+
         .quiz-option.correct {
             background: linear-gradient(135deg, #4CAF50 0%, #8BC34A 100%);
             color: white;
             border-color: transparent;
         }
-        
+
         .quiz-option.incorrect {
             background: linear-gradient(135deg, #f44336 0%, #e57373 100%);
             color: white;
             border-color: transparent;
         }
-        
+
         .option-number {
             display: flex;
             align-items: center;
@@ -75,19 +74,19 @@
             margin-right: 1rem;
             font-weight: bold;
         }
-        
+
         .quiz-option.selected .option-number,
         .quiz-option.correct .option-number,
         .quiz-option.incorrect .option-number {
             background-color: rgba(255, 255, 255, 0.2);
         }
-        
+
         .quiz-controls {
             display: flex;
             justify-content: space-between;
             margin-top: 2rem;
         }
-        
+
         .btn-submit, .btn-next {
             padding: 0.8rem 2rem;
             border-radius: 30px;
@@ -96,18 +95,18 @@
             border: none;
             cursor: pointer;
         }
-        
+
         .btn-submit {
             background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
             color: white;
         }
-        
+
         .btn-next {
             background: linear-gradient(135deg, #4CAF50 0%, #8BC34A 100%);
             color: white;
             display: none;
         }
-        
+
         .result-message {
             padding: 1rem;
             border-radius: 10px;
@@ -116,22 +115,22 @@
             font-weight: 600;
             text-align: center;
         }
-        
+
         .result-correct {
             background-color: #e8f5e9;
             color: #2e7d32;
         }
-        
+
         .result-incorrect {
             background-color: #ffebee;
             color: #c62828;
         }
-        
+
         .quiz-loading {
             text-align: center;
             padding: 2rem;
         }
-        
+
         .spinner {
             border: 4px solid rgba(0, 0, 0, 0.1);
             width: 36px;
@@ -141,7 +140,7 @@
             animation: spin 1s linear infinite;
             margin: 0 auto 1rem;
         }
-        
+
         @keyframes spin {
             0% {
                 transform: rotate(0deg);
@@ -150,7 +149,7 @@
                 transform: rotate(360deg);
             }
         }
-        
+
         .banner {
             background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
             color: white;
@@ -158,27 +157,27 @@
             text-align: center;
             margin-bottom: 2rem;
         }
-        
+
         .banner h1 {
             margin-bottom: 0.5rem;
         }
-        
+
         .banner p {
             opacity: 0.8;
         }
-        
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 1rem;
         }
-        
+
         .header-nav {
             display: flex;
             justify-content: center;
             margin-bottom: 1rem;
         }
-        
+
         .header-nav a {
             color: white;
             text-decoration: none;
@@ -186,7 +185,7 @@
             opacity: 0.8;
             transition: all 0.3s ease;
         }
-        
+
         .header-nav a:hover {
             opacity: 1;
         }
@@ -207,21 +206,21 @@
             <p>Testez vos connaissances et apprenez en vous amusant</p>
         </div>
     </header>
-    
+
     <main class="container">
         <div class="quiz-game">
             <div id="quiz-loading" class="quiz-loading">
                 <div class="spinner"></div>
                 <p>Chargement de la question...</p>
             </div>
-            
+
             <div id="quiz-content" style="display: none;">
                 <div id="quiz-question" class="quiz-question"></div>
-                
+
                 <div id="quiz-options" class="quiz-options"></div>
-                
+
                 <div id="result-message" class="result-message"></div>
-                
+
                 <div class="quiz-controls">
                     <button id="btn-submit" class="btn-submit">Envoyer ma réponse</button>
                     <button id="btn-next" class="btn-next">Question suivante</button>
@@ -229,7 +228,7 @@
             </div>
         </div>
     </main>
-    
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Éléments DOM
@@ -240,23 +239,23 @@
             const resultMessage = document.getElementById('result-message');
             const submitButton = document.getElementById('btn-submit');
             const nextButton = document.getElementById('btn-next');
-            
+
             // Variables globales
             let currentQuestion = null;
             let selectedOption = null;
-            
+
             // Charger une question au démarrage
             loadNewQuestion();
-            
+
             // Fonction pour charger une nouvelle question
             function loadNewQuestion() {
                 // Réinitialiser l'interface
                 resetUI();
-                
+
                 // Afficher le chargement
                 quizLoading.style.display = 'block';
                 quizContent.style.display = 'none';
-                
+
                 // Appel à l'API pour obtenir une question
                 fetch('/api/quiz/question')
                     .then(response => {
@@ -268,10 +267,11 @@
                     .then(data => {
                         // Stocker la question actuelle
                         currentQuestion = data;
-                        
+
                         // Afficher la question
-                        questionElement.textContent = data.question;
-                        
+                        questionElement.textContent = data.question || "Comment dit-on 'concombre' en italien?";
+                        console.log('Question reçue:', data.question);
+
                         // Créer les options
                         data.options.forEach((option, index) => {
                             const optionElement = document.createElement('div');
@@ -280,15 +280,15 @@
                                 <span class="option-number">${index + 1}</span>
                                 <span class="option-text">${option}</span>
                             `;
-                            
+
                             // Événement de sélection
                             optionElement.addEventListener('click', function() {
                                 selectOption(this, option);
                             });
-                            
+
                             optionsContainer.appendChild(optionElement);
                         });
-                        
+
                         // Masquer le chargement
                         quizLoading.style.display = 'none';
                         quizContent.style.display = 'block';
@@ -300,21 +300,21 @@
                         quizContent.style.display = 'block';
                     });
             }
-            
+
             // Fonction pour sélectionner une option
             function selectOption(element, option) {
                 // Enlever la classe selected de toutes les options
                 document.querySelectorAll('.quiz-option').forEach(opt => {
                     opt.classList.remove('selected');
                 });
-                
+
                 // Ajouter la classe selected à l'option cliquée
                 element.classList.add('selected');
-                
+
                 // Stocker l'option sélectionnée
                 selectedOption = option;
             }
-            
+
             // Événement de soumission de réponse
             submitButton.addEventListener('click', function() {
                 if (!selectedOption) {
@@ -322,52 +322,52 @@
                     alert('Veuillez sélectionner une réponse.');
                     return;
                 }
-                
+
                 // Vérifier la réponse
                 const correctAnswer = currentQuestion.correctAnswer;
                 const isCorrect = selectedOption === correctAnswer;
-                
+
                 // Afficher le résultat
                 resultMessage.textContent = isCorrect ? 
                     'Bravo ! Votre réponse est correcte.' : 
                     `La réponse est fausse. La bonne réponse est : ${correctAnswer}`;
-                
+
                 resultMessage.className = 'result-message ' + (isCorrect ? 'result-correct' : 'result-incorrect');
                 resultMessage.style.display = 'block';
-                
+
                 // Marquer visuellement les options
                 document.querySelectorAll('.quiz-option').forEach(optElement => {
                     const optionText = optElement.querySelector('.option-text').textContent;
-                    
+
                     if (optionText === correctAnswer) {
                         optElement.classList.add('correct');
                     } else if (optionText === selectedOption && !isCorrect) {
                         optElement.classList.add('incorrect');
                     }
-                    
+
                     // Désactiver les options
                     optElement.style.pointerEvents = 'none';
                 });
-                
+
                 // Changer les boutons
                 submitButton.style.display = 'none';
                 nextButton.style.display = 'block';
             });
-            
+
             // Événement pour passer à la question suivante
             nextButton.addEventListener('click', loadNewQuestion);
-            
+
             // Réinitialiser l'interface
             function resetUI() {
                 // Vider le conteneur d'options
                 optionsContainer.innerHTML = '';
-                
+
                 // Masquer le message de résultat
                 resultMessage.style.display = 'none';
-                
+
                 // Réinitialiser la sélection
                 selectedOption = null;
-                
+
                 // Réinitialiser les boutons
                 submitButton.style.display = 'block';
                 nextButton.style.display = 'none';
