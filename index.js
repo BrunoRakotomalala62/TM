@@ -13,7 +13,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Route pour la page de login
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'utils/login.html'));
+  res.sendFile(path.join(__dirname, 'login.html'));
 });
 
 // Vérification des identifiants
