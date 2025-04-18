@@ -3,6 +3,7 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const bodyParser = require('body-parser');
+const { exec } = require('child_process');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -56,6 +57,37 @@ app.post('/verify-login', (req, res) => {
     console.error('Erreur lors de la vérification des identifiants:', error);
     return res.status(500).json({ success: false, message: 'Erreur serveur' });
   }
+});
+
+// Route pour la page chatbot
+app.get('/chat/chatbot', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'chat', 'chatbot.html'));
+});
+
+// API endpoint pour le chat
+app.post('/api/chat', (req, res) => {
+  const { message } = req.body;
+  
+  // Créer un fichier temporaire avec le message de l'utilisateur
+  const tempInput = `INSERT_INPUT_HERE=${message}`;
+  
+  // Exécuter le script Gemini avec le message de l'utilisateur
+  const geminiScript = path.join(__dirname, 'pilot', 'gemini.js');
+  const command = `node -e "
+    const fs = require('fs');
+    const content = fs.readFileSync('${geminiScript}', 'utf8');
+    const modifiedContent = content.replace('INSERT_INPUT_HERE', \`${message}\`);
+    console.log(modifiedContent);
+  " | node --input-type=module`;
+  
+  exec(command, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`Erreur d'exécution: ${error}`);
+      return res.status(500).send("Désolé, une erreur s'est produite lors du traitement de votre demande.");
+    }
+    
+    res.send(stdout || "Je n'ai pas de réponse pour le moment.");
+  });
 });
 
 // Démarrer le serveur
