@@ -1,10 +1,10 @@
+
 const express = require('express');
 const {
   GoogleGenerativeAI,
   HarmCategory,
   HarmBlockThreshold,
 } = require("@google/generative-ai");
-const fs = require("node:fs");
 const multer = require('multer');
 const mime = require("mime-types");
 
@@ -18,19 +18,10 @@ if (!apiKey) {
   console.error('Error: GEMINI_API_KEY environment variable is not set');
   throw new Error('GEMINI_API_KEY is required');
 }
+
 const genAI = new GoogleGenerativeAI(apiKey);
-
-const model = genAI.getGenerativeModel({
-  model: "gemini-pro",
-  generationConfig: {
-    temperature: 0.9,
-    topP: 1,
-    topK: 1,
-    maxOutputTokens: 2048,
-  },
-});
-
-const imageModel = genAI.getGenerativeModel({ model: "gemini-pro-vision" });
+const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+const visionModel = genAI.getGenerativeModel({ model: "gemini-pro-vision" });
 
 let chatSession = null;
 
@@ -40,6 +31,9 @@ async function handleChat(message, files = []) {
       chatSession = model.startChat({
         history: [],
         generationConfig: {
+          temperature: 0.9,
+          topK: 1,
+          topP: 1,
           maxOutputTokens: 2048,
         },
       });
@@ -48,7 +42,7 @@ async function handleChat(message, files = []) {
     let result;
     if (files && files.length > 0) {
       const parts = [];
-      parts.push({ text: message || "Analysez ces images" });
+      parts.push({ text: message || "Analysez ces fichiers" });
 
       for (const file of files) {
         if (file.mimetype.startsWith('image/')) {
@@ -61,7 +55,7 @@ async function handleChat(message, files = []) {
         }
       }
 
-      result = await imageModel.generateContent(parts);
+      result = await visionModel.generateContent(parts);
     } else {
       result = await chatSession.sendMessage(message);
     }
@@ -70,7 +64,7 @@ async function handleChat(message, files = []) {
     return response.text();
   } catch (error) {
     console.error('Error in handleChat:', error);
-    return "Désolé, je ne peux pas traiter votre demande pour le moment.";
+    throw error;
   }
 }
 
@@ -83,7 +77,6 @@ router.post('/chat', upload.array('files'), async (req, res) => {
 
     const response = await handleChat(message, files);
     res.json({ response });
-
   } catch (error) {
     console.error('Error processing request:', error);
     res.status(500).json({ error: "Une erreur est survenue", details: error.message });
