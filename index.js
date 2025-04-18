@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const { exec } = require('child_process');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(bodyParser.json());
@@ -88,7 +88,7 @@ app.get('/index/quiz/quiz.html', (req, res) => {
 });
 
 // Démarrer le serveur
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Serveur démarré sur le port ${PORT}`);
-  console.log(`Accédez à http://localhost:${PORT} pour voir la page de login`);
+  console.log(`Accédez à http://0.0.0.0:${PORT} pour voir la page de login`);
 });

@@ -14,11 +14,20 @@ deploymentTarget = "autoscale"
 ignorePorts = false
 
 [workflows]
-runButton = "Run Server"
+runButton = "Start Server"
 
 [[workflows.workflow]]
 name = "Run Server"
 author = 41617341
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "node index.js"
+
+[[workflows.workflow]]
+name = "Start Server"
+author = 41668638
 mode = "sequential"
 
 [[workflows.workflow.tasks]]
