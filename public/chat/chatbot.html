@@ -173,6 +173,10 @@
             animation: fadeIn 0.5s ease;
             position: relative;
             transition: all 0.3s ease;
+            width: auto;
+            display: inline-block;
+            white-space: normal;
+            overflow: visible;
         }
         
         @keyframes fadeIn {
@@ -201,9 +205,11 @@
         
         .bot-message {
             align-self: flex-start;
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.6);
             color: white;
             border-bottom-left-radius: 5px;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+            font-weight: 500;
         }
         
         .bot-message::after {
@@ -645,8 +651,13 @@
                 messageDiv.classList.add(sender === 'user' ? 'user-message' : 'bot-message');
                 messageDiv.style.opacity = '0';
                 messageDiv.style.transform = 'translateY(20px)';
+                messageDiv.style.width = 'auto';
+                messageDiv.style.display = 'inline-block';
                 
                 const textDiv = document.createElement('div');
+                textDiv.style.whiteSpace = 'normal';
+                textDiv.style.wordBreak = 'break-word';
+                textDiv.style.overflow = 'visible';
                 
                 // Vérifier si le message contient des données techniques non filtrées
                 if (sender === 'bot' && (
@@ -666,6 +677,11 @@
                 
                 // Scroll vers le bas
                 chatMessages.scrollTop = chatMessages.scrollHeight;
+                
+                // Retarder le scroll pour s'assurer que tout le contenu est affiché
+                setTimeout(() => {
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }, 100);
                 
                 // Effet d'apparition avec délai
                 setTimeout(() => {
