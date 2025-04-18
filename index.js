@@ -9,13 +9,18 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Servir les fichiers statiques des dossiers utils et public
+// Route principale qui redirige vers la page de connexion
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'utils', 'login.html'));
+});
+
+// Servir les fichiers statiques des dossiers utils et public après la redirection
 app.use(express.static('utils'));
 app.use(express.static('public'));
 
-// Route principale qui redirige vers la page de connexion
-app.get('/', (req, res) => {
-  res.redirect('/utils/login.html');
+// Bloquer l'accès direct à index.html sans authentification
+app.get('/index.html', (req, res) => {
+  res.redirect('/');
 });
 
 // Route pour vérifier les informations de connexion
