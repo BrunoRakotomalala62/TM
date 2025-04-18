@@ -42,28 +42,34 @@ router.get('/question', async (req, res) => {
     const correctAnswerMatch = responseText.match(/🔑 Réponse correcte : (.*)/);
     let correctAnswer = correctAnswerMatch ? correctAnswerMatch[1].trim() : '';
     
-    // Décodage des entités HTML dans la réponse correcte
-    correctAnswer = correctAnswer.replace(/&([^;]+);/g, (match, entity) => {
+    // Fonction pour décoder les entités HTML
+    function decodeHTMLEntities(text) {
+      if (!text) return '';
+      
       const entities = {
-        'ouml': 'ö',
-        'auml': 'ä',
-        'uuml': 'ü',
-        'Ouml': 'Ö',
-        'Auml': 'Ä',
-        'Uuml': 'Ü',
-        'szlig': 'ß',
-        'nbsp': ' ',
-        'amp': '&',
-        'lt': '<',
-        'gt': '>'
+        'ouml': 'ö', 'auml': 'ä', 'uuml': 'ü',
+        'Ouml': 'Ö', 'Auml': 'Ä', 'Uuml': 'Ü',
+        'szlig': 'ß', 'nbsp': ' ', 'amp': '&',
+        'lt': '<', 'gt': '>', 'quot': '"',
+        '#039': "'", '#034': '"'
       };
-      return entities[entity] || match;
-    });
+      
+      return text.replace(/&([^;]+);/g, (match, entity) => {
+        return entities[entity] || match;
+      });
+    }
+    
+    // Décodage des entités HTML dans la réponse correcte
+    correctAnswer = decodeHTMLEntities(correctAnswer);
+    
+    // Décodage des entités HTML pour la question et les options
+    const decodedQuestion = decodeHTMLEntities(question);
+    const decodedOptions = options.map(option => decodeHTMLEntities(option));
     
     // Créer l'objet de question formaté
     const formattedQuestion = {
-      question,
-      options,
+      question: decodedQuestion,
+      options: decodedOptions,
       correctAnswer
     };
     
