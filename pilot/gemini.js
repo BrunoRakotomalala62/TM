@@ -1,10 +1,6 @@
 
 const express = require('express');
-const {
-  GoogleGenerativeAI,
-  HarmCategory,
-  HarmBlockThreshold,
-} = require("@google/generative-ai");
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 const multer = require('multer');
 const mime = require("mime-types");
 
@@ -20,8 +16,7 @@ if (!apiKey) {
 }
 
 const genAI = new GoogleGenerativeAI(apiKey);
-const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-const visionModel = genAI.getGenerativeModel({ model: "gemini-pro-vision" });
+const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
 let chatSession = null;
 
@@ -42,7 +37,7 @@ async function handleChat(message, files = []) {
     let result;
     if (files && files.length > 0) {
       const parts = [];
-      parts.push({ text: message || "Analysez ces fichiers" });
+      parts.push({ text: message || "Analysez ces images" });
 
       for (const file of files) {
         if (file.mimetype.startsWith('image/')) {
@@ -55,7 +50,7 @@ async function handleChat(message, files = []) {
         }
       }
 
-      result = await visionModel.generateContent(parts);
+      result = await model.generateContent(parts);
     } else {
       result = await chatSession.sendMessage(message);
     }
