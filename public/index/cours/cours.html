@@ -301,9 +301,14 @@
                     this.style.transform = 'scale(0.95)';
                     setTimeout(() => {
                         this.style.transform = 'scale(1)';
-                        // Ici on pourrait rediriger vers la page spécifique du niveau
-                        // window.location.href = `/index/cours/${niveau}.html`;
-                        alert('Les cours pour ce niveau seront bientôt disponibles!');
+                        
+                        // Vérifier la classe pour la redirection
+                        if (this.classList.contains('troisieme')) {
+                            window.location.href = `/index/cours/3eme/3eme.html`;
+                        } else {
+                            // Pour les autres niveaux
+                            alert('Les cours pour ce niveau seront bientôt disponibles!');
+                        }
                     }, 150);
                 });
             });
