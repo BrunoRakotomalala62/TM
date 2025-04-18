@@ -71,7 +71,7 @@ router.post('/chat', upload.array('files'), async (req, res) => {
     const files = req.files;
 
     const response = await handleChat(message, files);
-    res.json({ response });
+    res.send(response);
   } catch (error) {
     console.error('Error processing request:', error);
     res.status(500).json({ error: "Une erreur est survenue", details: error.message });
