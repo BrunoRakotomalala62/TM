@@ -298,7 +298,20 @@
                 const messageDiv = document.createElement('div');
                 messageDiv.classList.add('message');
                 messageDiv.classList.add(sender === 'user' ? 'user-message' : 'bot-message');
-                messageDiv.textContent = text;
+                
+                // Afficher l'image si c'est un message utilisateur avec une image
+                if (sender === 'user' && fileInput.files.length > 0) {
+                    const img = document.createElement('img');
+                    img.src = URL.createObjectURL(fileInput.files[0]);
+                    img.style.maxWidth = '100%';
+                    img.style.borderRadius = '8px';
+                    img.style.marginBottom = '10px';
+                    messageDiv.appendChild(img);
+                }
+                
+                const textDiv = document.createElement('div');
+                textDiv.textContent = text;
+                messageDiv.appendChild(textDiv);
                 
                 chatMessages.appendChild(messageDiv);
                 
