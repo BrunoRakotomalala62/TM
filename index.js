@@ -78,6 +78,15 @@ app.get('/index/A-propos/contact/photos/:filename', (req, res) => {
 const geminiRouter = require('./pilot/gemini').router;
 app.use('/api', geminiRouter);
 
+// Import et utilisation du router Quiz
+const quizRouter = require('./pilot/quiz');
+app.use('/api/quiz', quizRouter);
+
+// Route pour la page quiz
+app.get('/index/quiz/quiz.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index', 'quiz', 'quiz.html'));
+});
+
 // Démarrer le serveur
 app.listen(PORT, () => {
   console.log(`Serveur démarré sur le port ${PORT}`);
