@@ -73,27 +73,30 @@ app.post('/api/chat', (req, res) => {
     return res.status(500).send("Désolé, le chatbot n'est pas correctement configuré. Veuillez définir la variable d'environnement GEMINI_API_KEY.");
   }
   
-  // Exécuter le script Gemini avec le message de l'utilisateur
-  const geminiScript = path.join(__dirname, 'pilot', 'gemini.js');
-  const command = `node -e "
-    const fs = require('fs');
-    const content = fs.readFileSync('${geminiScript}', 'utf8');
-    const modifiedContent = content.replace('INSERT_INPUT_HERE', \`${message}\`);
-    fs.writeFileSync('/tmp/gemini_temp.js', modifiedContent);
-  " && GEMINI_API_KEY=${process.env.GEMINI_API_KEY} node --input-type=module /tmp/gemini_temp.js`;
-  
-  exec(command, (error, stdout, stderr) => {
-    if (error) {
-      console.error(`Erreur d'exécution: ${error}`);
-      return res.status(500).send("Désolé, une erreur s'est produite lors du traitement de votre demande.");
-    }
+  // Créer un fichier temporaire pour le message utilisateur
+  const userMessageFile = path.join('/tmp', 'user_message.txt');
+  try {
+    fs.writeFileSync(userMessageFile, message);
     
-    if (stderr) {
-      console.error(`Erreur standard: ${stderr}`);
-    }
+    // Exécuter le script Gemini
+    const command = `GEMINI_API_KEY=${process.env.GEMINI_API_KEY} USER_MESSAGE="${message.replace(/"/g, '\\"')}" node ${path.join(__dirname, 'pilot', 'gemini.js')}`;
     
-    res.send(stdout || "Je n'ai pas de réponse pour le moment.");
-  });
+    exec(command, (error, stdout, stderr) => {
+      if (error) {
+        console.error(`Erreur d'exécution: ${error}`);
+        return res.status(500).send("Désolé, une erreur s'est produite lors du traitement de votre demande.");
+      }
+      
+      if (stderr) {
+        console.error(`Erreur standard: ${stderr}`);
+      }
+      
+      res.send(stdout || "Je n'ai pas de réponse pour le moment.");
+    });
+  } catch (error) {
+    console.error(`Erreur lors du traitement du message: ${error}`);
+    return res.status(500).send("Désolé, une erreur s'est produite lors du traitement de votre message.");
+  }
 });
 
 // Démarrer le serveur

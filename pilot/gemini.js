@@ -3,9 +3,7 @@
 // npm install @google/genai mime
 // npm install -D @types/node
 
-import {
-  GoogleGenAI,
-} from '@google/genai';
+const { GoogleGenerativeAI } = require('@google/genai');
 
 async function main() {
   // Vérifier si la clé API est disponible
@@ -15,18 +13,13 @@ async function main() {
     return;
   }
 
+  // Récupérer le message de l'utilisateur
+  const userInput = process.env.USER_MESSAGE || "Bonjour, comment puis-je vous aider ?";
+
   try {
-    const ai = new GoogleGenAI({
-      apiKey: apiKey,
-    });
+    const genAI = new GoogleGenerativeAI(apiKey);
     
-    const config = {
-      responseMimeType: 'text/plain',
-    };
-    
-    const model = ai.getGenerativeModel({ model: 'gemini-1.5-flash' });
-    
-    const userInput = `INSERT_INPUT_HERE`;
+    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
     
     const generationConfig = {
       temperature: 0.7,
