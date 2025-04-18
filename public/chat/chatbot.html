@@ -250,11 +250,25 @@
             const sendBtn = document.getElementById('sendBtn');
             const fileInput = document.getElementById('fileInput');
             
-            // Afficher le nom du fichier sélectionné
+            // Afficher l'aperçu de l'image sélectionnée
             fileInput.addEventListener('change', function() {
                 if (this.files.length > 0) {
-                    const fileName = this.files[0].name;
-                    alert(`Fichier sélectionné: ${fileName}`);
+                    const file = this.files[0];
+                    if (file.type.startsWith('image/')) {
+                        // Créer un message temporaire avec l'aperçu
+                        const messageDiv = document.createElement('div');
+                        messageDiv.classList.add('message', 'user-message');
+                        
+                        const img = document.createElement('img');
+                        img.src = URL.createObjectURL(file);
+                        img.style.maxWidth = '200px';
+                        img.style.borderRadius = '8px';
+                        img.style.marginBottom = '10px';
+                        
+                        messageDiv.appendChild(img);
+                        chatMessages.appendChild(messageDiv);
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                    }
                 }
             });
             
