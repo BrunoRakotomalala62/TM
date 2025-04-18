@@ -12,3 +12,19 @@ channel = "stable-24_11"
 run = ["node", "index.js"]
 deploymentTarget = "autoscale"
 ignorePorts = false
+
+[workflows]
+runButton = "Run Server"
+
+[[workflows.workflow]]
+name = "Run Server"
+author = 41617341
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "node index.js"
+
+[[ports]]
+localPort = 3000
+externalPort = 80
