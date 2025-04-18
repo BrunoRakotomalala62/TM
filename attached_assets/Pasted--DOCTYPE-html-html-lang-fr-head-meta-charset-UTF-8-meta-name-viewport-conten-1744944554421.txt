@@ -1,0 +1,239 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Éducation Malagasy - Accueil</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            <h1>Éducation Malagasy</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#" class="active">Accueil</a></li>
+                <li><a href="#cours">Cours</a></li>
+                <li><a href="#ressources">Ressources</a></li>
+                <li><a href="#quiz">Quiz</a></li>
+                <li><a href="#chatbot">Chatbot</a></li>
+                <li><a href="#about">À propos</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h2>Bienvenue sur notre plateforme éducative malagasy</h2>
+            <p>Découvrez nos ressources pédagogiques pour enrichir vos connaissances sur Madagascar et sa culture</p>
+            <a href="#cours" class="btn">Commencer à apprendre</a>
+        </div>
+    </section>
+
+    <section id="cours" class="section">
+        <div class="container">
+            <h2 class="section-title">Nos Cours</h2>
+            <div class="section-description">
+                <p>Explorez notre variété de cours conçus pour tous les niveaux</p>
+            </div>
+            <div class="cards">
+                <div class="card">
+                    <div class="card-icon"><i class="fas fa-language"></i></div>
+                    <h3>Langue Malagasy</h3>
+                    <p>Apprentissage de la langue et des dialectes régionaux</p>
+                    <a href="#" class="card-btn">Voir les cours</a>
+                </div>
+                <div class="card">
+                    <div class="card-icon"><i class="fas fa-history"></i></div>
+                    <h3>Histoire et Culture</h3>
+                    <p>Découvrez l'histoire riche et la culture diverse de Madagascar</p>
+                    <a href="#" class="card-btn">Voir les cours</a>
+                </div>
+                <div class="card">
+                    <div class="card-icon"><i class="fas fa-globe-africa"></i></div>
+                    <h3>Géographie</h3>
+                    <p>Exploration des régions et de la biodiversité unique de l'île</p>
+                    <a href="#" class="card-btn">Voir les cours</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="ressources" class="section bg-light">
+        <div class="container">
+            <h2 class="section-title">Ressources Pédagogiques</h2>
+            <div class="section-description">
+                <p>Accédez à nos ressources téléchargeables et matériels d'apprentissage</p>
+            </div>
+            <div class="resources">
+                <div class="resource-item">
+                    <i class="fas fa-file-pdf"></i>
+                    <h3>PDF Éducatifs</h3>
+                    <p>Manuels scolaires et guides d'apprentissage</p>
+                    <a href="#" class="btn-sm">Télécharger</a>
+                </div>
+                <div class="resource-item">
+                    <i class="fas fa-video"></i>
+                    <h3>Vidéos Tutoriels</h3>
+                    <p>Leçons vidéo et démonstrations pratiques</p>
+                    <a href="#" class="btn-sm">Regarder</a>
+                </div>
+                <div class="resource-item">
+                    <i class="fas fa-headphones"></i>
+                    <h3>Podcasts Éducatifs</h3>
+                    <p>Contenus audio pour l'apprentissage en déplacement</p>
+                    <a href="#" class="btn-sm">Écouter</a>
+                </div>
+                <div class="resource-item">
+                    <i class="fas fa-images"></i>
+                    <h3>Infographies</h3>
+                    <p>Informations visuelles sur divers sujets</p>
+                    <a href="#" class="btn-sm">Consulter</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="quiz" class="section">
+        <div class="container">
+            <h2 class="section-title">Quiz Interactifs</h2>
+            <div class="section-description">
+                <p>Testez vos connaissances et apprenez en vous amusant</p>
+            </div>
+            <div class="quiz-container">
+                <div class="quiz-preview">
+                    <h3>Quiz populaires</h3>
+                    <ul>
+                        <li><a href="#">Culture Générale Malagasy <span class="difficulty">Facile</span></a></li>
+                        <li><a href="#">Faune et Flore Endémiques <span class="difficulty">Intermédiaire</span></a></li>
+                        <li><a href="#">Histoire Précoloniale <span class="difficulty">Avancé</span></a></li>
+                        <li><a href="#">Géographie des Régions <span class="difficulty">Intermédiaire</span></a></li>
+                    </ul>
+                    <a href="#" class="btn">Voir tous les quiz</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="chatbot" class="section bg-light">
+        <div class="container">
+            <h2 class="section-title">Chatbot Éducatif</h2>
+            <div class="section-description">
+                <p>Notre assistant virtuel est là pour répondre à vos questions</p>
+            </div>
+            <div class="chatbot-demo">
+                <div class="chatbot-window">
+                    <div class="chatbot-header">
+                        <div class="chatbot-avatar">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="chatbot-info">
+                            <h3>Assistant Malagasy</h3>
+                            <span>En ligne</span>
+                        </div>
+                    </div>
+                    <div class="chatbot-messages">
+                        <div class="message bot">
+                            <p>Bonjour ! Je suis votre assistant virtuel. Comment puis-je vous aider aujourd'hui ?</p>
+                        </div>
+                        <div class="message user">
+                            <p>Peux-tu me parler de l'histoire de Madagascar ?</p>
+                        </div>
+                        <div class="message bot">
+                            <p>Bien sûr ! Madagascar a une histoire fascinante qui remonte à plus de 2000 ans. Voulez-vous en savoir plus sur la période précoloniale, coloniale ou post-indépendance ?</p>
+                        </div>
+                    </div>
+                    <div class="chatbot-input">
+                        <input type="text" placeholder="Posez votre question ici...">
+                        <button><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+                <div class="chatbot-features">
+                    <h3>Fonctionnalités du Chatbot</h3>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Réponses instantanées à vos questions</li>
+                        <li><i class="fas fa-check-circle"></i> Assistance dans plusieurs langues</li>
+                        <li><i class="fas fa-check-circle"></i> Informations vérifiées et mises à jour</li>
+                        <li><i class="fas fa-check-circle"></i> Suggestions de ressources complémentaires</li>
+                    </ul>
+                    <a href="#" class="btn">Discuter maintenant</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="section">
+        <div class="container">
+            <h2 class="section-title">À Propos de Nous</h2>
+            <div class="about-content">
+                <div class="about-image">
+                    <img src="https://via.placeholder.com/400x300" alt="Notre équipe">
+                </div>
+                <div class="about-text">
+                    <h3>Notre Mission</h3>
+                    <p>Nous sommes dédiés à rendre l'éducation malagasy accessible à tous, en préservant et promouvant la richesse culturelle et linguistique de Madagascar.</p>
+                    
+                    <h3>Notre Vision</h3>
+                    <p>Devenir la référence en matière de ressources éducatives malagasy en ligne, contribuant à l'éducation et à la préservation du patrimoine culturel.</p>
+                    
+                    <h3>Notre Équipe</h3>
+                    <p>Notre équipe est composée d'éducateurs, de développeurs et de passionnés de la culture malagasy, tous déterminés à offrir une expérience d'apprentissage exceptionnelle.</p>
+                    
+                    <a href="#" class="btn">En savoir plus</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h2>Éducation Malagasy</h2>
+                    <p>Apprendre, Découvrir, Grandir</p>
+                </div>
+                <div class="footer-links">
+                    <h3>Liens Rapides</h3>
+                    <ul>
+                        <li><a href="#">Accueil</a></li>
+                        <li><a href="#cours">Cours</a></li>
+                        <li><a href="#ressources">Ressources</a></li>
+                        <li><a href="#quiz">Quiz</a></li>
+                        <li><a href="#chatbot">Chatbot</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h3>Contact</h3>
+                    <p><i class="fas fa-envelope"></i> contact@educationmalagasy.com</p>
+                    <p><i class="fas fa-phone"></i> +261 20 12 345 67</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Antananarivo, Madagascar</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-newsletter">
+                    <h3>Newsletter</h3>
+                    <p>Inscrivez-vous pour recevoir nos dernières mises à jour</p>
+                    <form>
+                        <input type="email" placeholder="Votre email">
+                        <button type="submit"><i class="fas fa-arrow-right"></i></button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Éducation Malagasy. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
