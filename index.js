@@ -9,8 +9,9 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Servir les fichiers statiques du dossier utils
+// Servir les fichiers statiques des dossiers utils et public
 app.use(express.static('utils'));
+app.use(express.static('public'));
 
 // Route principale qui redirige vers la page de connexion
 app.get('/', (req, res) => {
@@ -27,7 +28,7 @@ app.post('/verify-login', (req, res) => {
     
     // Vérifier si le mot de passe correspond à la clé
     if (password === key) {
-      res.json({ success: true });
+      res.json({ success: true, redirectUrl: '/index.html' });
     } else {
       res.json({ success: false });
     }
