@@ -1,7 +1,9 @@
-
 const express = require('express');
-const { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } = require("@google/generative-ai");
-const { GoogleAIFileManager } = require("@google/generative-ai/server");
+const {
+  GoogleGenerativeAI,
+  HarmCategory,
+  HarmBlockThreshold,
+} = require("@google/genai");
 const fs = require("node:fs");
 const multer = require('multer');
 const mime = require("mime-types");
@@ -13,38 +15,18 @@ const upload = multer({
 
 const apiKey = process.env.GEMINI_API_KEY;
 const genAI = new GoogleGenerativeAI(apiKey);
-const fileManager = new GoogleAIFileManager(apiKey);
-
-async function uploadToGemini(path, mimeType) {
-  const uploadResult = await fileManager.uploadFile(path, {
-    mimeType,
-    displayName: path,
-  });
-  return uploadResult.file;
-}
-
-async function waitForFilesActive(files) {
-  for (const name of files.map((file) => file.name)) {
-    let file = await fileManager.getFile(name);
-    while (file.state === "PROCESSING") {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      file = await fileManager.getFile(name);
-    }
-    if (file.state !== "ACTIVE") {
-      throw Error(`File ${file.name} failed to process`);
-    }
-  }
-}
 
 const model = genAI.getGenerativeModel({
-  model: "gemini-2.0-flash",
+  model: "gemini-pro",
   generationConfig: {
-    temperature: 1,
-    topP: 0.95,
-    topK: 40,
-    maxOutputTokens: 8192,
-  }
+    temperature: 0.9,
+    topP: 1,
+    topK: 1,
+    maxOutputTokens: 2048,
+  },
 });
+
+const imageModel = genAI.getGenerativeModel({ model: "gemini-pro-vision" });
 
 let chatSession = null;
 
@@ -53,59 +35,35 @@ async function handleChat(message, files = []) {
     if (!chatSession) {
       chatSession = model.startChat({
         history: [],
+        generationConfig: {
+          maxOutputTokens: 2048,
+        },
       });
     }
 
     let result;
     if (files && files.length > 0) {
-      const geminiFiles = [];
-      const supportedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+      const parts = [];
+      parts.push({ text: message || "Analysez ces images" });
 
       for (const file of files) {
-        if (supportedTypes.includes(file.mimetype)) {
-          const data = file.buffer;
-          const base64Data = data.toString('base64');
-          geminiFiles.push({
-            inlineData: {
-              data: base64Data,
-              mimeType: file.mimetype
-            }
-          });
-        } else {
-          console.log(`Type de fichier non supporté: ${file.mimetype}`);
-        }
-      }
-
-      if (geminiFiles.length > 0) {
-        const parts = [{
-          text: message || "Analysez ces images et répondez à mes questions"
-        }, ...geminiFiles];
-
-        result = await chatSession.sendMessage(parts);
-      } else {
-        const parts = [{
-          text: message || "Décrivez cette image",
-        }];
-
-        for (const file of files) {
-          const data = file.buffer;
-          const base64Data = data.toString('base64');
-
+        if (file.mimetype.startsWith('image/')) {
           parts.push({
             inlineData: {
-              data: base64Data,
+              data: file.buffer.toString('base64'),
               mimeType: file.mimetype
             }
           });
         }
-
-        result = await chatSession.sendMessage(parts);
       }
+
+      result = await imageModel.generateContent(parts);
     } else {
       result = await chatSession.sendMessage(message);
     }
 
-    return result.response.text();
+    const response = await result.response;
+    return response.text();
   } catch (error) {
     console.error('Error in handleChat:', error);
     return "Désolé, je ne peux pas traiter votre demande pour le moment.";
