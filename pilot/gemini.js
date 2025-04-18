@@ -37,10 +37,11 @@ async function handleChat(message, files = []) {
     let result;
     if (files && files.length > 0) {
       const parts = [];
-      parts.push({ text: message || "Analysez ces images" });
+      parts.push({ text: message || "Décrivez cette image en détail" });
 
       for (const file of files) {
         if (file.mimetype.startsWith('image/')) {
+            console.log("Image reçue:", file.originalname);
           parts.push({
             inlineData: {
               data: file.buffer.toString('base64'),

@@ -271,13 +271,17 @@
                 
                 // Simuler une réponse du bot (à remplacer par l'appel à l'API Gemini)
                 setTimeout(() => {
-                    fetch('/api/chat', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ message })
-                    })
+                    const formData = new FormData();
+                formData.append('message', message);
+                
+                if (fileInput.files.length > 0) {
+                    formData.append('files', fileInput.files[0]);
+                }
+                
+                fetch('/api/chat', {
+                    method: 'POST',
+                    body: formData
+                })
                     .then(response => response.text())
                     .then(data => {
                         addMessage(data, 'bot');
