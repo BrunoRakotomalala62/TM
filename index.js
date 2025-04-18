@@ -69,6 +69,11 @@ app.get('/index/A-propos/contact.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index', 'A-propos', 'contact.html'));
 });
 
+// Route pour les images de profil
+app.get('/index/A-propos/contact/photos/:filename', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index', 'A-propos', 'contact', 'photos', req.params.filename));
+});
+
 // Import et utilisation du router Gemini
 const geminiRouter = require('./pilot/gemini').router;
 app.use('/api', geminiRouter);
