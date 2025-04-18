@@ -3,6 +3,7 @@ const express = require('express');
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const multer = require('multer');
 const mime = require("mime-types");
+const pdf = require('pdf-parse');
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -40,7 +41,12 @@ async function handleChat(message, files = []) {
       parts.push({ text: message || "Décrivez cette image en détail" });
 
       for (const file of files) {
-        if (file.mimetype.startsWith('image/')) {
+        if (file.mimetype.startsWith('image/') || file.mimetype === 'application/pdf') {
+            if (file.mimetype === 'application/pdf') {
+                console.log("PDF reçu:", file.originalname);
+                const pdfData = await pdf(file.buffer);
+                message = `Analysez ce document PDF: ${pdfData.text}\n${message || ""}`;
+            } else {
             console.log("Image reçue:", file.originalname);
           parts.push({
             inlineData: {
@@ -49,6 +55,7 @@ async function handleChat(message, files = []) {
             }
           });
         }
+      }
       }
 
       result = await model.generateContent(parts);
