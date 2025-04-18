@@ -44,8 +44,15 @@ async function handleChat(message, files = []) {
         if (file.mimetype.startsWith('image/') || file.mimetype === 'application/pdf') {
             if (file.mimetype === 'application/pdf') {
                 console.log("PDF reçu:", file.originalname);
-                const pdfData = await pdf(file.buffer);
-                message = `Analysez ce document PDF: ${pdfData.text}\n${message || ""}`;
+                try {
+                    const pdfData = await pdf(file.buffer);
+                    const pdfText = pdfData.text.trim();
+                    console.log("Contenu du PDF extrait:", pdfText);
+                    message = `Analysez ce document PDF dont voici le contenu:\n${pdfText}\n${message || ""}`;
+                } catch (error) {
+                    console.error("Erreur lors de l'extraction du PDF:", error);
+                    throw new Error("Impossible de lire le contenu du PDF. Veuillez vérifier le fichier.");
+                }
             } else {
             console.log("Image reçue:", file.originalname);
           parts.push({
