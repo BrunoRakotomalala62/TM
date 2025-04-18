@@ -14,6 +14,10 @@ const upload = multer({
 });
 
 const apiKey = process.env.GEMINI_API_KEY;
+if (!apiKey) {
+  console.error('Error: GEMINI_API_KEY environment variable is not set');
+  throw new Error('GEMINI_API_KEY is required');
+}
 const genAI = new GoogleGenerativeAI(apiKey);
 
 const model = genAI.getGenerativeModel({
