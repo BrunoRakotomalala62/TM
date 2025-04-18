@@ -17,13 +17,16 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'utils', 'login.html'));
 });
 
-// Bloquer l'accès direct à index.html sans authentification
+// Route pour index.html qui va vérifier l'authentification (à implémenter plus tard)
 app.get('/index.html', (req, res) => {
-  res.redirect('/');
+  // Pour l'instant, on permet l'accès direct à index.html après connexion
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Servir les fichiers statiques seulement après les routes spécifiques
-app.use(express.static('public'));
+// Servir les fichiers statiques CSS et JS
+app.use(express.static('public', {
+  index: false // Empêche de servir index.html directement sans passer par la route
+}));
 app.use(express.static('utils'));
 
 // Vérification des identifiants
