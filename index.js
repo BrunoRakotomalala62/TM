@@ -64,6 +64,11 @@ app.get('/chat/chatbot', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'chat', 'chatbot.html'));
 });
 
+// Route pour la page À propos/contact
+app.get('/index/A-propos/contact.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index', 'A-propos', 'contact.html'));
+});
+
 // Import et utilisation du router Gemini
 const geminiRouter = require('./pilot/gemini').router;
 app.use('/api', geminiRouter);
