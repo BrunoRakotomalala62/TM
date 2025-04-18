@@ -87,6 +87,11 @@ app.get('/index/quiz/quiz.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index', 'quiz', 'quiz.html'));
 });
 
+// Route pour la page cours
+app.get('/index/cours/cours.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index', 'cours', 'cours.html'));
+});
+
 // Démarrer le serveur
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Serveur démarré sur le port ${PORT}`);

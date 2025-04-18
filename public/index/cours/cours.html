@@ -1,0 +1,306 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Éducation Malagasy - Cours</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+        }
+
+        .cours-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .header-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .back-button i {
+            margin-right: 8px;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .page-title {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+            font-size: 3rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            animation: fadeInDown 1s ease;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .class-description {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+            animation: fadeIn 1.2s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .class-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+            animation: fadeInUp 1.5s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .class-button {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px 30px;
+            text-align: center;
+            color: white;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .class-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: 0.6s;
+            z-index: 0;
+        }
+
+        .class-button:hover::before {
+            transform: translateX(100%);
+        }
+
+        .class-button:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .class-button h3 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .class-button .icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: rgba(255, 255, 255, 0.9);
+            position: relative;
+            z-index: 1;
+        }
+
+        .class-button p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .primaire { background: linear-gradient(135deg, #FF9966, #FF5E62); }
+        .sixieme { background: linear-gradient(135deg, #4776E6, #8E54E9); }
+        .cinquieme { background: linear-gradient(135deg, #00B4DB, #0083B0); }
+        .quatrieme { background: linear-gradient(135deg, #834d9b, #d04ed6); }
+        .troisieme { background: linear-gradient(135deg, #11998e, #38ef7d); }
+        .seconde { background: linear-gradient(135deg, #F2994A, #F2C94C); }
+        .terminal { background: linear-gradient(135deg, #ED213A, #93291E); }
+        .universitaire { background: linear-gradient(135deg, #396afc, #2948ff); }
+
+        .footer-note {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 50px;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .class-buttons {
+                grid-template-columns: 1fr;
+            }
+            
+            .page-title {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="cours-container">
+        <div class="header-navigation">
+            <a href="/index.html" class="back-button">
+                <i class="fas fa-arrow-left"></i> Retour à l'accueil
+            </a>
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <h1>Éducation Malagasy</h1>
+            </div>
+        </div>
+
+        <h1 class="page-title">Sélectionnez votre niveau</h1>
+        
+        <p class="class-description">
+            Découvrez nos cours adaptés à chaque niveau scolaire, du primaire jusqu'à l'université. 
+            Chaque section contient des contenus sur mesure pour faciliter votre apprentissage.
+        </p>
+
+        <div class="class-buttons">
+            <div class="class-button primaire">
+                <div class="icon"><i class="fas fa-child"></i></div>
+                <h3>Primaire</h3>
+                <p>Les fondamentaux adaptés aux jeunes élèves</p>
+            </div>
+
+            <div class="class-button sixieme">
+                <div class="icon"><i class="fas fa-book-open"></i></div>
+                <h3>6ème</h3>
+                <p>Première année du collège</p>
+            </div>
+
+            <div class="class-button cinquieme">
+                <div class="icon"><i class="fas fa-pencil-alt"></i></div>
+                <h3>5ème</h3>
+                <p>Progressez dans votre parcours au collège</p>
+            </div>
+
+            <div class="class-button quatrieme">
+                <div class="icon"><i class="fas fa-calculator"></i></div>
+                <h3>4ème</h3>
+                <p>Approfondissement des connaissances</p>
+            </div>
+
+            <div class="class-button troisieme">
+                <div class="icon"><i class="fas fa-atom"></i></div>
+                <h3>3ème</h3>
+                <p>Préparation au brevet des collèges</p>
+            </div>
+
+            <div class="class-button seconde">
+                <div class="icon"><i class="fas fa-flask"></i></div>
+                <h3>2nde</h3>
+                <p>Transition vers le lycée</p>
+            </div>
+
+            <div class="class-button terminal">
+                <div class="icon"><i class="fas fa-graduation-cap"></i></div>
+                <h3>Terminale</h3>
+                <p>Préparation au baccalauréat</p>
+            </div>
+
+            <div class="class-button universitaire">
+                <div class="icon"><i class="fas fa-university"></i></div>
+                <h3>Universitaire</h3>
+                <p>Études supérieures et spécialisations</p>
+            </div>
+        </div>
+
+        <p class="footer-note">
+            Cliquez sur un niveau pour découvrir tous les cours disponibles dans cette catégorie
+        </p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animation des boutons au chargement
+            const buttons = document.querySelectorAll('.class-button');
+            buttons.forEach((button, index) => {
+                button.style.opacity = 0;
+                setTimeout(() => {
+                    button.style.opacity = 1;
+                    button.style.transform = 'translateY(0)';
+                }, 100 * index);
+            });
+
+            // Ajouter un effet de clic
+            buttons.forEach(button => {
+                button.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)';
+                        // Ici on pourrait rediriger vers la page spécifique du niveau
+                        // window.location.href = `/index/cours/${niveau}.html`;
+                        alert('Les cours pour ce niveau seront bientôt disponibles!');
+                    }, 150);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
