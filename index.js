@@ -9,13 +9,22 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.urlencoded({ extended: true }));
 
-// Route pour la page de login
+// Route principale qui redirige vers la page de connexion
 app.get('/', (req, res) => {
-  console.log('Accès à la page de login détecté');
-  res.sendFile(path.join(__dirname, 'login.html'));
+  console.log('Redirection vers la page de login');
+  res.sendFile(path.join(__dirname, 'utils', 'login.html'));
 });
+
+// Bloquer l'accès direct à index.html sans authentification
+app.get('/index.html', (req, res) => {
+  res.redirect('/');
+});
+
+// Servir les fichiers statiques seulement après les routes spécifiques
+app.use(express.static('public'));
+app.use(express.static('utils'));
 
 // Vérification des identifiants
 app.post('/verify-login', (req, res) => {
@@ -24,35 +33,26 @@ app.post('/verify-login', (req, res) => {
   try {
     // Lire les informations d'identification depuis le fichier
     const credentials = fs.readFileSync(path.join(__dirname, 'utils/cle.txt'), 'utf8');
-    const lines = credentials.split('\n');
+    const lines = credentials.trim().split('\n');
     
-    let isAuthenticated = false;
+    console.log('Tentative de connexion:', email, password);
+    console.log('Contenu de cle.txt:', lines);
     
-    // Vérifier chaque ligne pour trouver une correspondance
-    for (const line of lines) {
-      const [storedEmail, storedPassword] = line.trim().split(':');
-      
-      if (email === storedEmail && password === storedPassword) {
-        isAuthenticated = true;
-        break;
-      }
-    }
+    // Vérifier si les identifiants correspondent
+    const validEmail = lines[0].trim();
+    const validPassword = lines[2].trim();
     
-    if (isAuthenticated) {
+    if (email === validEmail && password === validPassword) {
+      console.log('Connexion réussie');
       return res.json({ success: true });
     } else {
+      console.log('Échec de connexion: identifiants invalides');
       return res.json({ success: false, message: 'Email ou mot de passe incorrect' });
     }
   } catch (error) {
     console.error('Erreur lors de la vérification des identifiants:', error);
     return res.status(500).json({ success: false, message: 'Erreur serveur' });
   }
-});
-
-// Route catch-all pour déboguer
-app.get('*', (req, res, next) => {
-  console.log(`URL demandée: ${req.originalUrl}`);
-  next();
 });
 
 // Démarrer le serveur
