@@ -3,7 +3,7 @@ const {
   GoogleGenerativeAI,
   HarmCategory,
   HarmBlockThreshold,
-} = require("@google/genai");
+} = require("@google/generative-ai");
 const fs = require("node:fs");
 const multer = require('multer');
 const mime = require("mime-types");
