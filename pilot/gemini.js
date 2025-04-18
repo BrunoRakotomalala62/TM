@@ -75,7 +75,17 @@ async function handleChat(message, files = []) {
     }
 
     const response = await result.response;
-    return response.text();
+    let responseText = response.text();
+    
+    // Filtrer les réponses techniques pour éviter d'afficher des erreurs JSON ou des données brutes
+    if (responseText.includes('{"box_2d"') || responseText.includes('bounding box') || 
+        responseText.includes('```json') || responseText.match(/^\s*\[.*\]\s*$/)) {
+      // Si on détecte des données techniques, les remplacer par un message plus approprié
+      console.log("Données techniques détectées dans la réponse:", responseText);
+      return "Je ne peux pas analyser cette image correctement. Pourriez-vous me poser une question plus spécifique à son sujet?";
+    }
+    
+    return responseText;
   } catch (error) {
     console.error('Error in handleChat:', error);
     throw error;
