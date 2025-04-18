@@ -1,50 +1,62 @@
 
 const express = require('express');
-const fs = require('fs');
 const path = require('path');
-const app = express();
+const fs = require('fs');
 const bodyParser = require('body-parser');
 
-// Middleware pour analyser les données du formulaire
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Middleware
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Route principale qui redirige vers la page de connexion
+// Route pour la page de login
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'utils', 'login.html'));
+  console.log('Accès à la page de login détecté');
+  res.sendFile(path.join(__dirname, 'login.html'));
 });
 
-// Servir les fichiers statiques des dossiers utils et public après la redirection
-app.use(express.static('utils'));
-app.use(express.static('public'));
-
-// Bloquer l'accès direct à index.html sans authentification
-app.get('/index.html', (req, res) => {
-  res.redirect('/');
-});
-
-// Route pour vérifier les informations de connexion
+// Vérification des identifiants
 app.post('/verify-login', (req, res) => {
   const { email, password } = req.body;
   
   try {
-    // Lire le contenu du fichier cle.txt
-    const key = fs.readFileSync(path.join(__dirname, 'utils', 'cle.txt'), 'utf8').trim();
+    // Lire les informations d'identification depuis le fichier
+    const credentials = fs.readFileSync(path.join(__dirname, 'utils/cle.txt'), 'utf8');
+    const lines = credentials.split('\n');
     
-    // Vérifier si le mot de passe correspond à la clé
-    if (password === key) {
-      res.json({ success: true, redirectUrl: '/index.html' });
+    let isAuthenticated = false;
+    
+    // Vérifier chaque ligne pour trouver une correspondance
+    for (const line of lines) {
+      const [storedEmail, storedPassword] = line.trim().split(':');
+      
+      if (email === storedEmail && password === storedPassword) {
+        isAuthenticated = true;
+        break;
+      }
+    }
+    
+    if (isAuthenticated) {
+      return res.json({ success: true });
     } else {
-      res.json({ success: false });
+      return res.json({ success: false, message: 'Email ou mot de passe incorrect' });
     }
   } catch (error) {
-    console.error('Erreur lors de la vérification:', error);
-    res.json({ success: false });
+    console.error('Erreur lors de la vérification des identifiants:', error);
+    return res.status(500).json({ success: false, message: 'Erreur serveur' });
   }
 });
 
+// Route catch-all pour déboguer
+app.get('*', (req, res, next) => {
+  console.log(`URL demandée: ${req.originalUrl}`);
+  next();
+});
+
 // Démarrer le serveur
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, '0.0.0.0', () => {
+app.listen(PORT, () => {
   console.log(`Serveur démarré sur le port ${PORT}`);
+  console.log(`Accédez à http://localhost:${PORT} pour voir la page de login`);
 });
