@@ -207,7 +207,7 @@
                 const data = await response.json();
 
                 if (data.success) {
-                    window.location.href = data.redirectUrl;
+                    window.location.href = '/index.html'; //Corrected redirect
                 } else {
                     document.getElementById('errorMessage').style.display = 'block';
                 }

@@ -15,7 +15,7 @@ app.use(express.static('public'));
 
 // Route principale qui redirige vers la page de connexion
 app.get('/', (req, res) => {
-  res.redirect('/login.html');
+  res.redirect('/utils/login.html');
 });
 
 // Route pour vérifier les informations de connexion
