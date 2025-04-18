@@ -48,15 +48,11 @@ async function handleChat(message, files = []) {
                     const pdfData = await pdf(file.buffer);
                     const pdfText = pdfData.text.trim();
                     console.log("Contenu du PDF extrait:", pdfText);
-                    parts.push({
-                        fileData: {
-                            mimeType: file.mimetype,
-                            data: file.buffer.toString('base64')
-                        }
-                    });
-                    if (message) {
-                        parts.push({ text: message });
-                    }
+                    
+                    // Ajouter le texte du PDF au message
+                    message = `Voici l'exercice de mathématiques:\n${pdfText}\n\n${message || "Pouvez-vous m'aider à résoudre ces exercices ?"}`;
+                    parts.push({ text: message });
+                    
                 } catch (error) {
                     console.error("Erreur lors de l'extraction du PDF:", error);
                     throw new Error("Impossible de lire le contenu du PDF. Veuillez vérifier le fichier.");
