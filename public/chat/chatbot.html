@@ -153,6 +153,7 @@
             background: rgba(0, 0, 0, 0.05);
             min-height: calc(100vh - 230px);
             max-height: calc(100vh - 230px);
+            width: 100%;
         }
         
         .chat-messages::-webkit-scrollbar {
@@ -173,10 +174,10 @@
             animation: fadeIn 0.5s ease;
             position: relative;
             transition: all 0.3s ease;
-            width: auto;
-            display: inline-block;
+            margin-bottom: 12px;
             white-space: normal;
             overflow: visible;
+            box-sizing: border-box;
         }
         
         @keyframes fadeIn {
@@ -651,11 +652,13 @@
                 messageDiv.classList.add(sender === 'user' ? 'user-message' : 'bot-message');
                 messageDiv.style.opacity = '0';
                 messageDiv.style.transform = 'translateY(20px)';
-                messageDiv.style.width = 'auto';
-                messageDiv.style.display = 'inline-block';
+                
+                // Réglage de la largeur à 85% maximum au lieu de auto/inline-block
+                messageDiv.style.width = '85%';
+                messageDiv.style.display = 'block';
                 
                 const textDiv = document.createElement('div');
-                textDiv.style.whiteSpace = 'normal';
+                textDiv.style.whiteSpace = 'pre-wrap'; // Préserve les sauts de ligne
                 textDiv.style.wordBreak = 'break-word';
                 textDiv.style.overflow = 'visible';
                 
@@ -692,16 +695,16 @@
                 // Ajouter un effet de brillance pour les nouveaux messages du bot
                 if (sender === 'bot') {
                     messageDiv.style.position = 'relative';
-                    messageDiv.style.overflow = 'hidden';
+                    messageDiv.style.overflow = 'visible'; // Changer à visible pour éviter de couper le texte
                     
                     setTimeout(() => {
                         messageDiv.style.setProperty('--shine-color', 'rgba(255, 255, 255, 0.2)');
                         messageDiv.style.background = `
                             linear-gradient(
                                 90deg, 
-                                rgba(0, 0, 0, 0.4) 0%, 
+                                rgba(0, 0, 0, 0.6) 0%, 
                                 var(--shine-color) 25%, 
-                                rgba(0, 0, 0, 0.4) 50%
+                                rgba(0, 0, 0, 0.6) 50%
                             ) 
                         `;
                         messageDiv.style.backgroundSize = '200px 100%';
@@ -709,18 +712,24 @@
                         
                         // Retourner à l'apparence normale après l'animation
                         setTimeout(() => {
-                            messageDiv.style.background = 'rgba(0, 0, 0, 0.4)';
+                            messageDiv.style.background = 'rgba(0, 0, 0, 0.6)';
                             messageDiv.style.animation = 'none';
                         }, 2000);
                     }, 500);
                 }
             }
             
-            // Formater le message pour afficher les liens cliquables
+            // Formater le message pour afficher les liens cliquables et conserver les sauts de ligne
             function formatMessage(text) {
                 // Convertir les URLs en liens cliquables
                 const urlRegex = /(https?:\/\/[^\s]+)/g;
-                return text.replace(urlRegex, url => `<a href="${url}" target="_blank" style="color:#6a11cb;text-decoration:underline;">${url}</a>`);
+                // Remplacer les URLs par des liens
+                text = text.replace(urlRegex, url => `<a href="${url}" target="_blank" style="color:#6a11cb;text-decoration:underline;">${url}</a>`);
+                
+                // Conserver les sauts de ligne
+                text = text.replace(/\n/g, '<br>');
+                
+                return text;
             }
             
             // Effet de pulsation sur le bouton d'envoi
