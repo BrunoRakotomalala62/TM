@@ -27,7 +27,7 @@ router.get('/question', async (req, res) => {
     
     // Extraction de la question
     const questionMatch = responseText.match(/Question : (.*?)(?:\n|$)/);
-    const question = questionMatch ? questionMatch[1] : 'Comment dit-on "concombre" en italien?';
+    const question = questionMatch ? questionMatch[1].trim() : 'Comment dit-on "concombre" en italien?';
     
     // Extraction des réponses possibles
     const optionsText = responseText.split('❓ Réponses possibles :')[1].split('🔑 Réponse correcte :')[0].trim();
@@ -40,7 +40,25 @@ router.get('/question', async (req, res) => {
     
     // Extraction de la réponse correcte
     const correctAnswerMatch = responseText.match(/🔑 Réponse correcte : (.*)/);
-    const correctAnswer = correctAnswerMatch ? correctAnswerMatch[1].trim() : '';
+    let correctAnswer = correctAnswerMatch ? correctAnswerMatch[1].trim() : '';
+    
+    // Décodage des entités HTML dans la réponse correcte
+    correctAnswer = correctAnswer.replace(/&([^;]+);/g, (match, entity) => {
+      const entities = {
+        'ouml': 'ö',
+        'auml': 'ä',
+        'uuml': 'ü',
+        'Ouml': 'Ö',
+        'Auml': 'Ä',
+        'Uuml': 'Ü',
+        'szlig': 'ß',
+        'nbsp': ' ',
+        'amp': '&',
+        'lt': '<',
+        'gt': '>'
+      };
+      return entities[entity] || match;
+    });
     
     // Créer l'objet de question formaté
     const formattedQuestion = {

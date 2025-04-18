@@ -272,6 +272,11 @@
                         questionElement.textContent = data.question || "Comment dit-on 'concombre' en italien?";
                         console.log('Question reçue:', data.question);
 
+                        // S'assurer que la question est visible
+                        if (data.question) {
+                            document.title = 'Quiz - ' + data.question.substring(0, 30) + '...';
+                        }
+
                         // Créer les options
                         data.options.forEach((option, index) => {
                             const optionElement = document.createElement('div');
