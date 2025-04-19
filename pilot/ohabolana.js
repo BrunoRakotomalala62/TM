@@ -15,44 +15,71 @@ router.get('/recherche', async (req, res) => {
     const response = await fetch(apiUrl);
     const data = await response.json();
     
-    // Calculer le nombre total de pages en vérifiant toutes les pages suivantes
+    // Déterminer le nombre total de pages lors de la première recherche
     try {
       const currentPage = parseInt(page, 10);
-      let totalPages = currentPage;
-      let hasMorePages = true;
-      let checkPage = currentPage + 1;
       
-      // On vérifie jusqu'à 10 pages maximum pour ne pas surcharger l'API
-      const MAX_PAGES_TO_CHECK = 10;
-      let pagesChecked = 0;
-      
-      while (hasMorePages && pagesChecked < MAX_PAGES_TO_CHECK) {
-        const nextPageResponse = await fetch(`https://test-api-milay-vercel.vercel.app/api/ohab/recherche?ohabolana=${encodeURIComponent(terme)}&page=${checkPage}`);
-        const nextPageData = await nextPageResponse.json();
-        
-        if (nextPageData.resultats && nextPageData.resultats.length > 0) {
-          totalPages = checkPage;
-          checkPage++;
-          pagesChecked++;
-        } else {
-          hasMorePages = false;
+      // Si c'est la page 1, on va déterminer le nombre total de pages
+      if (currentPage === 1) {
+        // Fonction pour vérifier si une page existe
+        async function checkPageExists(pageNum) {
+          const checkResponse = await fetch(`https://test-api-milay-vercel.vercel.app/api/ohab/recherche?ohabolana=${encodeURIComponent(terme)}&page=${pageNum}`);
+          const checkData = await checkResponse.json();
+          return checkData.resultats && checkData.resultats.length > 0;
         }
-      }
+        
+        // Recherche binaire pour trouver rapidement la dernière page
+        // On commence par estimer qu'il y a au maximum 30 pages
+        let low = 1;
+        let high = 30;
+        let lastConfirmedPage = 1;
+        
+        while (low <= high) {
+          const mid = Math.floor((low + high) / 2);
+          
+          if (await checkPageExists(mid)) {
+            lastConfirmedPage = mid;
+            low = mid + 1;
+          } else {
+            high = mid - 1;
+          }
+        }
+        
+        // On a maintenant le nombre total de pages
+        const totalPages = lastConfirmedPage;
       
       // Ajouter les informations de pagination à la réponse
-      data.pageCourante = currentPage;
-      data.totalPages = totalPages;
-      
-      if (currentPage < totalPages) {
-        data.pageSuivante = currentPage + 1;
-        data.estDernierePage = false;
+        data.pageCourante = currentPage;
+        data.totalPages = totalPages;
+        
+        if (currentPage < totalPages) {
+          data.pageSuivante = currentPage + 1;
+          data.estDernierePage = false;
+        } else {
+          data.pageSuivante = null;
+          data.estDernierePage = true;
+        }
       } else {
-        data.pageSuivante = null;
-        data.estDernierePage = true;
+        // Si ce n'est pas la page 1, on utilise les informations de pagination existantes
+        // ou on obtient le nombre total de pages depuis le stockage
+        data.pageCourante = currentPage;
+        
+        // Vérifier si cette page existe vraiment
+        if (data.resultats && data.resultats.length > 0) {
+          // On utilise le nombre total que nous avons déjà calculé lors de la première requête
+          // Ce nombre est aussi transmis dans les données de la réponse
+          data.estDernierePage = (currentPage === data.totalPages);
+          data.pageSuivante = data.estDernierePage ? null : currentPage + 1;
+        } else {
+          // Si cette page n'existe pas, on redirige vers la dernière page connue
+          data.pageCourante = 1; // Retour à la page 1 par défaut
+          data.estDernierePage = true;
+          data.pageSuivante = null;
+        }
       }
     } catch (err) {
       console.error("Erreur lors du calcul du nombre total de pages:", err);
-      // En cas d'erreur, on suppose que c'est la dernière page
+      // En cas d'erreur, on suppose que c'est la dernière page connue
       data.pageCourante = parseInt(page, 10);
       data.totalPages = data.pageCourante;
       data.pageSuivante = null;
