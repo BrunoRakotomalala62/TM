@@ -92,6 +92,11 @@ app.get('/index/cours/cours.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index', 'cours', 'cours.html'));
 });
 
+// Route pour la page 4ème
+app.get('/index/cours/4eme/4eme.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index', 'cours', '4eme', '4eme.html'));
+});
+
 // Démarrer le serveur
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Serveur démarré sur le port ${PORT}`);

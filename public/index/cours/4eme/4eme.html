@@ -1,0 +1,564 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classe de 4ème - Matières</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-decoration: none;
+        }
+
+        .back-button i {
+            margin-right: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button:hover i {
+            transform: translateX(-5px);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            color: white;
+        }
+
+        .logo i {
+            font-size: 2rem;
+            margin-right: 10px;
+            animation: spin 10s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: white;
+            transform: translateX(-100%);
+            animation: lineMove 3s ease-in-out infinite;
+        }
+
+        @keyframes lineMove {
+            0% { transform: translateX(-100%); }
+            50% { transform: translateX(0); }
+            100% { transform: translateX(100%); }
+        }
+
+        .page-title {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            font-size: 3.5rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            animation: glowText 3s ease-in-out infinite;
+            position: relative;
+        }
+
+        @keyframes glowText {
+            0% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.2); }
+            50% { text-shadow: 0 0 20px rgba(255, 255, 255, 0.8); }
+            100% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.2); }
+        }
+
+        .page-subtitle {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+            opacity: 0.9;
+            animation: fadeInUp 1.2s ease;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+            perspective: 1000px;
+        }
+
+        .subject-card {
+            position: relative;
+            height: 220px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .subject-card:hover {
+            transform: rotateY(15deg) translateY(-20px);
+            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .subject-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+            z-index: 2;
+        }
+
+        .subject-card:hover::before {
+            left: 100%;
+            transition: 0.5s;
+        }
+
+        .card-inner {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            background-size: 300% 300%;
+            color: white;
+            text-align: center;
+            animation: gradientMove 15s ease infinite;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .subject-icon {
+            position: relative;
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            transition: all 0.5s ease;
+            z-index: 2;
+        }
+
+        .subject-card:hover .subject-icon {
+            transform: translateY(-10px) scale(1.2);
+            text-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .subject-icon::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            z-index: -1;
+            transition: transform 0.5s ease;
+        }
+
+        .subject-card:hover .subject-icon::after {
+            transform: translate(-50%, -50%) scale(1.5);
+        }
+
+        .subject-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .subject-description {
+            font-size: 1rem;
+            opacity: 0.9;
+            max-width: 90%;
+            margin: 0 auto;
+            line-height: 1.4;
+            position: relative;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+
+        .subject-card:hover .subject-description {
+            transform: translateY(5px);
+            opacity: 1;
+        }
+
+        /* Subject-specific colors with gradients */
+        .malagasy { background: linear-gradient(135deg, #FF416C, #FF4B2B); }
+        .anglais { background: linear-gradient(135deg, #1A2980, #26D0CE); }
+        .francais { background: linear-gradient(135deg, #8E2DE2, #4A00E0); }
+        .histogeo { background: linear-gradient(135deg, #FF8008, #FFC837); }
+        .physique { background: linear-gradient(135deg, #00B4DB, #0083B0); }
+        .maths { background: linear-gradient(135deg, #00C9FF, #92FE9D); }
+        .svt { background: linear-gradient(135deg, #F953C6, #B91D73); }
+        .eps { background: linear-gradient(135deg, #0F2027, #2C5364); }
+
+        /* Background decorations */
+        .decoration {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(50px);
+            opacity: 0.5;
+            z-index: 0;
+            animation: float 20s infinite alternate ease-in-out;
+        }
+
+        .decoration-1 {
+            width: 300px;
+            height: 300px;
+            background: rgba(0, 242, 254, 0.5);
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .decoration-2 {
+            width: 400px;
+            height: 400px;
+            background: rgba(79, 172, 254, 0.5);
+            bottom: 10%;
+            right: 10%;
+            animation-delay: 5s;
+        }
+
+        .decoration-3 {
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.3);
+            top: 50%;
+            left: 30%;
+            animation-delay: 10s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+            50% {
+                transform: translate(50px, 30px) scale(1.1);
+            }
+            100% {
+                transform: translate(-30px, -50px) scale(0.9);
+            }
+        }
+
+        .footer-note {
+            text-align: center;
+            color: white;
+            margin-top: 50px;
+            font-size: 1rem;
+            font-weight: 500;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50px;
+            backdrop-filter: blur(5px);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); }
+            50% { box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); }
+            100% { box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); }
+        }
+
+        /* Media Queries */
+        @media (max-width: 768px) {
+            .subjects-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .page-title {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="decoration decoration-1"></div>
+    <div class="decoration decoration-2"></div>
+    <div class="decoration decoration-3"></div>
+    
+    <div class="container">
+        <div class="header">
+            <a href="/index/cours/cours.html" class="back-button">
+                <i class="fas fa-arrow-left"></i> Retour aux niveaux
+            </a>
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <h1>Éducation Malagasy</h1>
+            </div>
+        </div>
+
+        <h1 class="page-title">Classe de 4ème</h1>
+        
+        <p class="page-subtitle">
+            Explorez notre programme complet pour la classe de 4ème et accédez à des ressources pédagogiques interactives. Renforcez vos connaissances avec nos cours spécialisés, exercices pratiques et quiz conçus par des experts.
+        </p>
+
+        <div class="subjects-grid">
+            <div class="subject-card malagasy">
+                <div class="card-inner">
+                    <div class="subject-icon"><i class="fas fa-language"></i></div>
+                    <h3 class="subject-name">Malagasy</h3>
+                    <p class="subject-description">Approfondissement de la littérature et perfectionnement de l'expression écrite</p>
+                </div>
+            </div>
+
+            <div class="subject-card anglais">
+                <div class="card-inner">
+                    <div class="subject-icon"><i class="fas fa-globe-europe"></i></div>
+                    <h3 class="subject-name">Anglais</h3>
+                    <p class="subject-description">Conversation avancée et découverte des cultures anglophones</p>
+                </div>
+            </div>
+
+            <div class="subject-card francais">
+                <div class="card-inner">
+                    <div class="subject-icon"><i class="fas fa-book"></i></div>
+                    <h3 class="subject-name">Français</h3>
+                    <p class="subject-description">Analyse de textes, argumentation et production écrite</p>
+                </div>
+            </div>
+
+            <div class="subject-card histogeo">
+                <div class="card-inner">
+                    <div class="subject-icon"><i class="fas fa-globe-africa"></i></div>
+                    <h3 class="subject-name">Histoire-Géo</h3>
+                    <p class="subject-description">Étude approfondie des périodes historiques et des enjeux géographiques</p>
+                </div>
+            </div>
+
+            <div class="subject-card physique">
+                <div class="card-inner">
+                    <div class="subject-icon"><i class="fas fa-atom"></i></div>
+                    <h3 class="subject-name">Physique-Chimie</h3>
+                    <p class="subject-description">Exploration des phénomènes naturels et expériences scientifiques</p>
+                </div>
+            </div>
+
+            <div class="subject-card maths">
+                <div class="card-inner">
+                    <div class="subject-icon"><i class="fas fa-calculator"></i></div>
+                    <h3 class="subject-name">Mathématiques</h3>
+                    <p class="subject-description">Algèbre, géométrie et applications dans la vie quotidienne</p>
+                </div>
+            </div>
+
+            <div class="subject-card svt">
+                <div class="card-inner">
+                    <div class="subject-icon"><i class="fas fa-leaf"></i></div>
+                    <h3 class="subject-name">SVT</h3>
+                    <p class="subject-description">Biologie humaine et comprendre les écosystèmes complexes</p>
+                </div>
+            </div>
+
+            <div class="subject-card eps">
+                <div class="card-inner">
+                    <div class="subject-icon"><i class="fas fa-running"></i></div>
+                    <h3 class="subject-name">EPS</h3>
+                    <p class="subject-description">Sports collectifs et développement des compétences motrices</p>
+                </div>
+            </div>
+        </div>
+
+        <p class="footer-note">
+            Cliquez sur une matière pour explorer nos cours, exercices et ressources interactives
+        </p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animation des cartes avec délai progressif
+            animateCards();
+            
+            // Effets interactifs pour les cartes
+            setupCardInteractions();
+            
+            // Effet de mouvement pour les décorations d'arrière-plan
+            setupBackgroundEffects();
+        });
+        
+        function animateCards() {
+            const cards = document.querySelectorAll('.subject-card');
+            
+            cards.forEach((card, index) => {
+                // Animation d'entrée avec délai progressif
+                card.style.opacity = 0;
+                card.style.transform = 'translateY(50px) scale(0.9)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                    card.style.opacity = 1;
+                    card.style.transform = 'translateY(0) scale(1)';
+                }, 150 * index);
+                
+                // Animation au clic
+                card.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.95)';
+                    
+                    // Effet de pulsation
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1.05)';
+                        setTimeout(() => {
+                            this.style.transform = '';
+                            alert('Les ressources pour cette matière seront bientôt disponibles !');
+                        }, 150);
+                    }, 150);
+                });
+            });
+        }
+        
+        function setupCardInteractions() {
+            const cards = document.querySelectorAll('.subject-card');
+            
+            cards.forEach(card => {
+                // Effet 3D au survol (parallaxe)
+                card.addEventListener('mousemove', function(e) {
+                    const rect = this.getBoundingClientRect();
+                    const x = e.clientX - rect.left; // position X relative à la carte
+                    const y = e.clientY - rect.top;  // position Y relative à la carte
+                    
+                    // Calcul de l'angle de rotation basé sur la position du curseur
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    // Réduire l'intensité en divisant par un nombre plus grand
+                    const rotateY = ((x - centerX) / 10) * 1; // horizontal rotation
+                    const rotateX = ((centerY - y) / 10) * 1; // vertical rotation
+                    
+                    this.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-10px)`;
+                    
+                    // Effet de lumière dynamique
+                    const cardInner = this.querySelector('.card-inner');
+                    const percentX = (x / rect.width) * 100;
+                    const percentY = (y / rect.height) * 100;
+                    cardInner.style.background = 
+                        `radial-gradient(circle at ${percentX}% ${percentY}%, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 60%)`;
+                });
+                
+                // Réinitialiser l'effet au départ de la souris
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = '';
+                    const cardInner = this.querySelector('.card-inner');
+                    cardInner.style.background = '';
+                });
+            });
+        }
+        
+        function setupBackgroundEffects() {
+            // Effet de parallaxe pour les décorations d'arrière-plan
+            document.addEventListener('mousemove', function(e) {
+                const moveX = (e.clientX * 0.01);
+                const moveY = (e.clientY * 0.01);
+                
+                document.querySelectorAll('.decoration').forEach((decoration, index) => {
+                    const factor = 0.5 + (index * 0.1); // Différentes vitesses pour chaque décoration
+                    decoration.style.transform = `translate(${moveX * factor}px, ${moveY * factor}px)`;
+                });
+            });
+            
+            // Animation du titre
+            const pageTitle = document.querySelector('.page-title');
+            pageTitle.addEventListener('mouseover', function() {
+                this.style.animation = 'none';
+                setTimeout(() => {
+                    this.style.animation = 'glowText 3s ease-in-out infinite';
+                }, 10);
+            });
+        }
+    </script>
+</body>
+</html>
