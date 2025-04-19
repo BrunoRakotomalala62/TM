@@ -1,0 +1,525 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Éducation Malagasy - Série OSE</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+            position: relative;
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-decoration: none;
+        }
+
+        .back-button i {
+            margin-right: 8px;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            color: white;
+        }
+
+        .logo i {
+            font-size: 2rem;
+            margin-right: 10px;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .page-title {
+            text-align: center;
+            color: #ffffff;
+            margin-bottom: 30px;
+            font-size: 3.5rem;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            font-weight: 700;
+            letter-spacing: 2px;
+            position: relative;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            }
+            to {
+                text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.5);
+            }
+        }
+
+        .page-subtitle {
+            text-align: center;
+            color: #E0E0E0;
+            margin-bottom: 50px;
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            animation: fadeIn 1.2s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Style des hexagones */
+        .subjects-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .subject-card {
+            width: 250px;
+            height: 300px;
+            position: relative;
+            perspective: 1000px;
+            cursor: pointer;
+            margin: 15px;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+
+        .subject-card:hover .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            background: linear-gradient(135deg, rgba(17, 153, 142, 0.9) 0%, rgba(56, 239, 125, 0.9) 100%);
+            text-align: center;
+        }
+
+        .card-back {
+            background: linear-gradient(135deg, rgba(56, 239, 125, 0.9) 0%, rgba(17, 153, 142, 0.9) 100%);
+            transform: rotateY(180deg);
+        }
+
+        .subject-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: white;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            transition: all 0.5s ease;
+        }
+
+        .subject-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: white;
+        }
+
+        .subject-description {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            color: white;
+        }
+
+        .btn-explore {
+            margin-top: 15px;
+            padding: 8px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-explore:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Animation des feuilles qui tombent */
+        .leaves-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .leaf {
+            position: absolute;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff' width='24px' height='24px'%3E%3Cpath d='M17,8C8,10,5.9,16.17,3.82,21.34L5.71,22l1-2.3C9,14,14,8.87,21,8c0,0-3,1-4,1s5.37-2.95,6.19-3.76L21,3,13,5.69c0,0,1.66,1.25,1.76,1.13C15.76,5.62,17,8,17,8z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            width: 24px;
+            height: 24px;
+            opacity: 0.5;
+            animation: leaf-fall linear infinite;
+        }
+
+        @keyframes leaf-fall {
+            0% {
+                transform: translateY(-5%) translateX(0) rotate(0deg);
+                opacity: 0.5;
+            }
+            25% {
+                transform: translateY(25%) translateX(5%) rotate(90deg);
+                opacity: 0.7;
+            }
+            50% {
+                transform: translateY(50%) translateX(-5%) rotate(180deg);
+                opacity: 0.5;
+            }
+            75% {
+                transform: translateY(75%) translateX(5%) rotate(270deg);
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(100vh) translateX(0) rotate(360deg);
+                opacity: 0.5;
+            }
+        }
+
+        /* Pulse effect on hover */
+        .subject-card:hover .subject-icon {
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .subjects-container {
+                justify-content: center;
+            }
+            
+            .subject-card {
+                width: 200px;
+                height: 240px;
+            }
+            
+            .page-title {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="leaves-container" id="leaves-container"></div>
+    
+    <div class="container">
+        <div class="header">
+            <a href="/index/cours/terminale/terminale.html" class="back-button">
+                <i class="fas fa-arrow-left"></i> Retour aux séries
+            </a>
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <h1>Éducation Malagasy</h1>
+            </div>
+        </div>
+
+        <h1 class="page-title">Série OSE - Matières</h1>
+        
+        <p class="page-subtitle">
+            Bienvenue dans le programme de la Série OSE ! Spécialisée en Organisation, Sciences et Économie, cette série vous prépare aux carrières dans la gestion, l'économie et l'administration. Explorez les matières ci-dessous pour accéder aux ressources pédagogiques dédiées.
+        </p>
+
+        <div class="subjects-container">
+            <div class="subject-card">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="subject-icon"><i class="fas fa-language"></i></div>
+                        <h3 class="subject-name">Malagasy</h3>
+                        <p class="subject-description">Communication professionnelle</p>
+                    </div>
+                    <div class="card-back">
+                        <p>Maîtrisez les aspects culturels et linguistiques malagasy</p>
+                        <button class="btn-explore">Explorer</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subject-card">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="subject-icon"><i class="fas fa-book"></i></div>
+                        <h3 class="subject-name">Français</h3>
+                        <p class="subject-description">Communication et analyses</p>
+                    </div>
+                    <div class="card-back">
+                        <p>Perfectionnez vos compétences en communication écrite et orale</p>
+                        <button class="btn-explore">Explorer</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subject-card">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="subject-icon"><i class="fas fa-chart-line"></i></div>
+                        <h3 class="subject-name">SES</h3>
+                        <p class="subject-description">Analyse économique</p>
+                    </div>
+                    <div class="card-back">
+                        <p>Approfondissez votre compréhension des mécanismes économiques</p>
+                        <button class="btn-explore">Explorer</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subject-card">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="subject-icon"><i class="fas fa-globe-americas"></i></div>
+                        <h3 class="subject-name">Anglais</h3>
+                        <p class="subject-description">Communication internationale</p>
+                    </div>
+                    <div class="card-back">
+                        <p>Développez vos compétences en anglais des affaires</p>
+                        <button class="btn-explore">Explorer</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subject-card">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="subject-icon"><i class="fas fa-globe-africa"></i></div>
+                        <h3 class="subject-name">Histoire-Géo</h3>
+                        <p class="subject-description">Analyse géopolitique</p>
+                    </div>
+                    <div class="card-back">
+                        <p>Comprenez les enjeux géopolitiques et économiques mondiaux</p>
+                        <button class="btn-explore">Explorer</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subject-card">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="subject-icon"><i class="fas fa-brain"></i></div>
+                        <h3 class="subject-name">Philosophie</h3>
+                        <p class="subject-description">Éthique des affaires</p>
+                    </div>
+                    <div class="card-back">
+                        <p>Explorez les questions éthiques dans le monde économique</p>
+                        <button class="btn-explore">Explorer</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subject-card">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="subject-icon"><i class="fas fa-calculator"></i></div>
+                        <h3 class="subject-name">Mathématiques</h3>
+                        <p class="subject-description">Mathématiques appliquées</p>
+                    </div>
+                    <div class="card-back">
+                        <p>Maîtrisez les outils mathématiques pour l'économie et la gestion</p>
+                        <button class="btn-explore">Explorer</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subject-card">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="subject-icon"><i class="fas fa-atom"></i></div>
+                        <h3 class="subject-name">Physique-Chimie</h3>
+                        <p class="subject-description">Applications industrielles</p>
+                    </div>
+                    <div class="card-back">
+                        <p>Découvrez les applications des sciences physiques en entreprise</p>
+                        <button class="btn-explore">Explorer</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subject-card">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="subject-icon"><i class="fas fa-leaf"></i></div>
+                        <h3 class="subject-name">SVT</h3>
+                        <p class="subject-description">Environnement et développement</p>
+                    </div>
+                    <div class="card-back">
+                        <p>Comprenez les enjeux environnementaux et leur impact économique</p>
+                        <button class="btn-explore">Explorer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Créer l'effet de feuilles qui tombent
+            createLeaves();
+            
+            // Animer les cartes au chargement
+            animateCards();
+            
+            // Configuration des boutons Explorer
+            setupExploreButtons();
+        });
+        
+        function createLeaves() {
+            const container = document.getElementById('leaves-container');
+            const leafCount = 25;
+            
+            for (let i = 0; i < leafCount; i++) {
+                const leaf = document.createElement('div');
+                leaf.className = 'leaf';
+                
+                // Position et animation aléatoires
+                const posX = Math.random() * 100;
+                const delay = Math.random() * 20;
+                const duration = Math.random() * 10 + 15;
+                const size = Math.random() * 15 + 10;
+                
+                leaf.style.left = `${posX}%`;
+                leaf.style.width = `${size}px`;
+                leaf.style.height = `${size}px`;
+                leaf.style.animationDuration = `${duration}s`;
+                leaf.style.animationDelay = `${delay}s`;
+                
+                container.appendChild(leaf);
+            }
+        }
+        
+        function animateCards() {
+            const cards = document.querySelectorAll('.subject-card');
+            
+            cards.forEach((card, index) => {
+                // Animation initiale
+                card.style.opacity = 0;
+                card.style.transform = 'translateY(50px) rotate(30deg)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                    card.style.opacity = 1;
+                    card.style.transform = 'translateY(0) rotate(0deg)';
+                }, 100 * index);
+            });
+        }
+        
+        function setupExploreButtons() {
+            const exploreButtons = document.querySelectorAll('.btn-explore');
+            
+            exploreButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    
+                    const card = this.closest('.subject-card');
+                    card.classList.add('clicked');
+                    
+                    // Animation de rotation 360°
+                    const cardInner = card.querySelector('.card-inner');
+                    cardInner.style.transition = 'transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                    
+                    setTimeout(() => {
+                        cardInner.style.transform = 'rotateY(540deg)';
+                        
+                        setTimeout(() => {
+                            // Réinitialiser l'animation
+                            cardInner.style.transition = 'transform 0.8s';
+                            cardInner.style.transform = 'rotateY(180deg)';
+                            card.classList.remove('clicked');
+                            
+                            // Simuler une redirection (à remplacer par des liens réels)
+                            alert('Les cours pour cette matière seront bientôt disponibles !');
+                        }, 1000);
+                    }, 100);
+                });
+            });
+        }
+    </script>
+</body>
+</html>

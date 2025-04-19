@@ -132,6 +132,21 @@ app.get('/index/cours/terminale/C/matiereC.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index', 'cours', 'terminale', 'C', 'matiereC.html'));
 });
 
+// Routes pour les pages de matières de la Série L
+app.get('/index/cours/terminale/L/matiereL.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index', 'cours', 'terminale', 'L', 'matiereL.html'));
+});
+
+// Routes pour les pages de matières de la Série OSE
+app.get('/index/cours/terminale/OSE/matiereOSE.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index', 'cours', 'terminale', 'OSE', 'matiereOSE.html'));
+});
+
+// Routes pour les pages de matières de la Série S
+app.get('/index/cours/terminale/S/matiereS.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index', 'cours', 'terminale', 'S', 'matiereS.html'));
+});
+
 // Route pour la page malagasy 5ème
 app.get('/index/cours/5eme/malagasy/malagasy5e.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index', 'cours', '5eme', 'malagasy', 'malagasy5e.html'));
