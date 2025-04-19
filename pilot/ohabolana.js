@@ -16,18 +16,27 @@ router.get('/recherche', async (req, res) => {
     const data = await response.json();
     
     // Vérifier si une page suivante existe
-    if (page === '1' || page === 1) {
-      try {
-        const nextPageResponse = await fetch(`https://test-api-milay-vercel.vercel.app/api/ohab/recherche?ohabolana=${encodeURIComponent(terme)}&page=2`);
-        const nextPageData = await nextPageResponse.json();
-        
-        if (nextPageData.resultats && nextPageData.resultats.length > 0) {
-          // Si une page 2 existe, on modifie la valeur de pageSuivante
-          data.pageSuivante = 2;
-        }
-      } catch (err) {
-        console.error("Erreur lors de la vérification de la page suivante:", err);
+    try {
+      const currentPage = parseInt(page, 10);
+      const nextPage = currentPage + 1;
+      
+      const nextPageResponse = await fetch(`https://test-api-milay-vercel.vercel.app/api/ohab/recherche?ohabolana=${encodeURIComponent(terme)}&page=${nextPage}`);
+      const nextPageData = await nextPageResponse.json();
+      
+      if (nextPageData.resultats && nextPageData.resultats.length > 0) {
+        // Si une page suivante existe, on l'indique dans la réponse
+        data.pageSuivante = nextPage;
+        data.estDernierePage = false;
+      } else {
+        // Si pas de page suivante, on indique que c'est la dernière page
+        data.pageSuivante = null;
+        data.estDernierePage = true;
       }
+    } catch (err) {
+      console.error("Erreur lors de la vérification de la page suivante:", err);
+      // En cas d'erreur, on suppose que c'est la dernière page
+      data.pageSuivante = null;
+      data.estDernierePage = true;
     }
     
     console.log("Réponse de l'API (modifiée si nécessaire):", data);
