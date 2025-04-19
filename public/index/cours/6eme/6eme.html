@@ -1,0 +1,640 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classe de 6ème - Matières</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(45deg, #1a2a6c, #b21f1f, #fdbb2d);
+            background-size: 400% 400%;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .back-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: 0.6s;
+        }
+
+        .back-button:hover::before {
+            left: 100%;
+        }
+
+        .back-button i {
+            margin-right: 8px;
+            transition: transform 0.4s ease;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button:hover i {
+            transform: translateX(-5px) rotate(-10deg);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            color: white;
+            position: relative;
+        }
+
+        .logo i {
+            font-size: 2rem;
+            margin-right: 10px;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            background: linear-gradient(45deg, #fff, #f0f0f0, #fff);
+            background-size: 200% auto;
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            animation: shine 3s linear infinite;
+        }
+
+        @keyframes shine {
+            to { background-position: 200% center; }
+        }
+
+        .page-title {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            font-size: 3.5rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .page-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, #fff, transparent);
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        .page-subtitle {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+            opacity: 0.9;
+            animation: fadeInUp 1.2s ease;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transform: perspective(1000px) rotateX(5deg);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: perspective(1000px) rotateX(5deg) translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: perspective(1000px) rotateX(5deg) translateY(0);
+            }
+        }
+
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+            perspective: 1000px;
+        }
+
+        .subject-card {
+            position: relative;
+            height: 220px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            transform-style: preserve-3d;
+            cursor: pointer;
+            transform: translateZ(0) rotateX(0) rotateY(0);
+        }
+
+        .subject-card:hover {
+            transform: translateY(-20px) rotateY(10deg);
+            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+        }
+
+        .subject-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+            z-index: 5;
+        }
+
+        .subject-card:hover::before {
+            left: 100%;
+            transition: 0.5s;
+        }
+
+        .card-inner {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            color: white;
+            text-align: center;
+            z-index: 3;
+            transition: transform 0.5s;
+            transform-style: preserve-3d;
+        }
+
+        .subject-card:hover .card-inner {
+            transform: translateZ(20px);
+        }
+
+        .subject-icon {
+            position: relative;
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            transition: all 0.5s ease;
+            z-index: 2;
+        }
+
+        .subject-card:hover .subject-icon {
+            transform: translateY(-10px) scale(1.2) rotateY(360deg);
+            text-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .subject-icon::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            z-index: -1;
+            transition: transform 0.5s ease;
+        }
+
+        .subject-card:hover .subject-icon::after {
+            transform: translate(-50%, -50%) scale(1.5);
+        }
+
+        .subject-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .subject-card:hover .subject-name {
+            color: #fff;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+        }
+
+        .subject-description {
+            font-size: 1rem;
+            opacity: 0.9;
+            max-width: 90%;
+            margin: 0 auto;
+            line-height: 1.4;
+            position: relative;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+
+        .subject-card:hover .subject-description {
+            transform: translateY(5px);
+            opacity: 1;
+        }
+
+        /* Subject-specific colors with dynamic gradients */
+        .malagasy { 
+            background: linear-gradient(135deg, #FFA500, #FF4500);
+            box-shadow: 0 10px 20px rgba(255, 165, 0, 0.4);
+        }
+        .anglais { 
+            background: linear-gradient(135deg, #6a11cb, #2575fc); 
+            box-shadow: 0 10px 20px rgba(106, 17, 203, 0.4);
+        }
+        .francais { 
+            background: linear-gradient(135deg, #FF0080, #7928CA); 
+            box-shadow: 0 10px 20px rgba(255, 0, 128, 0.4);
+        }
+        .histogeo { 
+            background: linear-gradient(135deg, #3B4371, #F3904F); 
+            box-shadow: 0 10px 20px rgba(59, 67, 113, 0.4);
+        }
+        .physique { 
+            background: linear-gradient(135deg, #43cea2, #185a9d); 
+            box-shadow: 0 10px 20px rgba(67, 206, 162, 0.4);
+        }
+        .maths { 
+            background: linear-gradient(135deg, #ff6e7f, #bfe9ff); 
+            box-shadow: 0 10px 20px rgba(255, 110, 127, 0.4);
+        }
+        .svt { 
+            background: linear-gradient(135deg, #56ab2f, #a8e063); 
+            box-shadow: 0 10px 20px rgba(86, 171, 47, 0.4);
+        }
+        .eps { 
+            background: linear-gradient(135deg, #4568dc, #b06ab3); 
+            box-shadow: 0 10px 20px rgba(69, 104, 220, 0.4);
+        }
+
+        /* 3D Floating elements in background */
+        .floating-element {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(20px);
+            opacity: 0.4;
+            z-index: 0;
+            animation-duration: 15s;
+            animation-iteration-count: infinite;
+            animation-timing-function: ease-in-out;
+            animation-name: float-around;
+        }
+
+        .element-1 {
+            width: 150px;
+            height: 150px;
+            background: #ff6e7f;
+            top: 15%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .element-2 {
+            width: 200px;
+            height: 200px;
+            background: #43cea2;
+            bottom: 20%;
+            right: 15%;
+            animation-delay: 2s;
+        }
+
+        .element-3 {
+            width: 100px;
+            height: 100px;
+            background: #6a11cb;
+            top: 40%;
+            right: 30%;
+            animation-delay: 4s;
+        }
+
+        .element-4 {
+            width: 120px;
+            height: 120px;
+            background: #FFA500;
+            bottom: 30%;
+            left: 25%;
+            animation-delay: 6s;
+        }
+
+        @keyframes float-around {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(50px, 25px) rotate(90deg);
+            }
+            50% {
+                transform: translate(25px, 50px) rotate(180deg);
+            }
+            75% {
+                transform: translate(-25px, 25px) rotate(270deg);
+            }
+            100% {
+                transform: translate(0, 0) rotate(360deg);
+            }
+        }
+
+        .footer-note {
+            text-align: center;
+            color: white;
+            margin-top: 50px;
+            font-size: 1rem;
+            font-weight: 500;
+            padding: 15px 30px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50px;
+            backdrop-filter: blur(5px);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            animation: pulse 2s infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer-note::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: 0.6s;
+        }
+
+        .footer-note:hover::before {
+            left: 100%;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); }
+            50% { box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); }
+            100% { box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); }
+        }
+
+        /* Media Queries */
+        @media (max-width: 768px) {
+            .subjects-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .page-title {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-element element-1"></div>
+    <div class="floating-element element-2"></div>
+    <div class="floating-element element-3"></div>
+    <div class="floating-element element-4"></div>
+    
+    <div class="container">
+        <div class="header">
+            <a href="/index/cours/cours.html" class="back-button">
+                <i class="fas fa-arrow-left"></i> Retour aux niveaux
+            </a>
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <h1>Éducation Malagasy</h1>
+            </div>
+        </div>
+
+        <h1 class="page-title">Classe de 6ème</h1>
+        
+        <p class="page-subtitle">
+            Bienvenue dans le programme de la classe de 6ème ! Débutez votre parcours au collège avec nos ressources pédagogiques premium conçues par des experts. Explorez nos cours interactifs, exercices pratiques et contenus multimédias pour développer un socle solide de connaissances.
+        </p>
+
+        <div class="subjects-grid">
+            <div class="subject-card malagasy">
+                <div class="card-inner">
+                    <div class="subject-icon"><i class="fas fa-language"></i></div>
+                    <h3 class="subject-name">Malagasy</h3>
+                    <p class="subject-description">Découverte de la littérature et perfectionnement des compétences linguistiques</p>
+                </div>
+            </div>
+
+            <div class="subject-card anglais">
+                <div class="card-inner">
+                    <div class="subject-icon"><i class="fas fa-globe-europe"></i></div>
+                    <h3 class="subject-name">Anglais</h3>
+                    <p class="subject-description">Initiation à la communication et à la culture anglophone</p>
+                </div>
+            </div>
+
+            <div class="subject-card francais">
+                <div class="card-inner">
+                    <div class="subject-icon"><i class="fas fa-book"></i></div>
+                    <h3 class="subject-name">Français</h3>
+                    <p class="subject-description">Grammaire, orthographe et découverte des textes littéraires</p>
+                </div>
+            </div>
+
+            <div class="subject-card histogeo">
+                <div class="card-inner">
+                    <div class="subject-icon"><i class="fas fa-globe-africa"></i></div>
+                    <h3 class="subject-name">Histoire-Géo</h3>
+                    <p class="subject-description">Exploration des civilisations anciennes et des espaces géographiques</p>
+                </div>
+            </div>
+
+            <div class="subject-card physique">
+                <div class="card-inner">
+                    <div class="subject-icon"><i class="fas fa-atom"></i></div>
+                    <h3 class="subject-name">Sciences Physiques</h3>
+                    <p class="subject-description">Introduction aux principes fondamentaux de la physique et de la chimie</p>
+                </div>
+            </div>
+
+            <div class="subject-card maths">
+                <div class="card-inner">
+                    <div class="subject-icon"><i class="fas fa-calculator"></i></div>
+                    <h3 class="subject-name">Mathématiques</h3>
+                    <p class="subject-description">Nombres, opérations et initiation à la géométrie</p>
+                </div>
+            </div>
+
+            <div class="subject-card svt">
+                <div class="card-inner">
+                    <div class="subject-icon"><i class="fas fa-leaf"></i></div>
+                    <h3 class="subject-name">SVT</h3>
+                    <p class="subject-description">Découverte du monde vivant et de l'environnement</p>
+                </div>
+            </div>
+
+            <div class="subject-card eps">
+                <div class="card-inner">
+                    <div class="subject-icon"><i class="fas fa-running"></i></div>
+                    <h3 class="subject-name">EPS</h3>
+                    <p class="subject-description">Activités sportives et développement des compétences motrices</p>
+                </div>
+            </div>
+        </div>
+
+        <p class="footer-note">
+            Explorez nos matières interactives et commencez votre apprentissage dès maintenant !
+        </p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animation d'entrée des cartes avec délai progressif
+            const cards = document.querySelectorAll('.subject-card');
+            
+            cards.forEach((card, index) => {
+                // Animation initiale masquée
+                card.style.opacity = 0;
+                card.style.transform = 'translateY(50px) scale(0.9) rotateX(20deg)';
+                
+                // Animation d'entrée avec délai
+                setTimeout(() => {
+                    card.style.transition = 'all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                    card.style.opacity = 1;
+                    card.style.transform = 'translateY(0) scale(1) rotateX(0)';
+                }, 150 * index);
+                
+                // Animation interactive au survol
+                card.addEventListener('mousemove', function(e) {
+                    const rect = this.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    // Effet de perspective 3D
+                    const rotateY = ((x - centerX) / 10) * 1;
+                    const rotateX = ((centerY - y) / 10) * 1;
+                    
+                    this.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-10px)`;
+                    
+                    // Effet de lumière dynamique
+                    const cardInner = this.querySelector('.card-inner');
+                    const percentX = (x / rect.width) * 100;
+                    const percentY = (y / rect.height) * 100;
+                    
+                    cardInner.style.background = `radial-gradient(circle at ${percentX}% ${percentY}%, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 60%)`;
+                });
+                
+                // Réinitialisation lorsque la souris quitte la carte
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = '';
+                    const cardInner = this.querySelector('.card-inner');
+                    cardInner.style.background = '';
+                });
+                
+                // Animation au clic
+                card.addEventListener('click', function() {
+                    // Effet de clic
+                    this.style.transform = 'scale(0.95)';
+                    
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1.05)';
+                        setTimeout(() => {
+                            this.style.transform = '';
+                            alert('Les ressources pour cette matière seront bientôt disponibles !');
+                        }, 150);
+                    }, 150);
+                });
+            });
+            
+            // Effet de parallaxe pour les éléments flottants
+            document.addEventListener('mousemove', function(e) {
+                const moveX = (e.clientX * 0.01);
+                const moveY = (e.clientY * 0.01);
+                
+                document.querySelectorAll('.floating-element').forEach((element, index) => {
+                    const factor = 0.5 + (index * 0.1);
+                    element.style.transform = `translate(${moveX * factor}px, ${moveY * factor}px)`;
+                });
+            });
+            
+            // Animation du titre
+            const pageTitle = document.querySelector('.page-title');
+            pageTitle.addEventListener('mouseover', function() {
+                this.style.textShadow = '0 0 20px rgba(255,255,255,0.8)';
+                setTimeout(() => {
+                    this.style.textShadow = '';
+                }, 500);
+            });
+        });
+    </script>
+</body>
+</html>
