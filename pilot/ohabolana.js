@@ -14,7 +14,23 @@ router.get('/recherche', async (req, res) => {
     console.log("URL de l'API appelée:", apiUrl);
     const response = await fetch(apiUrl);
     const data = await response.json();
-    console.log("Réponse de l'API:", data);
+    
+    // Vérifier si une page suivante existe
+    if (page === '1' || page === 1) {
+      try {
+        const nextPageResponse = await fetch(`https://test-api-milay-vercel.vercel.app/api/ohab/recherche?ohabolana=${encodeURIComponent(terme)}&page=2`);
+        const nextPageData = await nextPageResponse.json();
+        
+        if (nextPageData.resultats && nextPageData.resultats.length > 0) {
+          // Si une page 2 existe, on modifie la valeur de pageSuivante
+          data.pageSuivante = 2;
+        }
+      } catch (err) {
+        console.error("Erreur lors de la vérification de la page suivante:", err);
+      }
+    }
+    
+    console.log("Réponse de l'API (modifiée si nécessaire):", data);
     res.json(data);
   } catch (error) {
     console.error("Erreur:", error);

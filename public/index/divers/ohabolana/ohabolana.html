@@ -430,8 +430,23 @@
                     // Mise à jour des données de pagination
                     if (data.resultats && data.resultats.length > 0) {
                         currentPage = data.page || 1;
-                        // Par défaut, supposons au moins 2 pages sauf si pageSuivante est explicitement null
-                        totalPages = data.pageSuivante === null ? currentPage : currentPage + 1;
+                        
+                        // Vérifier s'il existe une page suivante en faisant une requête de vérification
+                        try {
+                            const nextPageResponse = await fetch(`/api/ohabolana/recherche?terme=${encodeURIComponent(terme)}&page=${currentPage + 1}`);
+                            const nextPageData = await nextPageResponse.json();
+                            
+                            if (nextPageData.resultats && nextPageData.resultats.length > 0) {
+                                totalPages = currentPage + 1;
+                                // Si on a trouvé une page 2, il pourrait y avoir une page 3, mais on s'arrête à 2 pour l'instant
+                            } else {
+                                totalPages = currentPage;
+                            }
+                        } catch (err) {
+                            // En cas d'erreur, on suppose qu'il n'y a pas de page suivante
+                            totalPages = currentPage;
+                        }
+                        
                         updatePaginationUI();
                         displayResults(data.resultats);
                     } else {
