@@ -1,12 +1,16 @@
 
 const express = require('express');
 const router = express.Router();
-const fetch = require('node-fetch');
 
+// Utilisation d'une fonction asynchrone pour gérer les requêtes
 router.get('/recherche', async (req, res) => {
   try {
     const { terme, page = 1 } = req.query;
     console.log("Terme recherché:", terme, "Page:", page);
+    
+    // Importer dynamiquement node-fetch
+    const { default: fetch } = await import('node-fetch');
+    
     const response = await fetch(`https://test-api-milay-vercel.vercel.app/api/ohab/recherche?ohabolana=${encodeURIComponent(terme)}&page=${page}`);
     const data = await response.json();
     console.log("Réponse de l'API:", data);
