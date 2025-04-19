@@ -1,0 +1,547 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cours de Malagasy - 3ème</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(-45deg, #FF9966, #FF5E62, #FF8E53, #FE6B8B);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: white;
+        }
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-decoration: none;
+        }
+
+        .back-button i {
+            margin-right: 8px;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            color: white;
+        }
+
+        .logo i {
+            font-size: 2rem;
+            margin-right: 10px;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .page-title {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            font-size: 3rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            animation: fadeInDown 1s ease;
+        }
+
+        .page-subtitle {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+            opacity: 0.9;
+            animation: fadeIn 1.2s ease;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .pdf-section {
+            margin-top: 40px;
+            animation: fadeInUp 1s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .pdf-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .pdf-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 25px;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .pdf-card:nth-child(odd) {
+            background: linear-gradient(135deg, rgba(255, 153, 102, 0.2), rgba(255, 94, 98, 0.2));
+        }
+
+        .pdf-card:nth-child(even) {
+            background: linear-gradient(135deg, rgba(254, 107, 139, 0.2), rgba(255, 142, 83, 0.2));
+        }
+
+        .pdf-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .pdf-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .pdf-card:hover::before {
+            opacity: 1;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.3;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 0.1;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0.3;
+            }
+        }
+
+        .pdf-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #fff;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            animation: float 3s ease infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .pdf-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #fff;
+            text-align: center;
+            word-break: break-word;
+        }
+
+        .pdf-info {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .download-btn i {
+            margin-right: 8px;
+        }
+
+        .download-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            z-index: -1;
+        }
+
+        .download-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .download-btn:hover::after {
+            transform: translateX(0);
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: float-particle 15s infinite;
+        }
+
+        @keyframes float-particle {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .no-files {
+            text-align: center;
+            padding: 50px;
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
+        }
+
+        @media (max-width: 768px) {
+            .pdf-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .page-title {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    
+    <div class="container">
+        <div class="header">
+            <a href="/index/cours/3eme/3eme.html" class="back-button">
+                <i class="fas fa-arrow-left"></i> Retour aux matières
+            </a>
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <h1>Éducation Malagasy</h1>
+            </div>
+        </div>
+
+        <h1 class="page-title">Cours de Malagasy - 3ème</h1>
+        
+        <p class="page-subtitle">
+            Découvrez nos ressources pédagogiques en langue malagasy pour les élèves de 3ème. Téléchargez les documents PDF pour approfondir vos connaissances en grammaire, littérature et culture malagasy.
+        </p>
+
+        <div class="pdf-section">
+            <div class="pdf-grid" id="pdfContainer">
+                <!-- Les PDF seront générés dynamiquement ici -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Créer des particules animées pour l'arrière-plan
+            createParticles();
+            
+            // Charger les PDFs disponibles
+            loadPDFs();
+            
+            // Fonction pour créer les particules d'arrière-plan
+            function createParticles() {
+                const particlesContainer = document.getElementById('particles');
+                const particleCount = 30;
+                const colors = ['#ffffff', '#f5f5f5', '#e0e0e0', '#d5d5d5'];
+                
+                for (let i = 0; i < particleCount; i++) {
+                    const particle = document.createElement('div');
+                    particle.classList.add('particle');
+                    
+                    // Styles aléatoires pour chaque particule
+                    const size = Math.random() * 15 + 5;
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    
+                    particle.style.width = `${size}px`;
+                    particle.style.height = `${size}px`;
+                    particle.style.backgroundColor = color;
+                    
+                    // Positions initiales aléatoires
+                    particle.style.left = `${Math.random() * 100}vw`;
+                    particle.style.top = `${Math.random() * 100}vh`;
+                    
+                    // Animation avec délai aléatoire
+                    particle.style.animationDuration = `${15 + Math.random() * 20}s`;
+                    particle.style.animationDelay = `${Math.random() * 5}s`;
+                    
+                    particlesContainer.appendChild(particle);
+                }
+            }
+            
+            // Fonction pour charger les PDFs depuis le serveur
+            function loadPDFs() {
+                const pdfContainer = document.getElementById('pdfContainer');
+                
+                // Vider le conteneur
+                pdfContainer.innerHTML = '<div class="loading" style="text-align: center; padding: 30px; width: 100%;">Chargement des documents... <i class="fas fa-spinner fa-spin"></i></div>';
+                
+                // Faire une requête à l'API pour obtenir la liste des PDFs
+                fetch('/api/pdf/malagasy/3eme')
+                    .then(response => response.json())
+                    .then(data => {
+                        // Vider le conteneur
+                        pdfContainer.innerHTML = '';
+                        
+                        if (data.files && data.files.length > 0) {
+                            // Ajouter chaque PDF trouvé
+                            data.files.forEach((pdfName, index) => {
+                                const pdfCard = createPDFCard(pdfName);
+                                pdfContainer.appendChild(pdfCard);
+                                
+                                // Animation d'entrée avec délai échelonné
+                                setTimeout(() => {
+                                    pdfCard.style.opacity = 1;
+                                    pdfCard.style.transform = 'translateY(0)';
+                                }, 200 * index);
+                            });
+                        } else {
+                            // Aucun PDF trouvé
+                            pdfContainer.innerHTML = `
+                                <div class="no-files">
+                                    <i class="fas fa-exclamation-circle" style="font-size: 3rem; margin-bottom: 20px;"></i>
+                                    <p>Aucun document PDF disponible pour le moment.</p>
+                                </div>
+                            `;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erreur lors du chargement des PDFs:', error);
+                        pdfContainer.innerHTML = `
+                            <div class="no-files">
+                                <i class="fas fa-times-circle" style="font-size: 3rem; margin-bottom: 20px;"></i>
+                                <p>Une erreur est survenue lors du chargement des documents.</p>
+                                <button onclick="loadPDFs()" style="margin-top: 15px; padding: 10px 20px; background: rgba(255,255,255,0.2); border: none; color: white; border-radius: 50px; cursor: pointer;">
+                                    <i class="fas fa-redo"></i> Réessayer
+                                </button>
+                            </div>
+                        `;
+                    });
+            }
+            
+            // Fonction pour créer une carte PDF
+            function createPDFCard(pdfName) {
+                const card = document.createElement('div');
+                card.className = 'pdf-card';
+                card.style.opacity = 0;
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                
+                // Icône PDF
+                const icon = document.createElement('div');
+                icon.className = 'pdf-icon';
+                icon.innerHTML = '<i class="fas fa-file-pdf"></i>';
+                
+                // Titre du PDF (formater le nom du fichier)
+                const title = document.createElement('div');
+                title.className = 'pdf-title';
+                const formattedTitle = pdfName.replace(/_/g, ' ').replace('.pdf', '');
+                title.textContent = formattedTitle;
+                
+                // Informations sur le PDF
+                const info = document.createElement('div');
+                info.className = 'pdf-info';
+                info.textContent = 'Document PDF pour le cours de Malagasy';
+                
+                // Bouton de téléchargement
+                const downloadBtn = document.createElement('a');
+                downloadBtn.className = 'download-btn';
+                downloadBtn.href = `/Attachement/index/cours/3eme/malagasy/${pdfName}`;
+                downloadBtn.download = pdfName;
+                downloadBtn.innerHTML = '<i class="fas fa-download"></i> Télécharger';
+                
+                // Ajouter effet d'ondulation au bouton
+                downloadBtn.addEventListener('mouseenter', function(e) {
+                    const x = e.clientX - this.getBoundingClientRect().left;
+                    const y = e.clientY - this.getBoundingClientRect().top;
+                    
+                    const ripple = document.createElement('span');
+                    ripple.style.position = 'absolute';
+                    ripple.style.width = '100%';
+                    ripple.style.height = '100%';
+                    ripple.style.left = '0';
+                    ripple.style.top = '0';
+                    ripple.style.opacity = '0.5';
+                    ripple.style.background = 'radial-gradient(circle at ' + x + 'px ' + y + 'px, rgba(255, 255, 255, 0.3) 0%, transparent 60%)';
+                    ripple.style.transform = 'scale(0)';
+                    ripple.style.transition = 'transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.5s';
+                    ripple.style.pointerEvents = 'none';
+                    ripple.style.borderRadius = '50px';
+                    
+                    this.appendChild(ripple);
+                    
+                    setTimeout(() => {
+                        ripple.style.transform = 'scale(3)';
+                        ripple.style.opacity = '0';
+                        
+                        setTimeout(() => {
+                            ripple.remove();
+                        }, 500);
+                    }, 10);
+                });
+                
+                // Assemble la carte
+                card.appendChild(icon);
+                card.appendChild(title);
+                card.appendChild(info);
+                card.appendChild(downloadBtn);
+                
+                return card;
+            }
+            
+            // Ajouter un écouteur d'événements pour rafraîchir les PDFs
+            document.addEventListener('visibilitychange', function() {
+                if (document.visibilityState === 'visible') {
+                    // Recharger les PDFs lorsque l'utilisateur revient sur la page
+                    loadPDFs();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -92,6 +92,41 @@ app.get('/index/cours/cours.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index', 'cours', 'cours.html'));
 });
 
+// Route pour la page malagasy 3ème
+app.get('/index/cours/3eme/malagasy/malagasy3e.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index', 'cours', '3eme', 'malagasy', 'malagasy3e.html'));
+});
+
+// Route pour télécharger des fichiers PDF
+app.get('/Attachement/index/cours/3eme/malagasy/:filename', (req, res) => {
+  const filename = req.params.filename;
+  const filePath = path.join(__dirname, 'Attachement', 'index', 'cours', '3eme', 'malagasy', filename);
+  res.download(filePath);
+});
+
+// Route API pour lister les fichiers PDF disponibles
+app.get('/api/pdf/malagasy/3eme', (req, res) => {
+  const pdfDir = path.join(__dirname, 'Attachement', 'index', 'cours', '3eme', 'malagasy');
+  
+  // Vérifier si le répertoire existe
+  if (!fs.existsSync(pdfDir)) {
+    return res.json({ files: [] });
+  }
+  
+  // Lire les fichiers du répertoire
+  fs.readdir(pdfDir, (err, files) => {
+    if (err) {
+      console.error('Erreur lors de la lecture du répertoire:', err);
+      return res.status(500).json({ error: 'Erreur serveur' });
+    }
+    
+    // Filtrer uniquement les fichiers PDF
+    const pdfFiles = files.filter(file => file.toLowerCase().endsWith('.pdf'));
+    
+    res.json({ files: pdfFiles });
+  });
+});
+
 // Démarrer le serveur
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Serveur démarré sur le port ${PORT}`);
