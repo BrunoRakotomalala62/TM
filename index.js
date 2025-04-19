@@ -86,6 +86,10 @@ app.use('/api/quiz', quizRouter);
 const ohabolanaRouter = require('./pilot/ohabolana');
 app.use('/api/ohabolana', ohabolanaRouter);
 
+// Import et utilisation du router Horoscope
+const horoscopeRouter = require('./pilot/horoscope');
+app.use('/api/horoscope', horoscopeRouter);
+
 // Route pour la page quiz
 app.get('/index/quiz/quiz.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index', 'quiz', 'quiz.html'));

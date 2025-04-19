@@ -97,16 +97,172 @@
             text-align: center;
         }
 
-        .coming-soon {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
+        .signs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .sign-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+
+        .sign-btn i {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .sign-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+        }
+
+        .language-btns {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            gap: 15px;
+        }
+
+        .lang-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .lang-btn.active {
+            background: rgba(255, 255, 255, 0.4);
+            font-weight: bold;
+        }
+
+        .lang-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .horoscope-result {
+            margin-top: 20px;
+            text-align: left;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .horoscope-result.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .result-header .sign-icon {
+            font-size: 2.5rem;
+            margin-right: 15px;
+        }
+
+        .result-title {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .result-date {
+            margin: 5px 0 0;
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        .result-section {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .section-title i {
+            margin-right: 10px;
+        }
+
+        .section-content {
+            line-height: 1.6;
         }
 
         .footer-note {
             text-align: center;
-            margin-top: 3rem;
             font-size: 0.9rem;
             opacity: 0.7;
+            margin-top: 30px;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+        }
+
+        .loading i {
+            font-size: 2rem;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .no-result {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.1rem;
+            display: none;
+        }
+
+        .citation {
+            font-style: italic;
+            text-align: center;
+            margin: 20px 0;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+
+        .lucky-number {
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .clin-doeil {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
         }
     </style>
 </head>
@@ -130,11 +286,133 @@
             <h1 class="page-title">Horoscope Malagasy</h1>
             
             <div class="content">
-                <p class="coming-soon">Contenu horoscope à venir prochainement...</p>
-                <i class="fas fa-star" style="font-size: 4rem; margin-bottom: 2rem;"></i>
+                <div class="language-btns">
+                    <button class="lang-btn active" data-lang="fr">Français</button>
+                    <button class="lang-btn" data-lang="mg">Malagasy</button>
+                </div>
+
+                <div class="signs-grid">
+                    <button class="sign-btn" data-sign="bélier">
+                        <i class="fas fa-fire"></i>
+                        Bélier
+                    </button>
+                    <button class="sign-btn" data-sign="taureau">
+                        <i class="fas fa-bull"></i>
+                        Taureau
+                    </button>
+                    <button class="sign-btn" data-sign="gémeaux">
+                        <i class="fas fa-user-friends"></i>
+                        Gémeaux
+                    </button>
+                    <button class="sign-btn" data-sign="cancer">
+                        <i class="fas fa-crab"></i>
+                        Cancer
+                    </button>
+                    <button class="sign-btn" data-sign="lion">
+                        <i class="fas fa-crown"></i>
+                        Lion
+                    </button>
+                    <button class="sign-btn" data-sign="vierge">
+                        <i class="fas fa-female"></i>
+                        Vierge
+                    </button>
+                    <button class="sign-btn" data-sign="balance">
+                        <i class="fas fa-balance-scale"></i>
+                        Balance
+                    </button>
+                    <button class="sign-btn" data-sign="scorpion">
+                        <i class="fas fa-spider"></i>
+                        Scorpion
+                    </button>
+                    <button class="sign-btn" data-sign="sagittaire">
+                        <i class="fas fa-bow-arrow"></i>
+                        Sagittaire
+                    </button>
+                    <button class="sign-btn" data-sign="capricorne">
+                        <i class="fas fa-mountain"></i>
+                        Capricorne
+                    </button>
+                    <button class="sign-btn" data-sign="verseau">
+                        <i class="fas fa-tint"></i>
+                        Verseau
+                    </button>
+                    <button class="sign-btn" data-sign="poissons">
+                        <i class="fas fa-fish"></i>
+                        Poissons
+                    </button>
+                </div>
+
+                <div class="loading">
+                    <i class="fas fa-spinner"></i>
+                    <p>Chargement de votre horoscope...</p>
+                </div>
+
+                <div class="no-result">
+                    Veuillez sélectionner un signe du zodiaque pour voir votre horoscope.
+                </div>
+
+                <div class="horoscope-result">
+                    <div class="result-header">
+                        <div class="sign-icon"><i class="fas fa-star"></i></div>
+                        <div>
+                            <h2 class="result-title" id="result-sign">Bélier</h2>
+                            <p class="result-date" id="result-date">19 avril 2025</p>
+                        </div>
+                    </div>
+
+                    <div class="result-section">
+                        <div class="section-title">
+                            <i class="fas fa-heart"></i> Amour
+                        </div>
+                        <div class="section-content" id="result-amour"></div>
+                    </div>
+
+                    <div class="result-section">
+                        <div class="section-title">
+                            <i class="fas fa-coins"></i> Argent
+                        </div>
+                        <div class="section-content" id="result-argent"></div>
+                    </div>
+
+                    <div class="result-section">
+                        <div class="section-title">
+                            <i class="fas fa-heartbeat"></i> Santé
+                        </div>
+                        <div class="section-content" id="result-sante"></div>
+                    </div>
+
+                    <div class="result-section">
+                        <div class="section-title">
+                            <i class="fas fa-briefcase"></i> Travail
+                        </div>
+                        <div class="section-content" id="result-travail"></div>
+                    </div>
+
+                    <div class="result-section">
+                        <div class="section-title">
+                            <i class="fas fa-home"></i> Famille
+                        </div>
+                        <div class="section-content" id="result-famille"></div>
+                    </div>
+
+                    <div class="result-section">
+                        <div class="section-title">
+                            <i class="fas fa-users"></i> Vie Sociale
+                        </div>
+                        <div class="section-content" id="result-vie-sociale"></div>
+                    </div>
+
+                    <div class="citation" id="result-citation"></div>
+
+                    <div class="lucky-number">
+                        <i class="fas fa-dice"></i> Nombre de chance: <span id="result-nombre"></span>
+                    </div>
+
+                    <div class="clin-doeil" id="result-clin-doeil"></div>
+                </div>
             </div>
 
-            <p class="footer-note">Découvrez l'astrologie et l'horoscope malagasy</p>
+            <p class="footer-note">Consultez votre horoscope quotidien pour découvrir ce que les astres vous réservent</p>
         </div>
     </main>
 
@@ -160,6 +438,111 @@
                     content.style.transform = 'translateY(0)';
                 }, 200);
             }, 100);
+
+            // Variables
+            const signButtons = document.querySelectorAll('.sign-btn');
+            const langButtons = document.querySelectorAll('.lang-btn');
+            const resultContainer = document.querySelector('.horoscope-result');
+            const loadingContainer = document.querySelector('.loading');
+            const noResultContainer = document.querySelector('.no-result');
+            
+            let currentLang = 'fr';
+            let currentHoroscope = null;
+
+            // Afficher No Result par défaut
+            noResultContainer.style.display = 'block';
+
+            // Fonctions
+            async function getHoroscope(signe) {
+                try {
+                    loadingContainer.style.display = 'block';
+                    noResultContainer.style.display = 'none';
+                    resultContainer.classList.remove('show');
+
+                    const response = await fetch(`/api/horoscope/rechercher?signe=${signe}`);
+                    const data = await response.json();
+                    
+                    currentHoroscope = data;
+                    displayHoroscope(data, currentLang);
+                    
+                    loadingContainer.style.display = 'none';
+                    resultContainer.classList.add('show');
+                } catch (error) {
+                    console.error('Erreur:', error);
+                    loadingContainer.style.display = 'none';
+                    noResultContainer.style.display = 'block';
+                    noResultContainer.textContent = 'Une erreur est survenue. Veuillez réessayer.';
+                }
+            }
+
+            function displayHoroscope(data, lang) {
+                // Mettre à jour le titre et la date
+                document.getElementById('result-sign').textContent = document.querySelector('.sign-btn.active').textContent.trim();
+                document.getElementById('result-date').textContent = data.date;
+                
+                // Mettre à jour les sections avec la langue sélectionnée
+                document.getElementById('result-amour').textContent = data.amour[lang];
+                document.getElementById('result-argent').textContent = data.argent[lang];
+                document.getElementById('result-sante').textContent = data.sante[lang];
+                document.getElementById('result-travail').textContent = data.travail[lang];
+                document.getElementById('result-famille').textContent = data.famille[lang];
+                document.getElementById('result-vie-sociale').textContent = data.vie_sociale[lang];
+                document.getElementById('result-citation').textContent = data.citation_du_jour[lang];
+                document.getElementById('result-nombre').textContent = data.nombre_de_chance[lang];
+                document.getElementById('result-clin-doeil').textContent = data.clin_doeil[lang];
+            }
+
+            // Event Listeners
+            signButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Mettre à jour le bouton actif
+                    signButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Récupérer l'horoscope
+                    const signe = this.dataset.sign;
+                    getHoroscope(signe);
+                });
+            });
+
+            langButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Mettre à jour le bouton de langue actif
+                    langButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Mettre à jour la langue et afficher l'horoscope si disponible
+                    currentLang = this.dataset.lang;
+                    if (currentHoroscope) {
+                        displayHoroscope(currentHoroscope, currentLang);
+                    }
+                });
+            });
+
+            // Définir les icônes pour les signes du zodiaque
+            const signIcons = {
+                'bélier': 'fas fa-fire',
+                'taureau': 'fas fa-bullhorn',
+                'gémeaux': 'fas fa-user-friends',
+                'cancer': 'fas fa-water',
+                'lion': 'fas fa-crown',
+                'vierge': 'fas fa-female',
+                'balance': 'fas fa-balance-scale',
+                'scorpion': 'fas fa-spider',
+                'sagittaire': 'fas fa-horse-head',
+                'capricorne': 'fas fa-mountain',
+                'verseau': 'fas fa-tint',
+                'poissons': 'fas fa-fish'
+            };
+
+            // Mettre à jour les icônes des signes
+            signButtons.forEach(button => {
+                const signe = button.dataset.sign;
+                if (signIcons[signe]) {
+                    const iconElement = button.querySelector('i');
+                    iconElement.className = signIcons[signe];
+                }
+            });
         });
     </script>
 </body>
