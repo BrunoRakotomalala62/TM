@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -452,11 +451,76 @@
             .subjects-grid {
                 grid-template-columns: 1fr;
             }
-            
+
             .page-title {
                 font-size: 2.5rem;
             }
         }
+
+        /* Styles for PDF download pages */
+        .pdf-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .pdf-card {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .pdf-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .pdf-icon {
+            font-size: 4rem;
+            margin-bottom: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .pdf-card:hover .pdf-icon {
+            transform: scale(1.1);
+        }
+
+        .pdf-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .download-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .download-button:hover {
+            background-color: #45a049;
+        }
+
+        .pdf-card:nth-child(odd) {
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+        .pdf-card:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+
     </style>
 </head>
 <body>
@@ -464,7 +528,7 @@
     <div class="floating-element element-2"></div>
     <div class="floating-element element-3"></div>
     <div class="floating-element element-4"></div>
-    
+
     <div class="container">
         <div class="header">
             <a href="/index/cours/cours.html" class="back-button">
@@ -477,13 +541,13 @@
         </div>
 
         <h1 class="page-title">Classe de 6ème</h1>
-        
+
         <p class="page-subtitle">
             Bienvenue dans le programme de la classe de 6ème ! Débutez votre parcours au collège avec nos ressources pédagogiques premium conçues par des experts. Explorez nos cours interactifs, exercices pratiques et contenus multimédias pour développer un socle solide de connaissances.
         </p>
 
         <div class="subjects-grid">
-            <div class="subject-card malagasy">
+            <div class="subject-card malagasy" data-subject="malagasy">
                 <div class="card-inner">
                     <div class="subject-icon"><i class="fas fa-language"></i></div>
                     <h3 class="subject-name">Malagasy</h3>
@@ -557,75 +621,80 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Animation d'entrée des cartes avec délai progressif
             const cards = document.querySelectorAll('.subject-card');
-            
+
             cards.forEach((card, index) => {
                 // Animation initiale masquée
                 card.style.opacity = 0;
                 card.style.transform = 'translateY(50px) scale(0.9) rotateX(20deg)';
-                
+
                 // Animation d'entrée avec délai
                 setTimeout(() => {
                     card.style.transition = 'all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
                     card.style.opacity = 1;
                     card.style.transform = 'translateY(0) scale(1) rotateX(0)';
                 }, 150 * index);
-                
+
                 // Animation interactive au survol
                 card.addEventListener('mousemove', function(e) {
                     const rect = this.getBoundingClientRect();
                     const x = e.clientX - rect.left;
                     const y = e.clientY - rect.top;
-                    
+
                     const centerX = rect.width / 2;
                     const centerY = rect.height / 2;
-                    
+
                     // Effet de perspective 3D
                     const rotateY = ((x - centerX) / 10) * 1;
                     const rotateX = ((centerY - y) / 10) * 1;
-                    
+
                     this.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-10px)`;
-                    
+
                     // Effet de lumière dynamique
                     const cardInner = this.querySelector('.card-inner');
                     const percentX = (x / rect.width) * 100;
                     const percentY = (y / rect.height) * 100;
-                    
+
                     cardInner.style.background = `radial-gradient(circle at ${percentX}% ${percentY}%, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 60%)`;
                 });
-                
+
                 // Réinitialisation lorsque la souris quitte la carte
                 card.addEventListener('mouseleave', function() {
                     this.style.transform = '';
                     const cardInner = this.querySelector('.card-inner');
                     cardInner.style.background = '';
                 });
-                
+
                 // Animation au clic
                 card.addEventListener('click', function() {
                     // Effet de clic
                     this.style.transform = 'scale(0.95)';
-                    
+
                     setTimeout(() => {
                         this.style.transform = 'scale(1.05)';
                         setTimeout(() => {
                             this.style.transform = '';
-                            alert('Les ressources pour cette matière seront bientôt disponibles !');
+                            const subject = this.getAttribute('data-subject');
+                            if (subject === 'malagasy') {
+                                window.location.href = '/index/cours/6eme/malagasy/malagasy6e.html';
+                            } else {
+                                alert('Les ressources pour cette matière seront bientôt disponibles !');
+                            }
                         }, 150);
                     }, 150);
                 });
             });
-            
+
             // Effet de parallaxe pour les éléments flottants
             document.addEventListener('mousemove', function(e) {
                 const moveX = (e.clientX * 0.01);
                 const moveY = (e.clientY * 0.01);
-                
+
                 document.querySelectorAll('.floating-element').forEach((element, index) => {
                     const factor = 0.5 + (index * 0.1);
                     element.style.transform = `translate(${moveX * factor}px, ${moveY * factor}px)`;
                 });
             });
-            
+
             // Animation du titre
             const pageTitle = document.querySelector('.page-title');
             pageTitle.addEventListener('mouseover', function() {

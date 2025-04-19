@@ -127,6 +127,16 @@ app.get('/index/cours/4eme/malagasy/malagasy4e.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index', 'cours', '4eme', 'malagasy', 'malagasy4e.html'));
 });
 
+// Route pour la page malagasy 6ème
+app.get('/index/cours/6eme/malagasy/malagasy6e.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index', 'cours', '6eme', 'malagasy', 'malagasy6e.html'));
+});
+
+// Route pour la page malagasy 2nde
+app.get('/index/cours/2nde/malagasy/malagasy2nde.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index', 'cours', '2nde', 'malagasy', 'malagasy2nde.html'));
+});
+
 // Route pour servir les fichiers PDF des cours
 app.get('/Attachement/index/cours/:niveau/malagasy/:filename', (req, res) => {
   const niveau = req.params.niveau;

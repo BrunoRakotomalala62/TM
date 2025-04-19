@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -286,7 +285,7 @@
             .subjects-grid {
                 grid-template-columns: 1fr;
             }
-            
+
             .page-title {
                 font-size: 2.2rem;
             }
@@ -298,7 +297,7 @@
     <div class="floating-element" style="width: 150px; height: 150px; top: 10%; left: 5%; animation-duration: 25s;"></div>
     <div class="floating-element" style="width: 100px; height: 100px; top: 50%; right: 10%; animation-duration: 18s; animation-delay: 2s;"></div>
     <div class="floating-element" style="width: 200px; height: 200px; bottom: 20%; left: 20%; animation-duration: 22s; animation-delay: 5s;"></div>
-    
+
     <div class="container">
         <div class="header">
             <a href="/index/cours/cours.html" class="back-button">
@@ -311,13 +310,13 @@
         </div>
 
         <h1 class="page-title">Classe de 2nde</h1>
-        
+
         <p class="page-subtitle">
             Bienvenue au lycée! Explorez les matières de la classe de seconde et accédez à des ressources pédagogiques de qualité pour réussir votre début au lycée. Chaque cours est conçu par des experts pour vous offrir une expérience d'apprentissage optimale.
         </p>
 
         <div class="subjects-grid">
-            <div class="subject-card malagasy">
+            <div class="subject-card malagasy" data-subject="malagasy">
                 <div class="card-inner">
                     <div class="card-front">
                         <div class="subject-icon"><i class="fas fa-language"></i></div>
@@ -417,42 +416,42 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Animation des cartes avec effet 3D
             const subjectCards = document.querySelectorAll('.subject-card');
-            
+
             // Animation d'entrée progressive
             subjectCards.forEach((card, index) => {
                 card.style.opacity = 0;
                 card.style.transform = 'translateY(50px) scale(0.8)';
-                
+
                 setTimeout(() => {
                     card.style.transition = 'all 0.8s cubic-bezier(0.23, 1, 0.32, 1.275)';
                     card.style.opacity = 1;
                     card.style.transform = 'translateY(0) scale(1)';
                 }, 100 * index);
-                
+
                 // Effet de mouvement 3D au survol
                 card.addEventListener('mousemove', function(e) {
                     const rect = this.getBoundingClientRect();
                     const x = (e.clientX - rect.left) / rect.width - 0.5;  // -0.5 à 0.5
                     const y = (e.clientY - rect.top) / rect.height - 0.5;  // -0.5 à 0.5
-                    
+
                     // Calcul de l'angle de rotation basé sur la position de la souris
                     const rotateX = y * -20; // inverse pour effet naturel
                     const rotateY = x * 20;
-                    
+
                     // Appliquer la transformation
                     this.querySelector('.card-inner').style.transform = 
                         `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-                    
+
                     // Effet de profondeur pour l'icône et le texte
                     const icon = this.querySelector('.subject-icon');
                     const name = this.querySelector('.subject-name');
                     const desc = this.querySelector('.subject-description');
-                    
+
                     icon.style.transform = `translateZ(40px) scale(1.2) translateX(${x * 15}px) translateY(${y * 15}px)`;
                     name.style.transform = `translateZ(30px) translateX(${x * 10}px) translateY(${y * 10}px)`;
                     desc.style.transform = `translateZ(20px) translateX(${x * 5}px) translateY(${y * 5}px)`;
                 });
-                
+
                 // Réinitialisation de l'effet au départ de la souris
                 card.addEventListener('mouseleave', function() {
                     this.querySelector('.card-inner').style.transform = '';
@@ -460,17 +459,21 @@
                     this.querySelector('.subject-name').style.transform = 'translateZ(10px)';
                     this.querySelector('.subject-description').style.transform = 'translateZ(5px)';
                 });
-                
+
                 // Effet au clic
                 card.addEventListener('click', function() {
+                    const subject = this.getAttribute('data-subject');
+                    if (subject === 'malagasy') {
+                        window.location.href = '/index/cours/2nde/malagasy/malagasy2nde.html';
+                    }
                     this.style.transform = 'scale(0.95)';
                     setTimeout(() => {
                         this.style.transform = '';
-                        alert('Les cours pour cette matière seront bientôt disponibles !');
+                        //alert('Les cours pour cette matière seront bientôt disponibles !');
                     }, 200);
                 });
             });
-            
+
             // Ajouter des éléments flottants aléatoires
             const container = document.querySelector('.container');
             for (let i = 0; i < 5; i++) {
