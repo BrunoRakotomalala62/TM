@@ -297,7 +297,7 @@
                         Bélier
                     </button>
                     <button class="sign-btn" data-sign="taureau">
-                        <i class="fas fa-bull"></i>
+                        <i class="fas fa-bullhorn"></i>
                         Taureau
                     </button>
                     <button class="sign-btn" data-sign="gémeaux">
@@ -305,7 +305,7 @@
                         Gémeaux
                     </button>
                     <button class="sign-btn" data-sign="cancer">
-                        <i class="fas fa-crab"></i>
+                        <i class="fas fa-water"></i>
                         Cancer
                     </button>
                     <button class="sign-btn" data-sign="lion">
@@ -325,7 +325,7 @@
                         Scorpion
                     </button>
                     <button class="sign-btn" data-sign="sagittaire">
-                        <i class="fas fa-bow-arrow"></i>
+                        <i class="fas fa-horse-head"></i>
                         Sagittaire
                     </button>
                     <button class="sign-btn" data-sign="capricorne">
@@ -499,9 +499,9 @@
                     signButtons.forEach(btn => btn.classList.remove('active'));
                     this.classList.add('active');
                     
-                    // Récupérer l'horoscope
+                    // Rediriger vers la page dynamique avec le signe sélectionné
                     const signe = this.dataset.sign;
-                    getHoroscope(signe);
+                    window.location.href = `/index/divers/horoscope/dynamique.html?signe=${signe}`;
                 });
             });
 

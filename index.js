@@ -129,6 +129,10 @@ app.get('/index/divers/horoscope/horoscope.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index', 'divers', 'horoscope', 'horoscope.html'));
 });
 
+app.get('/index/divers/horoscope/dynamique.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index', 'divers', 'horoscope', 'dynamique.html'));
+});
+
 app.get('/index/divers/ohabolana/ohabolana.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index', 'divers', 'ohabolana', 'ohabolana.html'));
 });
