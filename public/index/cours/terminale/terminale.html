@@ -442,13 +442,24 @@
                     }, 100);
                 });
                 
-                // Effet au clic
+                // Effet au clic avec redirection vers les pages de matières
                 card.addEventListener('click', function() {
                     this.style.transform = 'scale(0.95)';
                     
                     setTimeout(() => {
                         this.style.transform = '';
-                        alert('Les cours pour cette série seront bientôt disponibles !');
+                        
+                        // Redirection vers la page appropriée selon la série
+                        if (this.classList.contains('serie-a')) {
+                            window.location.href = '/index/cours/terminale/A/matiereA.html';
+                        } else if (this.classList.contains('serie-d')) {
+                            window.location.href = '/index/cours/terminale/D/matiereD.html';
+                        } else if (this.classList.contains('serie-c')) {
+                            window.location.href = '/index/cours/terminale/C/matiereC.html';
+                        } else {
+                            // Pour les autres séries pas encore implémentées
+                            alert('Les cours pour cette série seront bientôt disponibles !');
+                        }
                     }, 200);
                 });
             });

@@ -1,0 +1,566 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Série C - Matières</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #051937, #004d7a);
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-decoration: none;
+        }
+
+        .back-button i {
+            margin-right: 8px;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            color: white;
+        }
+
+        .logo i {
+            font-size: 2rem;
+            margin-right: 10px;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .page-title {
+            text-align: center;
+            color: #26D0CE;
+            margin-bottom: 30px;
+            font-size: 3.5rem;
+            text-shadow: 0 0 10px rgba(38, 208, 206, 0.5);
+            font-weight: 700;
+            letter-spacing: 2px;
+            position: relative;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px rgba(38, 208, 206, 0.5);
+            }
+            to {
+                text-shadow: 0 0 20px rgba(38, 208, 206, 0.8), 0 0 30px rgba(38, 208, 206, 0.5);
+            }
+        }
+
+        .page-subtitle {
+            text-align: center;
+            color: #E0E0E0;
+            margin-bottom: 50px;
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            animation: fadeIn 1.2s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .subjects-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .subject-card {
+            position: relative;
+            width: 280px;
+            height: 280px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+
+        .subject-card:hover .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .card-front {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            padding: 20px;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            padding: 20px;
+        }
+
+        .hexagon {
+            position: relative;
+            width: 100px;
+            height: 110px;
+            background: rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.5s ease;
+        }
+
+        .subject-card:hover .hexagon {
+            transform: scale(1.2) rotate(30deg);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .subject-icon {
+            font-size: 3rem;
+            color: white;
+            z-index: 2;
+            transition: all 0.5s ease;
+        }
+
+        .subject-card:hover .subject-icon {
+            transform: rotate(-30deg);
+        }
+
+        .subject-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            transition: all 0.5s ease;
+        }
+
+        .subject-description {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            transition: all 0.5s ease;
+        }
+
+        .btn-explore {
+            margin-top: 20px;
+            padding: 10px 25px;
+            background: linear-gradient(45deg, #1A2980, #26D0CE);
+            border: none;
+            border-radius: 30px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(38, 208, 206, 0.4);
+        }
+
+        .btn-explore:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(38, 208, 206, 0.6);
+        }
+
+        /* Matières spécifiques */
+        .malagasy .card-front { background: linear-gradient(135deg, #FF9966, #FF5E62); }
+        .francais .card-front { background: linear-gradient(135deg, #FC5C7D, #6A82FB); }
+        .anglais .card-front { background: linear-gradient(135deg, #4776E6, #8E54E9); }
+        .histogeo .card-front { background: linear-gradient(135deg, #834d9b, #d04ed6); }
+        .philosophie .card-front { background: linear-gradient(135deg, #2193b0, #6dd5ed); }
+        .maths .card-front { background: linear-gradient(135deg, #F2994A, #F2C94C); }
+        .physique-chimie .card-front { background: linear-gradient(135deg, #11998e, #38ef7d); }
+        .svt .card-front { background: linear-gradient(135deg, #FF5722, #FF9800); }
+
+        /* Bulles d'arrière-plan */
+        .bubbles-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+        
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
+            box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.5);
+            animation: float var(--duration) ease-in-out infinite;
+            opacity: 0.3;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+            50% { opacity: var(--opacity); }
+            100% { transform: translateY(-100px) scale(1); opacity: 0; }
+        }
+
+        /* Effet de lumière sur les boutons */
+        .subject-card::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            z-index: 1;
+            transform: translateX(-100%);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .footer-note {
+            text-align: center;
+            color: white;
+            margin-top: 50px;
+            font-size: 1rem;
+            opacity: 0.7;
+        }
+
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bubbles-container" id="bubbles-container"></div>
+    
+    <div class="container">
+        <div class="header">
+            <a href="/index/cours/terminale/terminale.html" class="back-button">
+                <i class="fas fa-arrow-left"></i> Retour aux séries
+            </a>
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <h1>Éducation Malagasy</h1>
+            </div>
+        </div>
+
+        <h1 class="page-title">Série C - Matières</h1>
+        
+        <p class="page-subtitle">
+            Bienvenue dans le programme de la Série C ! Cette série est axée sur les mathématiques et les sciences physiques, préparant aux carrières d'ingénierie et aux études scientifiques avancées. Explorez les matières ci-dessous pour accéder aux ressources pédagogiques dédiées.
+        </p>
+
+        <div class="subjects-container">
+            <div class="subject-card malagasy">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="hexagon">
+                            <div class="subject-icon"><i class="fas fa-language"></i></div>
+                        </div>
+                        <h3 class="subject-name">Malagasy</h3>
+                        <p class="subject-description">Communication technique</p>
+                    </div>
+                    <div class="card-back">
+                        <p>Maîtrisez la communication technique en malagasy</p>
+                        <button class="btn-explore">Explorer</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subject-card francais">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="hexagon">
+                            <div class="subject-icon"><i class="fas fa-book"></i></div>
+                        </div>
+                        <h3 class="subject-name">Français</h3>
+                        <p class="subject-description">Expression scientifique</p>
+                    </div>
+                    <div class="card-back">
+                        <p>Perfectionnez votre français scientifique et technique</p>
+                        <button class="btn-explore">Explorer</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subject-card anglais">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="hexagon">
+                            <div class="subject-icon"><i class="fas fa-globe-europe"></i></div>
+                        </div>
+                        <h3 class="subject-name">Anglais</h3>
+                        <p class="subject-description">Anglais technique</p>
+                    </div>
+                    <div class="card-back">
+                        <p>Développez vos compétences en anglais scientifique</p>
+                        <button class="btn-explore">Explorer</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subject-card histogeo">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="hexagon">
+                            <div class="subject-icon"><i class="fas fa-globe-africa"></i></div>
+                        </div>
+                        <h3 class="subject-name">Histoire-Géo</h3>
+                        <p class="subject-description">Géopolitique des ressources</p>
+                    </div>
+                    <div class="card-back">
+                        <p>Comprenez les enjeux géopolitiques des ressources mondiales</p>
+                        <button class="btn-explore">Explorer</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subject-card philosophie">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="hexagon">
+                            <div class="subject-icon"><i class="fas fa-brain"></i></div>
+                        </div>
+                        <h3 class="subject-name">Philosophie</h3>
+                        <p class="subject-description">Science et éthique</p>
+                    </div>
+                    <div class="card-back">
+                        <p>Explorez les implications éthiques des avancées scientifiques</p>
+                        <button class="btn-explore">Explorer</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subject-card maths">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="hexagon">
+                            <div class="subject-icon"><i class="fas fa-calculator"></i></div>
+                        </div>
+                        <h3 class="subject-name">Mathématiques</h3>
+                        <p class="subject-description">Mathématiques avancées</p>
+                    </div>
+                    <div class="card-back">
+                        <p>Maîtrisez les outils mathématiques de haut niveau</p>
+                        <button class="btn-explore">Explorer</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subject-card physique-chimie">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="hexagon">
+                            <div class="subject-icon"><i class="fas fa-atom"></i></div>
+                        </div>
+                        <h3 class="subject-name">Physique-Chimie</h3>
+                        <p class="subject-description">Physique approfondie</p>
+                    </div>
+                    <div class="card-back">
+                        <p>Explorez les concepts avancés de physique et de chimie</p>
+                        <button class="btn-explore">Explorer</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subject-card svt">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="hexagon">
+                            <div class="subject-icon"><i class="fas fa-leaf"></i></div>
+                        </div>
+                        <h3 class="subject-name">SVT</h3>
+                        <p class="subject-description">Sciences naturelles</p>
+                    </div>
+                    <div class="card-back">
+                        <p>Découvrez les applications des sciences de la vie et de la Terre</p>
+                        <button class="btn-explore">Explorer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <p class="footer-note">
+            Cliquez sur une matière pour découvrir les cours, exercices et ressources disponibles
+        </p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Création des bulles animées
+            createBubbles();
+            
+            // Animation des cartes au chargement
+            animateCards();
+            
+            // Effet interactif sur les cartes
+            setupInteractiveEffects();
+        });
+        
+        function createBubbles() {
+            const container = document.getElementById('bubbles-container');
+            const bubbleCount = 40;
+            
+            for (let i = 0; i < bubbleCount; i++) {
+                const bubble = document.createElement('div');
+                bubble.classList.add('bubble');
+                
+                // Styles aléatoires pour chaque bulle
+                const size = Math.random() * 100 + 20;
+                const opacity = Math.random() * 0.3 + 0.1;
+                const duration = Math.random() * 20 + 10;
+                const startPosition = Math.random() * 100;
+                
+                bubble.style.width = `${size}px`;
+                bubble.style.height = `${size}px`;
+                bubble.style.setProperty('--opacity', opacity);
+                bubble.style.setProperty('--duration', `${duration}s`);
+                
+                // Positions initiales aléatoires
+                bubble.style.left = `${startPosition}vw`;
+                bubble.style.bottom = `-${size}px`;
+                
+                // Animation avec délai aléatoire
+                bubble.style.animationDelay = `${Math.random() * 20}s`;
+                
+                container.appendChild(bubble);
+            }
+        }
+        
+        function animateCards() {
+            const cards = document.querySelectorAll('.subject-card');
+            
+            cards.forEach((card, index) => {
+                // Animation initiale
+                card.style.opacity = 0;
+                card.style.transform = 'translateY(50px) scale(0.9)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                    card.style.opacity = 1;
+                    card.style.transform = '';
+                }, 100 * index);
+            });
+        }
+        
+        function setupInteractiveEffects() {
+            const cards = document.querySelectorAll('.subject-card');
+            
+            cards.forEach(card => {
+                // Effet au survol 3D
+                card.addEventListener('mousemove', function(e) {
+                    if (!this.querySelector('.card-inner').style.transform.includes('rotateY(180deg)')) {
+                        const rect = this.getBoundingClientRect();
+                        const x = e.clientX - rect.left;
+                        const y = e.clientY - rect.top;
+                        
+                        const centerX = rect.width / 2;
+                        const centerY = rect.height / 2;
+                        
+                        const angleX = (y - centerY) / 10;
+                        const angleY = (centerX - x) / 10;
+                        
+                        this.style.transform = `perspective(1000px) rotateX(${angleX}deg) rotateY(${angleY}deg) scale3d(1.05, 1.05, 1.05)`;
+                    }
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    if (!this.querySelector('.card-inner').style.transform.includes('rotateY(180deg)')) {
+                        this.style.transform = '';
+                        setTimeout(() => {
+                            this.style.transition = 'all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                        }, 100);
+                    }
+                });
+                
+                // Effet au clic sur le bouton "Explorer"
+                const exploreBtn = card.querySelector('.btn-explore');
+                if (exploreBtn) {
+                    exploreBtn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        alert('Les cours pour cette matière seront bientôt disponibles !');
+                    });
+                }
+            });
+        }
+    </script>
+</body>
+</html>
