@@ -1,0 +1,491 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classe de 2nde - Matières</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(-45deg, #4B79A1, #283E51, #2C5364, #4B79A1);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-decoration: none;
+        }
+
+        .back-button i {
+            margin-right: 8px;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            color: white;
+        }
+
+        .logo i {
+            font-size: 2rem;
+            margin-right: 10px;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .page-title {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            font-size: 3rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            animation: fadeInDown 1s ease;
+        }
+
+        .page-subtitle {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+            opacity: 0.9;
+            animation: fadeIn 1.2s ease;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .subject-card {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            cursor: pointer;
+            height: 220px;
+            perspective: 1000px;
+            transform-style: preserve-3d;
+        }
+
+        .subject-card:hover {
+            transform: translateY(-15px) scale(1.05) rotateY(5deg);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+            z-index: 2;
+        }
+
+        .subject-card::before {
+            content: '';
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 60%);
+            top: -25%;
+            left: -25%;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            transform: translateZ(-10px);
+        }
+
+        .subject-card:hover::before {
+            opacity: 1;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.2; }
+            100% { transform: scale(1); opacity: 0.5; }
+        }
+
+        .card-inner {
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        .subject-card:hover .card-inner {
+            transform: rotateY(15deg) rotateX(5deg);
+        }
+
+        .card-front {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: white;
+            text-align: center;
+            transition: all 0.5s ease;
+        }
+
+        .subject-icon {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            transition: all 0.5s ease;
+            transform: translateZ(20px);
+        }
+
+        .subject-card:hover .subject-icon {
+            transform: translateZ(40px) scale(1.2);
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+        }
+
+        .subject-name {
+            font-size: 1.6rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            transition: all 0.5s ease;
+            transform: translateZ(10px);
+        }
+
+        .subject-card:hover .subject-name {
+            transform: translateZ(30px);
+            letter-spacing: 1px;
+        }
+
+        .subject-description {
+            font-size: 0.95rem;
+            opacity: 0.8;
+            transform: translateZ(5px);
+            transition: all 0.5s ease;
+            max-width: 90%;
+        }
+
+        .subject-card:hover .subject-description {
+            transform: translateZ(20px);
+            opacity: 1;
+        }
+
+        /* Subject-specific colors */
+        .malagasy { background: linear-gradient(135deg, #FF9966, #FF5E62); }
+        .anglais { background: linear-gradient(135deg, #4776E6, #8E54E9); }
+        .francais { background: linear-gradient(135deg, #00B4DB, #0083B0); }
+        .histogeo { background: linear-gradient(135deg, #834d9b, #d04ed6); }
+        .physique { background: linear-gradient(135deg, #11998e, #38ef7d); }
+        .maths { background: linear-gradient(135deg, #F2994A, #F2C94C); }
+        .svt { background: linear-gradient(135deg, #FF5722, #FF9800); }
+        .allemand { background: linear-gradient(135deg, #2C3E50, #4CA1AF); }
+        .espagnol { background: linear-gradient(135deg, #ED213A, #93291E); }
+
+        /* Floating elements effect */
+        .floating-element {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(2px);
+            pointer-events: none;
+            z-index: 0;
+            animation: float 15s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(50px, 25px) rotate(90deg); }
+            50% { transform: translate(25px, 50px) rotate(180deg); }
+            75% { transform: translate(-25px, 25px) rotate(270deg); }
+            100% { transform: translate(0, 0) rotate(360deg); }
+        }
+
+        .footer-note {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 50px;
+            font-size: 0.9rem;
+        }
+
+        /* Media Queries */
+        @media (max-width: 768px) {
+            .subjects-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .page-title {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating decorative elements -->
+    <div class="floating-element" style="width: 150px; height: 150px; top: 10%; left: 5%; animation-duration: 25s;"></div>
+    <div class="floating-element" style="width: 100px; height: 100px; top: 50%; right: 10%; animation-duration: 18s; animation-delay: 2s;"></div>
+    <div class="floating-element" style="width: 200px; height: 200px; bottom: 20%; left: 20%; animation-duration: 22s; animation-delay: 5s;"></div>
+    
+    <div class="container">
+        <div class="header">
+            <a href="/index/cours/cours.html" class="back-button">
+                <i class="fas fa-arrow-left"></i> Retour aux niveaux
+            </a>
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <h1>Éducation Malagasy</h1>
+            </div>
+        </div>
+
+        <h1 class="page-title">Classe de 2nde</h1>
+        
+        <p class="page-subtitle">
+            Bienvenue au lycée! Explorez les matières de la classe de seconde et accédez à des ressources pédagogiques de qualité pour réussir votre début au lycée. Chaque cours est conçu par des experts pour vous offrir une expérience d'apprentissage optimale.
+        </p>
+
+        <div class="subjects-grid">
+            <div class="subject-card malagasy">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="subject-icon"><i class="fas fa-language"></i></div>
+                        <h3 class="subject-name">Malagasy</h3>
+                        <p class="subject-description">Littérature et expression avancée en langue malagasy</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subject-card anglais">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="subject-icon"><i class="fas fa-globe-europe"></i></div>
+                        <h3 class="subject-name">Anglais</h3>
+                        <p class="subject-description">Approfondissement linguistique et découverte culturelle internationale</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subject-card francais">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="subject-icon"><i class="fas fa-book"></i></div>
+                        <h3 class="subject-name">Français</h3>
+                        <p class="subject-description">Analyse littéraire approfondie et techniques d'argumentation</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subject-card histogeo">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="subject-icon"><i class="fas fa-globe-africa"></i></div>
+                        <h3 class="subject-name">Histoire-Géo</h3>
+                        <p class="subject-description">Enjeux historiques mondiaux et problématiques géographiques contemporaines</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subject-card physique">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="subject-icon"><i class="fas fa-atom"></i></div>
+                        <h3 class="subject-name">Physique-Chimie</h3>
+                        <p class="subject-description">Exploration approfondie des lois physiques et des réactions chimiques</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subject-card maths">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="subject-icon"><i class="fas fa-calculator"></i></div>
+                        <h3 class="subject-name">Mathématiques</h3>
+                        <p class="subject-description">Algèbre, analyse, géométrie et probabilités avancées</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subject-card svt">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="subject-icon"><i class="fas fa-leaf"></i></div>
+                        <h3 class="subject-name">SVT</h3>
+                        <p class="subject-description">Étude approfondie des écosystèmes et de la génétique</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subject-card allemand">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="subject-icon"><i class="fas fa-comments"></i></div>
+                        <h3 class="subject-name">Allemand</h3>
+                        <p class="subject-description">Initiation et perfectionnement à la langue et culture allemande</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subject-card espagnol">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="subject-icon"><i class="fas fa-hat-cowboy"></i></div>
+                        <h3 class="subject-name">Espagnol</h3>
+                        <p class="subject-description">Découverte du monde hispanique et apprentissage linguistique</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <p class="footer-note">
+            Cliquez sur une matière pour accéder à tous les cours disponibles
+        </p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animation des cartes avec effet 3D
+            const subjectCards = document.querySelectorAll('.subject-card');
+            
+            // Animation d'entrée progressive
+            subjectCards.forEach((card, index) => {
+                card.style.opacity = 0;
+                card.style.transform = 'translateY(50px) scale(0.8)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'all 0.8s cubic-bezier(0.23, 1, 0.32, 1.275)';
+                    card.style.opacity = 1;
+                    card.style.transform = 'translateY(0) scale(1)';
+                }, 100 * index);
+                
+                // Effet de mouvement 3D au survol
+                card.addEventListener('mousemove', function(e) {
+                    const rect = this.getBoundingClientRect();
+                    const x = (e.clientX - rect.left) / rect.width - 0.5;  // -0.5 à 0.5
+                    const y = (e.clientY - rect.top) / rect.height - 0.5;  // -0.5 à 0.5
+                    
+                    // Calcul de l'angle de rotation basé sur la position de la souris
+                    const rotateX = y * -20; // inverse pour effet naturel
+                    const rotateY = x * 20;
+                    
+                    // Appliquer la transformation
+                    this.querySelector('.card-inner').style.transform = 
+                        `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                    
+                    // Effet de profondeur pour l'icône et le texte
+                    const icon = this.querySelector('.subject-icon');
+                    const name = this.querySelector('.subject-name');
+                    const desc = this.querySelector('.subject-description');
+                    
+                    icon.style.transform = `translateZ(40px) scale(1.2) translateX(${x * 15}px) translateY(${y * 15}px)`;
+                    name.style.transform = `translateZ(30px) translateX(${x * 10}px) translateY(${y * 10}px)`;
+                    desc.style.transform = `translateZ(20px) translateX(${x * 5}px) translateY(${y * 5}px)`;
+                });
+                
+                // Réinitialisation de l'effet au départ de la souris
+                card.addEventListener('mouseleave', function() {
+                    this.querySelector('.card-inner').style.transform = '';
+                    this.querySelector('.subject-icon').style.transform = 'translateZ(20px)';
+                    this.querySelector('.subject-name').style.transform = 'translateZ(10px)';
+                    this.querySelector('.subject-description').style.transform = 'translateZ(5px)';
+                });
+                
+                // Effet au clic
+                card.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                        alert('Les cours pour cette matière seront bientôt disponibles !');
+                    }, 200);
+                });
+            });
+            
+            // Ajouter des éléments flottants aléatoires
+            const container = document.querySelector('.container');
+            for (let i = 0; i < 5; i++) {
+                const size = Math.random() * 50 + 20;
+                const floatingEl = document.createElement('div');
+                floatingEl.classList.add('floating-element');
+                floatingEl.style.width = `${size}px`;
+                floatingEl.style.height = `${size}px`;
+                floatingEl.style.top = `${Math.random() * 100}%`;
+                floatingEl.style.left = `${Math.random() * 100}%`;
+                floatingEl.style.animationDuration = `${Math.random() * 10 + 15}s`;
+                floatingEl.style.animationDelay = `${Math.random() * 5}s`;
+                document.body.appendChild(floatingEl);
+            }
+        });
+    </script>
+</body>
+</html>
