@@ -11,7 +11,9 @@ router.get('/recherche', async (req, res) => {
     // Importer dynamiquement node-fetch
     const { default: fetch } = await import('node-fetch');
     
-    const response = await fetch(`https://test-api-milay-vercel.vercel.app/api/ohab/recherche?ohabolana=${encodeURIComponent(terme)}&page=${page}`);
+    const apiUrl = `https://test-api-milay-vercel.vercel.app/api/ohab/recherche?ohabolana=${encodeURIComponent(terme)}&page=${page}`;
+    console.log("URL de l'API appelée:", apiUrl);
+    const response = await fetch(apiUrl);
     const data = await response.json();
     console.log("Réponse de l'API:", data);
     res.json(data);

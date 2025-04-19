@@ -428,11 +428,11 @@
                     loading.style.display = 'none';
                     
                     // Mise à jour des données de pagination
-                    if (data.data && data.data.length > 0) {
-                        currentPage = data.currentPage || 1;
-                        totalPages = data.totalPages || 1;
+                    if (data.resultats && data.resultats.length > 0) {
+                        currentPage = data.page || 1;
+                        totalPages = data.pageSuivante ? currentPage + 1 : currentPage;
                         updatePaginationUI();
-                        displayResults(data.data);
+                        displayResults(data.resultats);
                     } else {
                         emptyResults.style.display = 'block';
                     }
@@ -461,9 +461,12 @@
                 results.forEach((item, index) => {
                     const resultElement = document.createElement('div');
                     resultElement.className = 'result-item';
+                    
+                    // Extraire le texte du proverbe (en enlevant le numéro au début si présent)
+                    const proverbeText = item.replace(/^\d+\.\s*/, '');
+                    
                     resultElement.innerHTML = `
-                        <p class="result-text">${item.ohabolana || 'N/A'}</p>
-                        <p class="result-meaning">${item.dikan_teny || 'Aucune signification disponible'}</p>
+                        <p class="result-text">${proverbeText || 'N/A'}</p>
                     `;
                     
                     // Animation au survol
