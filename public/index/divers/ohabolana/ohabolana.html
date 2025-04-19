@@ -430,7 +430,8 @@
                     // Mise à jour des données de pagination
                     if (data.resultats && data.resultats.length > 0) {
                         currentPage = data.page || 1;
-                        totalPages = data.pageSuivante ? currentPage + 1 : currentPage;
+                        // Par défaut, supposons au moins 2 pages sauf si pageSuivante est explicitement null
+                        totalPages = data.pageSuivante === null ? currentPage : currentPage + 1;
                         updatePaginationUI();
                         displayResults(data.resultats);
                     } else {
@@ -483,7 +484,8 @@
                 });
                 
                 resultsContainer.style.display = 'block';
-                pagination.style.display = totalPages > 1 ? 'flex' : 'none';
+                // Toujours afficher la pagination s'il y a des résultats
+                pagination.style.display = 'flex';
             }
             
             // Fonction pour mettre à jour l'UI de pagination

@@ -1,4 +1,3 @@
-
 const express = require('express');
 const router = express.Router();
 
@@ -7,10 +6,10 @@ router.get('/recherche', async (req, res) => {
   try {
     const { terme, page = 1 } = req.query;
     console.log("Terme recherché:", terme, "Page:", page);
-    
+
     // Importer dynamiquement node-fetch
     const { default: fetch } = await import('node-fetch');
-    
+
     const apiUrl = `https://test-api-milay-vercel.vercel.app/api/ohab/recherche?ohabolana=${encodeURIComponent(terme)}&page=${page}`;
     console.log("URL de l'API appelée:", apiUrl);
     const response = await fetch(apiUrl);
