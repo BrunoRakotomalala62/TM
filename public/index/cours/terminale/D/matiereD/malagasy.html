@@ -4,8 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Série D - Matières</title>
-    <link rel="stylesheet" href="/styles.css">
+    <title>Malagasy - Série D</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
@@ -16,6 +15,30 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             overflow-x: hidden;
             position: relative;
+            color: white;
+        }
+
+        .stars-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+        
+        .star {
+            position: absolute;
+            background-color: #fff;
+            border-radius: 50%;
+            animation: twinkle var(--duration) ease-in-out infinite;
+            opacity: 0;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: var(--opacity); transform: scale(1); }
         }
 
         .container {
@@ -119,16 +142,16 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .subjects-grid {
+        .pdf-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 30px;
             margin-bottom: 50px;
         }
 
-        .subject-card {
+        .pdf-card {
             position: relative;
-            height: 200px;
+            height: 280px;
             border-radius: 20px;
             overflow: hidden;
             cursor: pointer;
@@ -136,6 +159,16 @@
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
             transform-style: preserve-3d;
             perspective: 1000px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: slideInUp 0.6s ease-out forwards;
+        }
+
+        @keyframes slideInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .card-inner {
@@ -146,7 +179,7 @@
             transform-style: preserve-3d;
         }
 
-        .subject-card:hover .card-inner {
+        .pdf-card:hover .card-inner {
             transform: rotateY(180deg);
         }
 
@@ -168,7 +201,20 @@
             background: rgba(0, 0, 0, 0.8);
         }
 
-        .subject-icon {
+        /* Couleurs alternées pour les cartes PDF */
+        .pdf-card:nth-child(3n+1) .card-front {
+            background: linear-gradient(135deg, #4776E6, #8E54E9);
+        }
+
+        .pdf-card:nth-child(3n+2) .card-front {
+            background: linear-gradient(135deg, #5C258D, #4389A2);
+        }
+
+        .pdf-card:nth-child(3n+3) .card-front {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+        }
+
+        .pdf-icon {
             font-size: 3rem;
             margin-bottom: 15px;
             transition: all 0.5s ease;
@@ -182,73 +228,67 @@
             100% { transform: scale(1); }
         }
 
-        .subject-name {
+        .pdf-title {
             font-size: 1.8rem;
             font-weight: 700;
             margin-bottom: 10px;
             transition: all 0.5s ease;
+            text-align: center;
         }
 
-        .subject-description {
+        .pdf-info {
             font-size: 0.9rem;
             opacity: 0.9;
             transition: all 0.5s ease;
+            text-align: center;
+            margin-bottom: 5px;
         }
 
-        .btn-explore {
-            margin-top: 15px;
-            padding: 8px 20px;
+        .pdf-description {
+            font-size: 1rem;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .download-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             background: linear-gradient(45deg, #4776E6, #8E54E9);
-            border: none;
-            border-radius: 30px;
             color: white;
+            padding: 12px 25px;
+            border-radius: 30px;
             font-weight: 600;
+            font-size: 1rem;
+            border: none;
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 5px 15px rgba(71, 118, 230, 0.4);
+            text-decoration: none;
         }
 
-        .btn-explore:hover {
+        .download-button i {
+            margin-right: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .download-button:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 25px rgba(71, 118, 230, 0.6);
         }
 
-        /* Matières spécifiques */
-        .malagasy { background: linear-gradient(135deg, #FF9966, #FF5E62); }
-        .francais { background: linear-gradient(135deg, #FC5C7D, #6A82FB); }
-        .anglais { background: linear-gradient(135deg, #4776E6, #8E54E9); }
-        .histogeo { background: linear-gradient(135deg, #834d9b, #d04ed6); }
-        .philosophie { background: linear-gradient(135deg, #2193b0, #6dd5ed); }
-        .maths { background: linear-gradient(135deg, #F2994A, #F2C94C); }
-        .physique-chimie { background: linear-gradient(135deg, #11998e, #38ef7d); }
-        .svt { background: linear-gradient(135deg, #FF5722, #FF9800); }
-
-        /* Étoiles scintillantes */
-        .stars-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: 0;
-        }
-        
-        .star {
-            position: absolute;
-            background-color: #fff;
-            border-radius: 50%;
-            animation: twinkle var(--duration) ease-in-out infinite;
-            opacity: 0;
-        }
-        
-        @keyframes twinkle {
-            0%, 100% { opacity: 0; transform: scale(0.5); }
-            50% { opacity: var(--opacity); transform: scale(1); }
+        .download-button:hover i {
+            transform: translateY(3px);
         }
 
-        /* Effet de lumière sur les boutons */
-        .subject-card::before {
+        .pdf-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Effet de lumière sur les cartes */
+        .pdf-card::before {
             content: '';
             position: absolute;
             width: 15px;
@@ -286,6 +326,18 @@
             }
         }
 
+        .no-pdfs {
+            text-align: center;
+            color: white;
+            font-size: 1.5rem;
+            margin: 50px 0;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 16px;
+            backdrop-filter: blur(5px);
+            animation: pulse 2s infinite;
+        }
+
         .footer-note {
             text-align: center;
             color: white;
@@ -295,12 +347,12 @@
         }
 
         @media (max-width: 768px) {
-            .subjects-grid {
-                grid-template-columns: 1fr;
-            }
-            
             .page-title {
                 font-size: 2.5rem;
+            }
+            
+            .pdf-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -310,8 +362,8 @@
     
     <div class="container">
         <div class="header">
-            <a href="/index/cours/terminale/terminale.html" class="back-button">
-                <i class="fas fa-arrow-left"></i> Retour aux séries
+            <a href="/index/cours/terminale/D/matiereD.html" class="back-button">
+                <i class="fas fa-arrow-left"></i> Retour aux matières
             </a>
             <div class="logo">
                 <i class="fas fa-graduation-cap"></i>
@@ -319,141 +371,28 @@
             </div>
         </div>
 
-        <h1 class="page-title">Série D - Matières</h1>
+        <h1 class="page-title">Malagasy - Série D</h1>
         
         <p class="page-subtitle">
-            Bienvenue dans le programme de la Série D ! Focalisée sur les sciences naturelles et les mathématiques, cette série vous prépare aux carrières scientifiques et médicales. Découvrez les matières ci-dessous pour accéder aux ressources pédagogiques spécifiques.
+            Bienvenue dans le cours de Malagasy pour la Série D. Cette section vous propose des ressources pédagogiques adaptées aux étudiants en sciences de la vie. Vous trouverez ci-dessous les documents à télécharger pour approfondir vos connaissances.
         </p>
 
-        <div class="subjects-grid">
-            <div class="subject-card malagasy">
-                <div class="card-inner">
-                    <div class="card-front">
-                        <div class="subject-icon"><i class="fas fa-language"></i></div>
-                        <h3 class="subject-name">Malagasy</h3>
-                        <p class="subject-description">Langue et littérature malgache</p>
-                    </div>
-                    <div class="card-back">
-                        <p>Perfectionnez votre maîtrise de la langue malagasy</p>
-                        <a href="/index/cours/terminale/D/matiereD/malagasy.html" class="btn-explore">Explorer</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="subject-card francais">
-                <div class="card-inner">
-                    <div class="card-front">
-                        <div class="subject-icon"><i class="fas fa-book"></i></div>
-                        <h3 class="subject-name">Français</h3>
-                        <p class="subject-description">Expression écrite et orale</p>
-                    </div>
-                    <div class="card-back">
-                        <p>Développez vos compétences en communication scientifique</p>
-                        <button class="btn-explore">Explorer</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="subject-card anglais">
-                <div class="card-inner">
-                    <div class="card-front">
-                        <div class="subject-icon"><i class="fas fa-globe-europe"></i></div>
-                        <h3 class="subject-name">Anglais</h3>
-                        <p class="subject-description">Anglais scientifique</p>
-                    </div>
-                    <div class="card-back">
-                        <p>Maîtrisez le vocabulaire scientifique international</p>
-                        <button class="btn-explore">Explorer</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="subject-card histogeo">
-                <div class="card-inner">
-                    <div class="card-front">
-                        <div class="subject-icon"><i class="fas fa-globe-africa"></i></div>
-                        <h3 class="subject-name">Histoire-Géo</h3>
-                        <p class="subject-description">Enjeux contemporains</p>
-                    </div>
-                    <div class="card-back">
-                        <p>Comprenez les défis environnementaux et sociétaux</p>
-                        <button class="btn-explore">Explorer</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="subject-card philosophie">
-                <div class="card-inner">
-                    <div class="card-front">
-                        <div class="subject-icon"><i class="fas fa-brain"></i></div>
-                        <h3 class="subject-name">Philosophie</h3>
-                        <p class="subject-description">Épistémologie et éthique</p>
-                    </div>
-                    <div class="card-back">
-                        <p>Réfléchissez aux enjeux éthiques des sciences</p>
-                        <button class="btn-explore">Explorer</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="subject-card maths">
-                <div class="card-inner">
-                    <div class="card-front">
-                        <div class="subject-icon"><i class="fas fa-calculator"></i></div>
-                        <h3 class="subject-name">Mathématiques</h3>
-                        <p class="subject-description">Analyse et probabilités</p>
-                    </div>
-                    <div class="card-back">
-                        <p>Maîtrisez les outils mathématiques avancés</p>
-                        <button class="btn-explore">Explorer</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="subject-card physique-chimie">
-                <div class="card-inner">
-                    <div class="card-front">
-                        <div class="subject-icon"><i class="fas fa-atom"></i></div>
-                        <h3 class="subject-name">Physique-Chimie</h3>
-                        <p class="subject-description">Lois fondamentales et applications</p>
-                    </div>
-                    <div class="card-back">
-                        <p>Explorez les principes physico-chimiques du vivant</p>
-                        <button class="btn-explore">Explorer</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="subject-card svt">
-                <div class="card-inner">
-                    <div class="card-front">
-                        <div class="subject-icon"><i class="fas fa-leaf"></i></div>
-                        <h3 class="subject-name">SVT</h3>
-                        <p class="subject-description">Biologie et géologie avancées</p>
-                    </div>
-                    <div class="card-back">
-                        <p>Approfondissez vos connaissances du vivant et de la Terre</p>
-                        <button class="btn-explore">Explorer</button>
-                    </div>
-                </div>
-            </div>
+        <div class="pdf-grid" id="pdf-grid">
+            <!-- Les PDF seront chargés dynamiquement ici -->
         </div>
 
         <p class="footer-note">
-            Cliquez sur une matière pour découvrir les cours, exercices et ressources disponibles
+            Les documents sont au format PDF et nécessitent un lecteur compatible pour être consultés
         </p>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Création des étoiles scintillantes
+            // Créer des étoiles scintillantes
             createStars();
             
-            // Animation des cartes au chargement
-            animateCards();
-            
-            // Effet interactif sur les cartes
-            setupInteractiveEffects();
+            // Charger les PDF dynamiquement
+            loadPDFs();
         });
         
         function createStars() {
@@ -485,26 +424,72 @@
             }
         }
         
-        function animateCards() {
-            const cards = document.querySelectorAll('.subject-card');
+        function loadPDFs() {
+            // En production, cela devrait être remplacé par une requête AJAX
+            // ou un endpoint API qui récupère la liste des fichiers
             
-            cards.forEach((card, index) => {
-                // Animation initiale
-                card.style.opacity = 0;
-                card.style.transform = 'translateY(50px) scale(0.9)';
-                
-                setTimeout(() => {
-                    card.style.transition = 'all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-                    card.style.opacity = 1;
-                    card.style.transform = '';
-                }, 100 * index);
-            });
+            fetch('/api/get-pdf-list?path=terminale/D/matiereD')
+                .then(response => response.json())
+                .then(data => {
+                    displayPDFs(data.files);
+                })
+                .catch(error => {
+                    console.error('Erreur lors du chargement des PDFs:', error);
+                    
+                    // Simuler les données pour la démonstration
+                    const demoFiles = [
+                        { 
+                            name: "Lesona Malagasy Famaranana Sokajy D", 
+                            path: "/Attachement/index/cours/terminale/D/matiereD/lesona_malagasy_famaranana_sokajy_D.pdf",
+                            description: "Ce document contient les leçons essentielles de malagasy pour les étudiants de la série D, avec un focus sur le vocabulaire scientifique."
+                        }
+                    ];
+                    
+                    displayPDFs(demoFiles);
+                });
         }
         
-        function setupInteractiveEffects() {
-            const cards = document.querySelectorAll('.subject-card');
+        function displayPDFs(pdfFiles) {
+            const pdfGrid = document.getElementById('pdf-grid');
             
-            cards.forEach(card => {
+            if (pdfFiles.length === 0) {
+                pdfGrid.innerHTML = `
+                    <div class="no-pdfs">
+                        <i class="fas fa-file-pdf"></i>
+                        <p>Aucun document PDF n'est disponible pour le moment.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let htmlContent = '';
+            
+            pdfFiles.forEach((pdf, index) => {
+                const description = pdf.description || "Document pédagogique de malagasy pour les étudiants de la série D";
+                
+                htmlContent += `
+                    <div class="pdf-card" style="animation-delay: ${index * 0.2}s">
+                        <div class="card-inner">
+                            <div class="card-front">
+                                <div class="pdf-icon"><i class="fas fa-file-pdf"></i></div>
+                                <h3 class="pdf-title">${pdf.name}</h3>
+                                <p class="pdf-info">Document pédagogique · Format PDF</p>
+                            </div>
+                            <div class="card-back">
+                                <p class="pdf-description">${description}</p>
+                                <a href="${pdf.path}" class="download-button" download>
+                                    <i class="fas fa-download"></i> Télécharger
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            pdfGrid.innerHTML = htmlContent;
+            
+            // Ajouter des effets interactifs sur les cartes
+            document.querySelectorAll('.pdf-card').forEach(card => {
                 // Effet au survol
                 card.addEventListener('mousemove', function(e) {
                     if (!this.querySelector('.card-inner').style.transform.includes('rotateY(180deg)')) {
@@ -530,15 +515,6 @@
                         }, 100);
                     }
                 });
-                
-                // Effet au clic sur le bouton "Explorer"
-                const exploreBtn = card.querySelector('.btn-explore');
-                if (exploreBtn) {
-                    exploreBtn.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        alert('Les cours pour cette matière seront bientôt disponibles !');
-                    });
-                }
             });
         }
     </script>

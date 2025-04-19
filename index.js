@@ -117,6 +117,60 @@ app.get('/index/cours/terminale/terminale.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index', 'cours', 'terminale', 'terminale.html'));
 });
 
+// Routes pour les pages malagasy des séries terminales
+app.get('/index/cours/terminale/A/matiereA/malagasy.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index', 'cours', 'terminale', 'A', 'matiereA', 'malagasy.html'));
+});
+
+app.get('/index/cours/terminale/C/matiereC/malagasy.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index', 'cours', 'terminale', 'C', 'matiereC', 'malagasy.html'));
+});
+
+app.get('/index/cours/terminale/D/matiereD/malagasy.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index', 'cours', 'terminale', 'D', 'matiereD', 'malagasy.html'));
+});
+
+// API pour obtenir la liste des PDFs (pour le chargement dynamique)
+app.get('/api/get-pdf-list', (req, res) => {
+  const basePath = path.join(__dirname, 'Attachement', 'index', 'cours');
+  const requestedPath = req.query.path;
+  
+  // Validation du chemin pour éviter les attaques de traversée de chemin
+  if (!requestedPath || requestedPath.includes('..')) {
+    return res.status(400).json({ error: 'Chemin invalide' });
+  }
+  
+  const fullPath = path.join(basePath, requestedPath);
+  
+  try {
+    // Vérifier si le répertoire existe
+    if (!fs.existsSync(fullPath)) {
+      return res.json({ files: [] });
+    }
+    
+    // Lire les fichiers du répertoire
+    const files = fs.readdirSync(fullPath)
+      .filter(file => file.toLowerCase().endsWith('.pdf'))
+      .map(file => {
+        // Formatter le nom du fichier pour l'affichage
+        const displayName = file
+          .replace(/\.pdf$/i, '')
+          .replace(/_/g, ' ')
+          .replace(/\b\w/g, char => char.toUpperCase());
+        
+        return {
+          name: displayName,
+          path: `/Attachement/index/cours/${requestedPath}/${file}`
+        };
+      });
+    
+    res.json({ files });
+  } catch (error) {
+    console.error('Erreur lors de la lecture des PDFs:', error);
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
+});
+
 // Routes pour les pages de matières de la Série A
 app.get('/index/cours/terminale/A/matiereA.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index', 'cours', 'terminale', 'A', 'matiereA.html'));
