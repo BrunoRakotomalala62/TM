@@ -15,26 +15,46 @@ router.get('/recherche', async (req, res) => {
     const response = await fetch(apiUrl);
     const data = await response.json();
     
-    // Vérifier si une page suivante existe
+    // Calculer le nombre total de pages en vérifiant toutes les pages suivantes
     try {
       const currentPage = parseInt(page, 10);
-      const nextPage = currentPage + 1;
+      let totalPages = currentPage;
+      let hasMorePages = true;
+      let checkPage = currentPage + 1;
       
-      const nextPageResponse = await fetch(`https://test-api-milay-vercel.vercel.app/api/ohab/recherche?ohabolana=${encodeURIComponent(terme)}&page=${nextPage}`);
-      const nextPageData = await nextPageResponse.json();
+      // On vérifie jusqu'à 10 pages maximum pour ne pas surcharger l'API
+      const MAX_PAGES_TO_CHECK = 10;
+      let pagesChecked = 0;
       
-      if (nextPageData.resultats && nextPageData.resultats.length > 0) {
-        // Si une page suivante existe, on l'indique dans la réponse
-        data.pageSuivante = nextPage;
+      while (hasMorePages && pagesChecked < MAX_PAGES_TO_CHECK) {
+        const nextPageResponse = await fetch(`https://test-api-milay-vercel.vercel.app/api/ohab/recherche?ohabolana=${encodeURIComponent(terme)}&page=${checkPage}`);
+        const nextPageData = await nextPageResponse.json();
+        
+        if (nextPageData.resultats && nextPageData.resultats.length > 0) {
+          totalPages = checkPage;
+          checkPage++;
+          pagesChecked++;
+        } else {
+          hasMorePages = false;
+        }
+      }
+      
+      // Ajouter les informations de pagination à la réponse
+      data.pageCourante = currentPage;
+      data.totalPages = totalPages;
+      
+      if (currentPage < totalPages) {
+        data.pageSuivante = currentPage + 1;
         data.estDernierePage = false;
       } else {
-        // Si pas de page suivante, on indique que c'est la dernière page
         data.pageSuivante = null;
         data.estDernierePage = true;
       }
     } catch (err) {
-      console.error("Erreur lors de la vérification de la page suivante:", err);
+      console.error("Erreur lors du calcul du nombre total de pages:", err);
       // En cas d'erreur, on suppose que c'est la dernière page
+      data.pageCourante = parseInt(page, 10);
+      data.totalPages = data.pageCourante;
       data.pageSuivante = null;
       data.estDernierePage = true;
     }

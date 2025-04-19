@@ -442,22 +442,11 @@
                     
                     // Mise à jour des données de pagination
                     if (data.resultats && data.resultats.length > 0) {
-                        currentPage = data.page || 1;
+                        // Utiliser les informations de pagination fournies par l'API
+                        currentPage = data.pageCourante || data.page || 1;
+                        totalPages = data.totalPages || currentPage;
                         
-                        // On stocke d'abord le nombre total de pages courant
-                        totalPages = currentPage;
-                        
-                        // Vérifier s'il existe une page suivante en faisant une requête de vérification
-                        try {
-                            const nextPageResponse = await fetch(`/api/ohabolana/recherche?terme=${encodeURIComponent(terme)}&page=${currentPage + 1}`);
-                            const nextPageData = await nextPageResponse.json();
-                            
-                            if (nextPageData.resultats && nextPageData.resultats.length > 0) {
-                                totalPages = currentPage + 1;
-                            }
-                        } catch (err) {
-                            console.error("Erreur lors de la vérification de la page suivante:", err);
-                        }
+                        console.log(`Pagination: Page ${currentPage} sur ${totalPages}`);
                         
                         updatePaginationUI();
                         displayResults(data.resultats);
@@ -520,6 +509,13 @@
                 pageInfo.textContent = `Page ${currentPage} sur ${totalPages}`;
                 prevPageBtn.disabled = currentPage <= 1;
                 nextPageBtn.disabled = currentPage >= totalPages;
+                
+                // Mettre à jour l'affichage des boutons de pagination
+                if (totalPages > 1) {
+                    pagination.style.display = 'flex';
+                } else {
+                    pagination.style.display = 'none';
+                }
             }
             
             // Gestionnaire d'événement pour le formulaire de recherche
@@ -547,36 +543,29 @@
                     currentPage++;
                     await searchOhabolana(currentSearchTerm, currentPage);
                     
-                    // Après avoir chargé la page suivante, vérifier s'il y a encore une page après
-                    try {
-                        const checkNextResponse = await fetch(`/api/ohabolana/recherche?terme=${encodeURIComponent(currentSearchTerm)}&page=${currentPage + 1}`);
-                        const checkNextData = await checkNextResponse.json();
+                    // Afficher un message "Fin des résultats" si on est à la dernière page
+                    if (currentPage >= totalPages) {
+                        // C'est la dernière page, désactiver le bouton suivant et ajouter un message
+                        nextPageBtn.disabled = true;
                         
-                        if (!checkNextData.resultats || checkNextData.resultats.length === 0) {
-                            // C'est la dernière page, désactiver le bouton suivant et ajouter un message
-                            nextPageBtn.disabled = true;
-                            
-                            // Ajouter un message de fin sous la pagination
-                            const endMessage = document.createElement('div');
-                            endMessage.className = 'end-message';
-                            endMessage.innerHTML = '<i class="fas fa-check-circle"></i> Fin des résultats';
-                            endMessage.style.textAlign = 'center';
-                            endMessage.style.marginTop = '1rem';
-                            endMessage.style.color = '#fff';
-                            endMessage.style.padding = '0.5rem';
-                            endMessage.style.borderRadius = '5px';
-                            endMessage.style.background = 'rgba(255, 255, 255, 0.1)';
-                            
-                            // Supprimer tout message de fin précédent
-                            const oldEndMessage = document.querySelector('.end-message');
-                            if (oldEndMessage) {
-                                oldEndMessage.remove();
-                            }
-                            
-                            pagination.parentNode.insertBefore(endMessage, pagination.nextSibling);
+                        // Ajouter un message de fin sous la pagination
+                        const endMessage = document.createElement('div');
+                        endMessage.className = 'end-message';
+                        endMessage.innerHTML = '<i class="fas fa-check-circle"></i> Fin des résultats';
+                        endMessage.style.textAlign = 'center';
+                        endMessage.style.marginTop = '1rem';
+                        endMessage.style.color = '#fff';
+                        endMessage.style.padding = '0.5rem';
+                        endMessage.style.borderRadius = '5px';
+                        endMessage.style.background = 'rgba(255, 255, 255, 0.1)';
+                        
+                        // Supprimer tout message de fin précédent
+                        const oldEndMessage = document.querySelector('.end-message');
+                        if (oldEndMessage) {
+                            oldEndMessage.remove();
                         }
-                    } catch (err) {
-                        console.error("Erreur lors de la vérification de la fin des résultats:", err);
+                        
+                        pagination.parentNode.insertBefore(endMessage, pagination.nextSibling);
                     }
                 }
             });
