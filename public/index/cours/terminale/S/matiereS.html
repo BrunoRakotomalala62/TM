@@ -120,32 +120,34 @@
             to { opacity: 1; }
         }
 
-        /* Style des cartes circulaires */
+        /* Grille des matières */
         .subjects-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 30px;
-            margin-top: 50px;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
         }
 
+        /* Style des boutons de matières */
         .subject-card {
-            height: 200px;
-            position: relative;
-            border-radius: 50%;
-            overflow: hidden;
             background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(5px);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
             cursor: pointer;
-            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-            transform-style: preserve-3d;
-            perspective: 1000px;
-            margin: 20px auto;
+            transition: all 0.4s ease;
+            position: relative;
+            height: 180px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .subject-card:hover {
-            transform: translateY(-10px) scale(1.05);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
         }
 
         .subject-card::before {
@@ -153,128 +155,91 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.5), transparent 70%);
-            opacity: 0.3;
+            background: linear-gradient(45deg, rgba(255, 255, 255, 0.2), transparent);
             z-index: 1;
-            transition: opacity 0.5s ease;
-        }
-
-        .subject-card:hover::before {
-            opacity: 0.6;
-            animation: lightMove 2s infinite alternate;
-        }
-
-        @keyframes lightMove {
-            0% {
-                background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.5), transparent 70%);
-            }
-            100% {
-                background: radial-gradient(circle at 70% 70%, rgba(255, 255, 255, 0.5), transparent 70%);
-            }
         }
 
         .card-content {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            text-align: center;
+            position: relative;
             z-index: 2;
-            transition: transform 0.5s ease;
+            text-align: center;
+            padding: 20px;
+            width: 100%;
         }
 
         .subject-icon {
             font-size: 2.5rem;
-            margin-bottom: 10px;
             color: #333;
-            transition: all 0.5s ease;
+            margin-bottom: 15px;
+            transition: transform 0.5s ease;
         }
 
         .subject-name {
             font-size: 1.3rem;
             font-weight: 700;
-            margin-bottom: 5px;
             color: #333;
-            transition: all 0.3s ease;
+            margin-bottom: 8px;
+            transition: transform 0.3s ease;
         }
 
         .subject-description {
-            font-size: 0.8rem;
-            opacity: 0.8;
-            margin: 0;
+            font-size: 0.85rem;
             color: #333;
-            max-width: 80%;
-            display: none;
-            transition: all 0.3s ease;
+            opacity: 0.8;
         }
 
         .subject-card:hover .subject-icon {
-            transform: translateY(-5px);
-            color: #333;
+            transform: scale(1.2) translateY(-5px);
         }
 
-        .subject-card:hover .subject-name {
-            transform: translateY(5px);
+        /* Animation de lumière */
+        @keyframes lightMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
-        .subject-card:hover .subject-description {
-            display: block;
-            opacity: 1;
-        }
-
-        /* Effet de particules */
-        #particles-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
+        .subject-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
             pointer-events: none;
         }
 
-        .particle {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.7);
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
-            animation: float 15s linear infinite;
+        .subject-card:hover::after {
+            opacity: 1;
+            animation: rotateLight 4s linear infinite;
         }
 
-        @keyframes float {
-            0% {
-                transform: translateY(0) rotate(0deg);
-            }
-            100% {
-                transform: translateY(-100vh) rotate(360deg);
-            }
+        @keyframes rotateLight {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        /* Animation de rotation au clic */
+        /* Animation de rotation */
         .subject-card.clicked {
             animation: rotate360 1s forwards;
         }
 
         @keyframes rotate360 {
-            0% {
-                transform: translateY(-10px) scale(1.05) rotate(0deg);
-            }
-            100% {
-                transform: translateY(-10px) scale(1.05) rotate(360deg);
-            }
+            0% { transform: translateY(-10px) scale(1.03) rotate(0deg); }
+            100% { transform: translateY(-10px) scale(1.03) rotate(360deg); }
         }
 
+        /* Responsive */
         @media (max-width: 768px) {
             .subjects-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
             
             .subject-card {
-                height: 150px;
+                height: 160px;
             }
             
             .subject-icon {
@@ -282,7 +247,7 @@
             }
             
             .subject-name {
-                font-size: 1rem;
+                font-size: 1.1rem;
             }
             
             .page-title {
@@ -294,6 +259,15 @@
             .subjects-grid {
                 grid-template-columns: 1fr;
             }
+        }
+
+        /* Particules d'arrière-plan */
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+            pointer-events: none;
         }
     </style>
 </head>
@@ -406,27 +380,27 @@
         
         function createParticles() {
             const container = document.getElementById('particles-container');
-            const particleCount = 40;
+            const particleCount = 30;
             
             for (let i = 0; i < particleCount; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
                 
                 // Propriétés aléatoires
-                const size = Math.random() * 8 + 2;
+                const size = Math.random() * 6 + 2;
                 const posX = Math.random() * 100;
                 const posY = Math.random() * 100;
-                const duration = Math.random() * 10 + 10;
+                const duration = Math.random() * 15 + 10;
                 const delay = Math.random() * 5;
-                const opacity = Math.random() * 0.5 + 0.2;
                 
                 particle.style.width = `${size}px`;
                 particle.style.height = `${size}px`;
                 particle.style.left = `${posX}%`;
                 particle.style.top = `${posY}%`;
-                particle.style.animationDuration = `${duration}s`;
-                particle.style.animationDelay = `${delay}s`;
-                particle.style.opacity = opacity;
+                particle.style.opacity = Math.random() * 0.5 + 0.2;
+                
+                // Animation personnalisée
+                particle.style.animation = `float ${duration}s linear ${delay}s infinite`;
                 
                 container.appendChild(particle);
             }
@@ -438,12 +412,12 @@
             cards.forEach((card, index) => {
                 // Animation initiale
                 card.style.opacity = 0;
-                card.style.transform = 'scale(0.8)';
+                card.style.transform = 'translateY(30px)';
                 
                 setTimeout(() => {
-                    card.style.transition = 'all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                    card.style.transition = 'all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1)';
                     card.style.opacity = 1;
-                    card.style.transform = 'scale(1)';
+                    card.style.transform = 'translateY(0)';
                 }, 100 * index);
             });
         }
@@ -464,6 +438,32 @@
                 });
             });
         }
+
+        // Animation de flottement pour les particules
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes float {
+                0% {
+                    transform: translateY(0) rotate(0deg);
+                    opacity: 0.2;
+                }
+                25% {
+                    opacity: 0.5;
+                }
+                50% {
+                    transform: translateY(-100px) rotate(180deg);
+                    opacity: 0.3;
+                }
+                75% {
+                    opacity: 0.6;
+                }
+                100% {
+                    transform: translateY(-200px) rotate(360deg);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
     </script>
 </body>
 </html>
