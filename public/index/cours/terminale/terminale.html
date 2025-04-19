@@ -1,0 +1,458 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Éducation Malagasy - Terminale</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #1E1E1E 0%, #121212 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-decoration: none;
+        }
+
+        .back-button i {
+            margin-right: 8px;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            color: white;
+        }
+
+        .logo i {
+            font-size: 2rem;
+            margin-right: 10px;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .page-title {
+            text-align: center;
+            color: #FFD700;
+            margin-bottom: 30px;
+            font-size: 3.5rem;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            font-weight: 700;
+            letter-spacing: 2px;
+            position: relative;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            }
+            to {
+                text-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 0 30px rgba(255, 215, 0, 0.5);
+            }
+        }
+
+        .page-subtitle {
+            text-align: center;
+            color: #E0E0E0;
+            margin-bottom: 50px;
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            animation: fadeIn 1.2s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .subject-card {
+            position: relative;
+            height: 230px;
+            border-radius: 20px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            z-index: 2;
+            transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .subject-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            transition: all 0.5s ease;
+        }
+
+        .subject-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            transition: all 0.5s ease;
+        }
+
+        .subject-description {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            transition: all 0.5s ease;
+        }
+
+        /* Séries spécifiques */
+        .serie-a {
+            background: linear-gradient(135deg, #FF416C 0%, #FF4B2B 100%);
+        }
+
+        .serie-d {
+            background: linear-gradient(135deg, #4776E6 0%, #8E54E9 100%);
+        }
+
+        .serie-c {
+            background: linear-gradient(135deg, #1A2980 0%, #26D0CE 100%);
+        }
+
+        .serie-l {
+            background: linear-gradient(135deg, #834d9b 0%, #d04ed6 100%);
+        }
+
+        .serie-ose {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+
+        .serie-s {
+            background: linear-gradient(135deg, #F2994A 0%, #F2C94C 100%);
+        }
+
+        /* Effet de lumière sur les boutons */
+        .subject-card::before {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            filter: blur(5px);
+            top: 10px;
+            left: 10px;
+            animation: moveLight 8s linear infinite;
+            z-index: 3;
+            opacity: 0.7;
+        }
+
+        @keyframes moveLight {
+            0% {
+                top: 10px;
+                left: 10px;
+            }
+            25% {
+                top: 10px;
+                left: calc(100% - 20px);
+            }
+            50% {
+                top: calc(100% - 20px);
+                left: calc(100% - 20px);
+            }
+            75% {
+                top: calc(100% - 20px);
+                left: 10px;
+            }
+            100% {
+                top: 10px;
+                left: 10px;
+            }
+        }
+
+        .subject-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .subject-card:hover .card-inner {
+            transform: scale(1.05);
+        }
+
+        .subject-card:hover .subject-icon {
+            transform: scale(1.2) translateY(-5px);
+        }
+
+        /* Elements d'arrière-plan */
+        .background-element {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            z-index: 1;
+            opacity: 0.2;
+        }
+
+        .bg-elem-1 {
+            width: 300px;
+            height: 300px;
+            background: #FF416C;
+            top: 10%;
+            left: -100px;
+            animation: float 20s ease-in-out infinite alternate;
+        }
+
+        .bg-elem-2 {
+            width: 400px;
+            height: 400px;
+            background: #4776E6;
+            bottom: 5%;
+            right: -150px;
+            animation: float 25s ease-in-out infinite alternate-reverse;
+        }
+
+        .bg-elem-3 {
+            width: 200px;
+            height: 200px;
+            background: #11998e;
+            top: 60%;
+            left: 30%;
+            animation: float 18s ease-in-out infinite alternate;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            50% {
+                transform: translate(50px, 25px) rotate(10deg);
+            }
+            100% {
+                transform: translate(-30px, -50px) rotate(-5deg);
+            }
+        }
+
+        .footer-note {
+            text-align: center;
+            color: white;
+            margin-top: 50px;
+            font-size: 1rem;
+            opacity: 0.7;
+        }
+
+        @media (max-width: 768px) {
+            .subjects-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .page-title {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-element bg-elem-1"></div>
+    <div class="background-element bg-elem-2"></div>
+    <div class="background-element bg-elem-3"></div>
+    
+    <div class="container">
+        <div class="header">
+            <a href="/index/cours/cours.html" class="back-button">
+                <i class="fas fa-arrow-left"></i> Retour aux niveaux
+            </a>
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <h1>Éducation Malagasy</h1>
+            </div>
+        </div>
+
+        <h1 class="page-title">Classe de Terminale</h1>
+        
+        <p class="page-subtitle">
+            Bienvenue dans votre programme de Terminale ! Préparez-vous pour le baccalauréat avec nos ressources exclusives, conçues par des experts pour chaque série. Retrouvez des cours approfondis, des exercices ciblés et des méthodes de préparation aux examens.
+        </p>
+
+        <div class="subjects-grid">
+            <div class="subject-card serie-a">
+                <div class="card-inner">
+                    <div class="subject-icon"><i class="fas fa-book-reader"></i></div>
+                    <h3 class="subject-name">Série A</h3>
+                    <p class="subject-description">Littérature, philosophie et sciences humaines</p>
+                </div>
+            </div>
+
+            <div class="subject-card serie-d">
+                <div class="card-inner">
+                    <div class="subject-icon"><i class="fas fa-microscope"></i></div>
+                    <h3 class="subject-name">Série D</h3>
+                    <p class="subject-description">Sciences naturelles et mathématiques</p>
+                </div>
+            </div>
+
+            <div class="subject-card serie-c">
+                <div class="card-inner">
+                    <div class="subject-icon"><i class="fas fa-calculator"></i></div>
+                    <h3 class="subject-name">Série C</h3>
+                    <p class="subject-description">Mathématiques et sciences physiques</p>
+                </div>
+            </div>
+
+            <div class="subject-card serie-l">
+                <div class="card-inner">
+                    <div class="subject-icon"><i class="fas fa-language"></i></div>
+                    <h3 class="subject-name">Série L</h3>
+                    <p class="subject-description">Langues et littératures</p>
+                </div>
+            </div>
+
+            <div class="subject-card serie-ose">
+                <div class="card-inner">
+                    <div class="subject-icon"><i class="fas fa-chart-line"></i></div>
+                    <h3 class="subject-name">Série OSE</h3>
+                    <p class="subject-description">Organisation, sciences et économie</p>
+                </div>
+            </div>
+
+            <div class="subject-card serie-s">
+                <div class="card-inner">
+                    <div class="subject-icon"><i class="fas fa-atom"></i></div>
+                    <h3 class="subject-name">Série S</h3>
+                    <p class="subject-description">Sciences expérimentales et technologie</p>
+                </div>
+            </div>
+        </div>
+
+        <p class="footer-note">
+            Sélectionnez votre série pour accéder à tous les cours, exercices et ressources disponibles
+        </p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animation des cartes au chargement
+            animateCards();
+            
+            // Effet interactif sur les cartes
+            setupInteractiveEffects();
+        });
+        
+        function animateCards() {
+            const cards = document.querySelectorAll('.subject-card');
+            
+            cards.forEach((card, index) => {
+                // Animation initiale
+                card.style.opacity = 0;
+                card.style.transform = 'translateY(50px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                    card.style.opacity = 1;
+                    card.style.transform = '';
+                }, 100 * index);
+            });
+        }
+        
+        function setupInteractiveEffects() {
+            const cards = document.querySelectorAll('.subject-card');
+            
+            cards.forEach(card => {
+                // Effet au survol
+                card.addEventListener('mousemove', function(e) {
+                    const rect = this.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    const angleX = (y - centerY) / 20;
+                    const angleY = (centerX - x) / 20;
+                    
+                    this.style.transform = `perspective(1000px) rotateX(${angleX}deg) rotateY(${angleY}deg) scale3d(1.05, 1.05, 1.05)`;
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = '';
+                    setTimeout(() => {
+                        this.style.transition = 'all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                    }, 100);
+                });
+                
+                // Effet au clic
+                card.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.95)';
+                    
+                    setTimeout(() => {
+                        this.style.transform = '';
+                        alert('Les cours pour cette série seront bientôt disponibles !');
+                    }, 200);
+                });
+            });
+        }
+    </script>
+</body>
+</html>
