@@ -112,6 +112,23 @@ app.get('/index/cours/1ere/1ere.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index', 'cours', '1ere', '1ere.html'));
 });
 
+// Routes pour la section Divers
+app.get('/index/divers/divers.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index', 'divers', 'divers.html'));
+});
+
+app.get('/index/divers/horoscope/horoscope.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index', 'divers', 'horoscope', 'horoscope.html'));
+});
+
+app.get('/index/divers/ohabolana/ohabolana.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index', 'divers', 'ohabolana', 'ohabolana.html'));
+});
+
+app.get('/index/divers/kabary/kabary.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index', 'divers', 'kabary', 'kabary.html'));
+});
+
 // Route pour la page terminale
 app.get('/index/cours/terminale/terminale.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index', 'cours', 'terminale', 'terminale.html'));
