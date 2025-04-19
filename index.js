@@ -117,6 +117,23 @@ app.get('/index/cours/terminale/terminale.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index', 'cours', 'terminale', 'terminale.html'));
 });
 
+// Route pour la page malagasy 5ème
+app.get('/index/cours/5eme/malagasy/malagasy5e.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index', 'cours', '5eme', 'malagasy', 'malagasy5e.html'));
+});
+
+// Route pour la page malagasy 4ème
+app.get('/index/cours/4eme/malagasy/malagasy4e.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index', 'cours', '4eme', 'malagasy', 'malagasy4e.html'));
+});
+
+// Route pour servir les fichiers PDF des cours
+app.get('/Attachement/index/cours/:niveau/malagasy/:filename', (req, res) => {
+  const niveau = req.params.niveau;
+  const filename = req.params.filename;
+  res.sendFile(path.join(__dirname, 'Attachement', 'index', 'cours', niveau, 'malagasy', filename));
+});
+
 // Démarrer le serveur
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Serveur démarré sur le port ${PORT}`);
