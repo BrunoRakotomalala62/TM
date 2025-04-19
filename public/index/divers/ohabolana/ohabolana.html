@@ -86,20 +86,173 @@
             text-align: center;
             font-weight: 600;
             text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            animation: fadeInDown 0.8s ease forwards;
         }
 
-        .content {
+        .search-container {
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
+            border-radius: 15px;
             padding: 2rem;
             max-width: 800px;
-            margin: 0 auto;
+            margin: 0 auto 2rem;
             text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(4px);
+            animation: fadeIn 1s ease forwards;
         }
 
-        .coming-soon {
+        .search-form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 250px;
+            padding: 12px 20px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 50px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            outline: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .search-input:focus {
+            background-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .search-button {
+            padding: 12px 25px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 50px;
+            background-color: #ff7b00;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .search-button:hover {
+            background-color: #ff9500;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .search-desc {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .results-container {
+            max-width: 800px;
+            margin: 0 auto;
+            border-radius: 15px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(4px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+
+        .result-item {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .result-item:nth-child(odd) {
+            background-color: rgba(255, 255, 255, 0.08);
+        }
+
+        .result-item:nth-child(even) {
+            background-color: rgba(106, 17, 203, 0.15);
+        }
+
+        .result-item:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+            transform: translateX(5px);
+        }
+
+        .result-text {
             font-size: 1.2rem;
-            margin-bottom: 2rem;
+            margin-bottom: 0.5rem;
+            color: #fff;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .result-meaning {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-style: italic;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+            gap: 10px;
+        }
+
+        .pagination-button {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.15);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .pagination-button:hover:not(:disabled) {
+            background-color: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+
+        .pagination-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .page-info {
+            padding: 8px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+        }
+
+        .loading {
+            display: none;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
         }
 
         .footer-note {
@@ -107,6 +260,62 @@
             margin-top: 3rem;
             font-size: 0.9rem;
             opacity: 0.7;
+        }
+
+        .empty-results {
+            display: none;
+            padding: 2rem;
+            text-align: center;
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .quote-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: rgba(255, 255, 255, 0.2);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInDown {
+            from { 
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Styles pour les appareils mobiles */
+        @media (max-width: 600px) {
+            .search-form {
+                flex-direction: column;
+            }
+            
+            .search-input, .search-button {
+                width: 100%;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
         }
     </style>
 </head>
@@ -129,25 +338,70 @@
         <div class="container">
             <h1 class="page-title">Ohabolana (Proverbes)</h1>
             
-            <div class="content">
-                <p class="coming-soon">Collection de proverbes malagasy à venir prochainement...</p>
-                <i class="fas fa-quote-left" style="font-size: 4rem; margin-bottom: 2rem;"></i>
+            <div class="search-container">
+                <p class="search-desc">Explorez la sagesse traditionnelle malagasy à travers notre collection de proverbes. Saisissez un mot-clé pour trouver des ohabolana.</p>
+                
+                <form class="search-form" id="searchForm">
+                    <input type="text" class="search-input" id="searchInput" placeholder="Entrez un mot-clé..." required>
+                    <button type="submit" class="search-button">
+                        <i class="fas fa-search"></i> Rechercher
+                    </button>
+                </form>
+                
+                <i class="fas fa-quote-left quote-icon"></i>
             </div>
 
-            <p class="footer-note">Découvrez la sagesse traditionnelle malagasy à travers les proverbes</p>
+            <div class="loading" id="loading">
+                <div class="loading-spinner"></div>
+            </div>
+
+            <div class="empty-results" id="emptyResults">
+                <i class="fas fa-search" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                <p>Aucun proverbe trouvé pour votre recherche.</p>
+                <p>Essayez avec d'autres termes.</p>
+            </div>
+
+            <div class="results-container" id="resultsContainer">
+                <!-- Les résultats seront insérés ici dynamiquement -->
+            </div>
+
+            <div class="pagination" id="pagination" style="display: none;">
+                <button class="pagination-button" id="prevPage" disabled>
+                    <i class="fas fa-chevron-left"></i> Précédent
+                </button>
+                <div class="page-info" id="pageInfo">Page 1</div>
+                <button class="pagination-button" id="nextPage">
+                    Suivant <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+
+            <p class="footer-note">La sagesse des ancêtres malagasy est un trésor inestimable transmis de génération en génération.</p>
         </div>
     </main>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const searchForm = document.getElementById('searchForm');
+            const searchInput = document.getElementById('searchInput');
+            const resultsContainer = document.getElementById('resultsContainer');
+            const loading = document.getElementById('loading');
+            const emptyResults = document.getElementById('emptyResults');
+            const pagination = document.getElementById('pagination');
+            const prevPageBtn = document.getElementById('prevPage');
+            const nextPageBtn = document.getElementById('nextPage');
+            const pageInfo = document.getElementById('pageInfo');
+            
+            let currentPage = 1;
+            let currentSearchTerm = '';
+            let totalPages = 1;
+            
             // Animation sur la page
             const pageTitle = document.querySelector('.page-title');
-            const content = document.querySelector('.content');
+            const searchContainer = document.querySelector('.search-container');
             
             pageTitle.style.opacity = 0;
             pageTitle.style.transform = 'translateY(-20px)';
-            content.style.opacity = 0;
-            content.style.transform = 'translateY(20px)';
+            searchContainer.style.opacity = 0;
             
             setTimeout(() => {
                 pageTitle.style.transition = 'all 0.5s ease';
@@ -155,11 +409,116 @@
                 pageTitle.style.transform = 'translateY(0)';
                 
                 setTimeout(() => {
-                    content.style.transition = 'all 0.5s ease';
-                    content.style.opacity = 1;
-                    content.style.transform = 'translateY(0)';
+                    searchContainer.style.transition = 'all 0.5s ease';
+                    searchContainer.style.opacity = 1;
                 }, 200);
             }, 100);
+            
+            // Fonction pour effectuer la recherche
+            async function searchOhabolana(terme, page) {
+                try {
+                    loading.style.display = 'flex';
+                    resultsContainer.style.display = 'none';
+                    emptyResults.style.display = 'none';
+                    pagination.style.display = 'none';
+                    
+                    const response = await fetch(`/api/ohabolana/recherche?terme=${encodeURIComponent(terme)}&page=${page}`);
+                    const data = await response.json();
+                    
+                    loading.style.display = 'none';
+                    
+                    // Mise à jour des données de pagination
+                    if (data.data && data.data.length > 0) {
+                        currentPage = data.currentPage || 1;
+                        totalPages = data.totalPages || 1;
+                        updatePaginationUI();
+                        displayResults(data.data);
+                    } else {
+                        emptyResults.style.display = 'block';
+                    }
+                } catch (error) {
+                    console.error("Erreur lors de la recherche:", error);
+                    loading.style.display = 'none';
+                    resultsContainer.innerHTML = `
+                        <div class="result-item">
+                            <p class="result-text">Une erreur est survenue lors de la recherche.</p>
+                            <p class="result-meaning">Veuillez réessayer plus tard.</p>
+                        </div>
+                    `;
+                    resultsContainer.style.display = 'block';
+                }
+            }
+            
+            // Fonction pour afficher les résultats
+            function displayResults(results) {
+                resultsContainer.innerHTML = '';
+                
+                if (results.length === 0) {
+                    emptyResults.style.display = 'block';
+                    return;
+                }
+                
+                results.forEach((item, index) => {
+                    const resultElement = document.createElement('div');
+                    resultElement.className = 'result-item';
+                    resultElement.innerHTML = `
+                        <p class="result-text">${item.ohabolana || 'N/A'}</p>
+                        <p class="result-meaning">${item.dikan_teny || 'Aucune signification disponible'}</p>
+                    `;
+                    
+                    // Animation au survol
+                    resultElement.style.opacity = 0;
+                    resultElement.style.transform = 'translateX(-10px)';
+                    
+                    setTimeout(() => {
+                        resultElement.style.transition = 'all 0.3s ease';
+                        resultElement.style.opacity = 1;
+                        resultElement.style.transform = 'translateX(0)';
+                    }, index * 100);
+                    
+                    resultsContainer.appendChild(resultElement);
+                });
+                
+                resultsContainer.style.display = 'block';
+                pagination.style.display = totalPages > 1 ? 'flex' : 'none';
+            }
+            
+            // Fonction pour mettre à jour l'UI de pagination
+            function updatePaginationUI() {
+                pageInfo.textContent = `Page ${currentPage} sur ${totalPages}`;
+                prevPageBtn.disabled = currentPage <= 1;
+                nextPageBtn.disabled = currentPage >= totalPages;
+            }
+            
+            // Gestionnaire d'événement pour le formulaire de recherche
+            searchForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const searchTerm = searchInput.value.trim();
+                
+                if (searchTerm) {
+                    currentSearchTerm = searchTerm;
+                    currentPage = 1;
+                    searchOhabolana(searchTerm, currentPage);
+                }
+            });
+            
+            // Gestionnaires d'événements pour la pagination
+            prevPageBtn.addEventListener('click', function() {
+                if (currentPage > 1) {
+                    currentPage--;
+                    searchOhabolana(currentSearchTerm, currentPage);
+                }
+            });
+            
+            nextPageBtn.addEventListener('click', function() {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    searchOhabolana(currentSearchTerm, currentPage);
+                }
+            });
+            
+            // Focus sur l'input de recherche au chargement
+            searchInput.focus();
         });
     </script>
 </body>

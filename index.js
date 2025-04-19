@@ -82,6 +82,10 @@ app.use('/api', geminiRouter);
 const quizRouter = require('./pilot/quiz');
 app.use('/api/quiz', quizRouter);
 
+// Import et utilisation du router Ohabolana
+const ohabolanaRouter = require('./pilot/ohabolana');
+app.use('/api/ohabolana', ohabolanaRouter);
+
 // Route pour la page quiz
 app.get('/index/quiz/quiz.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index', 'quiz', 'quiz.html'));
