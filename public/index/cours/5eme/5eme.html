@@ -1,0 +1,527 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classe de 5ème - Matières</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #7B68EE, #483D8B);
+            background-size: 400% 400%;
+            animation: gradientBackground 15s ease infinite;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientBackground {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-decoration: none;
+        }
+
+        .back-button i {
+            margin-right: 8px;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            color: white;
+        }
+
+        .logo i {
+            font-size: 2rem;
+            margin-right: 10px;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .page-title {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            font-size: 3rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            animation: fadeInDown 1s ease;
+        }
+
+        .page-subtitle {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+            opacity: 0.9;
+            animation: fadeIn 1.2s ease;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .subject-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            cursor: pointer;
+            height: 200px;
+            perspective: 1000px;
+            position: relative;
+            isolation: isolate;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .subject-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            z-index: 2;
+        }
+
+        .subject-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(215deg, transparent 0%, transparent 35%, rgba(255, 255, 255, 0.1) 50%, transparent 65%, transparent 100%);
+            z-index: -1;
+            transform: translateX(-100%);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .content-wrapper {
+            height: 100%;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: white;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .subject-card:hover .content-wrapper {
+            transform: scale(1.05);
+        }
+
+        .subject-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .subject-card:hover .subject-icon {
+            transform: translateY(-5px);
+        }
+
+        .subject-icon::after {
+            content: '';
+            position: absolute;
+            height: 5px;
+            width: 0;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            transition: width 0.3s ease;
+            border-radius: 5px;
+        }
+
+        .subject-card:hover .subject-icon::after {
+            width: 40px;
+        }
+
+        .subject-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .subject-description {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            max-width: 200px;
+            margin: 0 auto;
+        }
+
+        /* Subject-specific colors with gradients */
+        .malagasy { background: linear-gradient(135deg, #9b59b6, #8e44ad); }
+        .anglais { background: linear-gradient(135deg, #3498db, #2980b9); }
+        .francais { background: linear-gradient(135deg, #1abc9c, #16a085); }
+        .histogeo { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+        .physique { background: linear-gradient(135deg, #f1c40f, #f39c12); }
+        .maths { background: linear-gradient(135deg, #2ecc71, #27ae60); }
+        .svt { background: linear-gradient(135deg, #e67e22, #d35400); }
+        .eps { background: linear-gradient(135deg, #34495e, #2c3e50); }
+
+        /* Animated floating particles */
+        .particles-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            display: block;
+            border-radius: 50%;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .footer-note {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 50px;
+            font-size: 0.9rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.7; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
+
+        /* Media Queries */
+        @media (max-width: 768px) {
+            .subjects-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .page-title {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles-container" id="particles-container"></div>
+    
+    <div class="container">
+        <div class="header">
+            <a href="/index/cours/cours.html" class="back-button">
+                <i class="fas fa-arrow-left"></i> Retour aux niveaux
+            </a>
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <h1>Éducation Malagasy</h1>
+            </div>
+        </div>
+
+        <h1 class="page-title">Classe de 5ème</h1>
+        
+        <p class="page-subtitle">
+            Explorez les différentes matières de la classe de 5ème et approfondissez vos connaissances avec nos cours interactifs, exercices pratiques et quiz stimulants.
+        </p>
+
+        <div class="subjects-grid">
+            <div class="subject-card malagasy">
+                <div class="content-wrapper">
+                    <div class="subject-icon"><i class="fas fa-language"></i></div>
+                    <h3 class="subject-name">Malagasy</h3>
+                    <p class="subject-description">Perfectionnement de la langue et découverte de la littérature</p>
+                </div>
+            </div>
+
+            <div class="subject-card anglais">
+                <div class="content-wrapper">
+                    <div class="subject-icon"><i class="fas fa-globe-europe"></i></div>
+                    <h3 class="subject-name">Anglais</h3>
+                    <p class="subject-description">Communication et culture des pays anglophones</p>
+                </div>
+            </div>
+
+            <div class="subject-card francais">
+                <div class="content-wrapper">
+                    <div class="subject-icon"><i class="fas fa-book"></i></div>
+                    <h3 class="subject-name">Français</h3>
+                    <p class="subject-description">Expression écrite et analyse de textes littéraires</p>
+                </div>
+            </div>
+
+            <div class="subject-card histogeo">
+                <div class="content-wrapper">
+                    <div class="subject-icon"><i class="fas fa-globe-africa"></i></div>
+                    <h3 class="subject-name">Histoire-Géo</h3>
+                    <p class="subject-description">Civilisations et espaces géographiques</p>
+                </div>
+            </div>
+
+            <div class="subject-card physique">
+                <div class="content-wrapper">
+                    <div class="subject-icon"><i class="fas fa-atom"></i></div>
+                    <h3 class="subject-name">Physique-Chimie</h3>
+                    <p class="subject-description">Introduction aux phénomènes physiques et chimiques</p>
+                </div>
+            </div>
+
+            <div class="subject-card maths">
+                <div class="content-wrapper">
+                    <div class="subject-icon"><i class="fas fa-calculator"></i></div>
+                    <h3 class="subject-name">Mathématiques</h3>
+                    <p class="subject-description">Résolution de problèmes et raisonnement logique</p>
+                </div>
+            </div>
+
+            <div class="subject-card svt">
+                <div class="content-wrapper">
+                    <div class="subject-icon"><i class="fas fa-leaf"></i></div>
+                    <h3 class="subject-name">SVT</h3>
+                    <p class="subject-description">Étude des écosystèmes et du corps humain</p>
+                </div>
+            </div>
+
+            <div class="subject-card eps">
+                <div class="content-wrapper">
+                    <div class="subject-icon"><i class="fas fa-running"></i></div>
+                    <h3 class="subject-name">EPS</h3>
+                    <p class="subject-description">Développement des capacités motrices et sportives</p>
+                </div>
+            </div>
+        </div>
+
+        <p class="footer-note">
+            Cliquez sur une matière pour accéder aux cours, exercices et quiz
+        </p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Création des particules animées
+            createParticles();
+            
+            // Animation des cartes de matière
+            animateSubjectCards();
+            
+            // Effets avancés sur les cartes
+            setupCardEffects();
+        });
+        
+        function createParticles() {
+            const container = document.getElementById('particles-container');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Propriétés aléatoires
+                const size = Math.random() * 5 + 3;
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                const opacity = Math.random() * 0.3 + 0.1;
+                const animDuration = Math.random() * 15 + 10;
+                const animDelay = Math.random() * 5;
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${posX}vw`;
+                particle.style.top = `${posY}vh`;
+                particle.style.opacity = opacity;
+                particle.style.backgroundColor = 'white';
+                
+                // Animation personnalisée
+                particle.style.animation = `float ${animDuration}s infinite linear ${animDelay}s`;
+                
+                container.appendChild(particle);
+            }
+        }
+        
+        function animateSubjectCards() {
+            const cards = document.querySelectorAll('.subject-card');
+            
+            cards.forEach((card, index) => {
+                // Animation d'entrée
+                card.style.opacity = 0;
+                card.style.transform = 'translateY(30px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                    card.style.opacity = 1;
+                    card.style.transform = 'translateY(0)';
+                }, 100 * index);
+                
+                // Animation au clic
+                card.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                        alert('Les ressources pour cette matière seront bientôt disponibles !');
+                    }, 200);
+                });
+            });
+        }
+        
+        function setupCardEffects() {
+            const cards = document.querySelectorAll('.subject-card');
+            
+            cards.forEach(card => {
+                // Effet de parallaxe au survol
+                card.addEventListener('mousemove', function(e) {
+                    const rect = this.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    const rotateX = (y - centerY) / 10;
+                    const rotateY = (centerX - x) / 10;
+                    
+                    this.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+                    
+                    // Effet de lumière
+                    const contentWrapper = this.querySelector('.content-wrapper');
+                    const percentX = (x / rect.width) * 100;
+                    const percentY = (y / rect.height) * 100;
+                    contentWrapper.style.background = `radial-gradient(circle at ${percentX}% ${percentY}%, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 50%)`;
+                });
+                
+                // Réinitialisation
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = '';
+                    const contentWrapper = this.querySelector('.content-wrapper');
+                    contentWrapper.style.background = '';
+                });
+            });
+        }
+        
+        // Animation pour les particules
+        document.addEventListener('mousemove', function(e) {
+            const mouseX = e.clientX;
+            const mouseY = e.clientY;
+            
+            const particles = document.querySelectorAll('.particle');
+            particles.forEach(particle => {
+                const rect = particle.getBoundingClientRect();
+                const particleX = rect.left + rect.width / 2;
+                const particleY = rect.top + rect.height / 2;
+                
+                const distance = Math.sqrt(Math.pow(mouseX - particleX, 2) + Math.pow(mouseY - particleY, 2));
+                
+                if (distance < 150) {
+                    const angle = Math.atan2(mouseY - particleY, mouseX - particleX);
+                    const force = (150 - distance) / 10;
+                    
+                    const moveX = Math.cos(angle) * force;
+                    const moveY = Math.sin(angle) * force;
+                    
+                    particle.style.transform = `translate(${-moveX}px, ${-moveY}px)`;
+                } else {
+                    particle.style.transform = '';
+                }
+            });
+        });
+        
+        // Animation flottante pour les particules
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateX(0);
+            }
+            25% {
+                transform: translateY(-20px) translateX(10px);
+            }
+            50% {
+                transform: translateY(0) translateX(20px);
+            }
+            75% {
+                transform: translateY(20px) translateX(10px);
+            }
+            100% {
+                transform: translateY(0) translateX(0);
+            }
+        }
+    </script>
+</body>
+</html>
