@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const { exec } = require('child_process');
 
 const app = express();
-const PORT = process.env.PORT || 3030;
+const PORT = process.env.PORT || 4040;
 
 // Middleware
 app.use(bodyParser.json());
