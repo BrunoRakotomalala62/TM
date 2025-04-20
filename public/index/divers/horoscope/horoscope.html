@@ -292,7 +292,7 @@
                 </div>
 
                 <div class="signs-grid">
-                    <button class="sign-btn" data-sign="bélier">
+                    <button class="sign-btn" data-sign="belier">
                         <i class="fas fa-fire"></i>
                         Bélier
                     </button>
@@ -300,7 +300,7 @@
                         <i class="fas fa-bullhorn"></i>
                         Taureau
                     </button>
-                    <button class="sign-btn" data-sign="gémeaux">
+                    <button class="sign-btn" data-sign="gemeaux">
                         <i class="fas fa-user-friends"></i>
                         Gémeaux
                     </button>
@@ -458,8 +458,13 @@
                     loadingContainer.style.display = 'block';
                     noResultContainer.style.display = 'none';
                     resultContainer.classList.remove('show');
+                    
+                    // Normaliser le signe (supprimer les accents et mettre en minuscules)
+                    const normalizedSign = signe
+                        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+                        .toLowerCase();
 
-                    const response = await fetch(`/api/horoscope/rechercher?signe=${signe}`);
+                    const response = await fetch(`/api/horoscope/${normalizedSign}`);
                     const data = await response.json();
                     
                     currentHoroscope = data;

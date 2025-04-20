@@ -285,8 +285,12 @@
                 loading.style.display = 'flex';
                 content.style.display = 'none';
 
-                // Appeler l'API
-                fetch(`/api/horoscope/${sign}`)
+                // Appeler l'API - Assurer que le signe est sans accent et en minuscules
+                const normalizedSign = sign
+                    .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Supprimer les accents
+                    .toLowerCase(); // Convertir en minuscules
+                
+                fetch(`/api/horoscope/${normalizedSign}`)
                     .then(response => {
                         if (!response.ok) {
                             throw new Error('Erreur lors de la récupération des données');
