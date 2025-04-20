@@ -1,4 +1,3 @@
-
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
@@ -33,19 +32,19 @@ app.use(express.static('utils'));
 // Vérification des identifiants
 app.post('/verify-login', (req, res) => {
   const { email, password } = req.body;
-  
+
   try {
     // Lire les informations d'identification depuis le fichier
     const credentials = fs.readFileSync(path.join(__dirname, 'utils/cle.txt'), 'utf8');
     const lines = credentials.trim().split('\n');
-    
+
     console.log('Tentative de connexion:', email, password);
     console.log('Contenu de cle.txt:', lines);
-    
+
     // Vérifier si les identifiants correspondent
     const validEmail = lines[0].trim();
     const validPassword = lines[2].trim();
-    
+
     if (email === validEmail && password === validPassword) {
       console.log('Connexion réussie');
       return res.json({ success: true });
@@ -163,20 +162,20 @@ app.get('/index/cours/terminale/D/matiereD/malagasy.html', (req, res) => {
 app.get('/api/get-pdf-list', (req, res) => {
   const basePath = path.join(__dirname, 'Attachement', 'index', 'cours');
   const requestedPath = req.query.path;
-  
+
   // Validation du chemin pour éviter les attaques de traversée de chemin
   if (!requestedPath || requestedPath.includes('..')) {
     return res.status(400).json({ error: 'Chemin invalide' });
   }
-  
+
   const fullPath = path.join(basePath, requestedPath);
-  
+
   try {
     // Vérifier si le répertoire existe
     if (!fs.existsSync(fullPath)) {
       return res.json({ files: [] });
     }
-    
+
     // Lire les fichiers du répertoire
     const files = fs.readdirSync(fullPath)
       .filter(file => file.toLowerCase().endsWith('.pdf'))
@@ -186,13 +185,13 @@ app.get('/api/get-pdf-list', (req, res) => {
           .replace(/\.pdf$/i, '')
           .replace(/_/g, ' ')
           .replace(/\b\w/g, char => char.toUpperCase());
-        
+
         return {
           name: displayName,
           path: `/Attachement/index/cours/${requestedPath}/${file}`
         };
       });
-    
+
     res.json({ files });
   } catch (error) {
     console.error('Erreur lors de la lecture des PDFs:', error);
@@ -256,6 +255,12 @@ app.get('/Attachement/index/cours/:niveau/malagasy/:filename', (req, res) => {
   const filename = req.params.filename;
   res.sendFile(path.join(__dirname, 'Attachement', 'index', 'cours', niveau, 'malagasy', filename));
 });
+
+// Route pour la page physique-chimie 3ème
+app.get('/index/cours/3eme/physique3e/physique3e.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index', 'cours', '3eme', 'physique3e', 'physique3e.html'));
+});
+
 
 // Démarrer le serveur
 app.listen(PORT, '0.0.0.0', () => {

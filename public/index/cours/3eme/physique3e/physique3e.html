@@ -1,0 +1,448 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physique-Chimie - 3ème</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #111;
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animation de lumière verte qui bouge */
+        .light-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .light {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(0,255,128,0.8) 0%, rgba(0,255,128,0) 70%);
+            border-radius: 50%;
+            filter: blur(20px);
+            opacity: 0.5;
+            animation: float 15s infinite ease-in-out;
+        }
+
+        .light:nth-child(1) {
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .light:nth-child(2) {
+            top: 60%;
+            left: 80%;
+            width: 200px;
+            height: 200px;
+            animation-delay: 2s;
+        }
+
+        .light:nth-child(3) {
+            top: 80%;
+            left: 30%;
+            width: 180px;
+            height: 180px;
+            animation-delay: 4s;
+        }
+
+        .light:nth-child(4) {
+            top: 30%;
+            left: 60%;
+            width: 250px;
+            height: 250px;
+            animation-delay: 6s;
+        }
+
+        .light:nth-child(5) {
+            top: 50%;
+            left: 50%;
+            width: 300px;
+            height: 300px;
+            opacity: 0.3;
+            animation-delay: 8s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+            25% {
+                transform: translate(50px, 50px) scale(1.2);
+            }
+            50% {
+                transform: translate(0, 100px) scale(1);
+            }
+            75% {
+                transform: translate(-50px, 50px) scale(0.8);
+            }
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+        }
+
+        /* Effet de particules */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background-color: rgba(0, 255, 128, 0.6);
+            animation: particle-float 20s infinite;
+        }
+
+        @keyframes particle-float {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(0, 255, 128, 0.2);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 15px rgba(0, 255, 128, 0.3);
+            border: 1px solid rgba(0, 255, 128, 0.3);
+            text-decoration: none;
+        }
+
+        .back-button i {
+            margin-right: 8px;
+        }
+
+        .back-button:hover {
+            background: rgba(0, 255, 128, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 255, 128, 0.4);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            color: white;
+        }
+
+        .logo i {
+            font-size: 2rem;
+            margin-right: 10px;
+            color: #00ff80;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            background: linear-gradient(to right, #fff, #00ff80);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 3rem;
+            background: linear-gradient(to right, #fff, #00ff80);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 10px rgba(0, 255, 128, 0.3);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 5px rgba(0, 255, 128, 0.3), 0 0 10px rgba(0, 255, 128, 0.3);
+            }
+            to {
+                text-shadow: 0 0 10px rgba(0, 255, 128, 0.5), 0 0 20px rgba(0, 255, 128, 0.5), 0 0 30px rgba(0, 255, 128, 0.5);
+            }
+        }
+
+        .page-subtitle {
+            text-align: center;
+            color: #ccc;
+            margin-bottom: 50px;
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        .pdf-card {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 255, 128, 0.2);
+            border: 1px solid rgba(0, 255, 128, 0.3);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            transform: translateY(30px);
+            opacity: 0;
+            animation: slideUp 0.8s forwards;
+        }
+
+        @keyframes slideUp {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .pdf-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(0, 255, 128, 0.3);
+        }
+
+        .pdf-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .pdf-icon {
+            font-size: 2.5rem;
+            color: #00ff80;
+            margin-right: 20px;
+        }
+
+        .pdf-title {
+            font-size: 1.8rem;
+            color: white;
+            margin-bottom: 5px;
+        }
+
+        .pdf-subtitle {
+            font-size: 1rem;
+            color: #aaa;
+        }
+
+        .pdf-description {
+            color: #ddd;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .download-button {
+            display: inline-flex;
+            align-items: center;
+            background: linear-gradient(to right, #00cc66, #00ff80);
+            color: #000;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 255, 128, 0.3);
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .download-button i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        .download-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 255, 128, 0.5);
+            background: linear-gradient(to right, #00ff80, #00cc66);
+        }
+
+        .footer-note {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 50px;
+            font-size: 0.9rem;
+        }
+
+        /* Media Queries */
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2.2rem;
+            }
+
+            .pdf-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .pdf-icon {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Conteneur des lumières animées -->
+    <div class="light-container">
+        <div class="light"></div>
+        <div class="light"></div>
+        <div class="light"></div>
+        <div class="light"></div>
+        <div class="light"></div>
+    </div>
+    
+    <!-- Particules -->
+    <div class="particles" id="particles"></div>
+    
+    <div class="container">
+        <div class="header">
+            <a href="/index/cours/3eme/3eme.html" class="back-button">
+                <i class="fas fa-arrow-left"></i> Retour aux matières
+            </a>
+            <div class="logo">
+                <i class="fas fa-atom"></i>
+                <h1>Physique-Chimie 3ème</h1>
+            </div>
+        </div>
+
+        <h1 class="page-title">Ressources de Physique-Chimie</h1>
+        
+        <p class="page-subtitle">
+            Découvrez tous nos supports de cours, exercices et ressources en Physique-Chimie pour les élèves de 3ème. 
+            Ces documents vous aideront à comprendre les concepts fondamentaux et à préparer vos examens.
+        </p>
+
+        <div class="pdf-card">
+            <div class="pdf-header">
+                <div class="pdf-icon">
+                    <i class="fas fa-file-pdf"></i>
+                </div>
+                <div>
+                    <h2 class="pdf-title">Résumé de Physique-Chimie</h2>
+                    <p class="pdf-subtitle">Document complet pour la 3ème</p>
+                </div>
+            </div>
+            <p class="pdf-description">
+                Ce document contient un résumé complet du programme de Physique-Chimie de 3ème. Il couvre tous les chapitres 
+                essentiels, notamment l'électricité, la mécanique, la chimie et l'optique. Parfait pour réviser avant les examens 
+                et synthétiser vos connaissances.
+            </p>
+            <a href="/Attachement/index/cours/3eme/physique3e/Resume_physique_3eme.pdf" class="download-button" download>
+                <i class="fas fa-download"></i> Télécharger le PDF
+            </a>
+        </div>
+
+        <p class="footer-note">
+            Les documents sont régulièrement mis à jour pour correspondre au programme officiel.
+        </p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Créer des particules animées pour l'arrière-plan
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Styles aléatoires pour chaque particule
+                const size = Math.random() * 6 + 2;
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.opacity = Math.random() * 0.5 + 0.2;
+                
+                // Positions initiales aléatoires
+                particle.style.left = `${Math.random() * 100}vw`;
+                particle.style.top = `${Math.random() * 100}vh`;
+                
+                // Animation avec délai aléatoire
+                particle.style.animationDuration = `${15 + Math.random() * 20}s`;
+                particle.style.animationDelay = `${Math.random() * 5}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+            
+            // Animation des lumières vertes
+            const lights = document.querySelectorAll('.light');
+            
+            window.addEventListener('mousemove', function(e) {
+                const x = e.clientX / window.innerWidth;
+                const y = e.clientY / window.innerHeight;
+                
+                lights.forEach((light, index) => {
+                    const offsetX = (x - 0.5) * (index + 1) * 50;
+                    const offsetY = (y - 0.5) * (index + 1) * 50;
+                    
+                    light.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+                });
+            });
+            
+            // Effet de zoom sur le bouton
+            const downloadButton = document.querySelector('.download-button');
+            downloadButton.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px) scale(1.05)';
+            });
+            
+            downloadButton.addEventListener('mouseleave', function() {
+                this.style.transform = '';
+            });
+        });
+    </script>
+</body>
+</html>
