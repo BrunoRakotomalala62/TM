@@ -1,813 +1,375 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Horoscope - Résultat</title>
+    <title>Horoscope - Éducation Malagasy</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        :root {
-            --primary-color: #8145e5;
-            --secondary-color: #4834d4;
-            --accent-color: #a55eea;
-            --text-color: #ffffff;
-            --bg-color: #2b1867;
-            --card-bg: rgba(255, 255, 255, 0.1);
-            --card-border: rgba(255, 255, 255, 0.2);
-        }
-
         body {
-            background: linear-gradient(135deg, var(--bg-color) 0%, var(--primary-color) 100%);
-            min-height: 100vh;
+            font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: var(--text-color);
-            overflow-x: hidden;
-            position: relative;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        /* Animation de particules d'étoiles */
-        .stars {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
+        header {
+            text-align: center;
+            margin-top: 30px;
+            margin-bottom: 30px;
         }
 
-        .star {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background-color: white;
-            border-radius: 50%;
-            opacity: 0;
-            animation: twinkle 4s infinite;
-        }
-
-        @keyframes twinkle {
-            0% { opacity: 0; transform: scale(0.5); }
-            50% { opacity: 1; transform: scale(1); }
-            100% { opacity: 0; transform: scale(0.5); }
-        }
-
-        /* Animation de vagues au bas de l'écran */
-        .waves {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 100px;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%234834d4" fill-opacity="0.4" d="M0,288L48,272C96,256,192,224,288,197.3C384,171,480,149,576,165.3C672,181,768,235,864,250.7C960,267,1056,245,1152,224C1248,203,1344,181,1392,170.7L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
-            background-size: cover;
-            background-repeat: no-repeat;
-            pointer-events: none;
-            z-index: -1;
-            animation: wave 15s linear infinite;
-        }
-
-        @keyframes wave {
-            0% { background-position-x: 0; }
-            100% { background-position-x: 1440px; }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
         }
 
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 0;
+            width: 90%;
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             margin-bottom: 30px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .logo {
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-            color: var(--text-color);
-        }
-
-        .logo i {
-            font-size: 2rem;
-            margin-right: 15px;
-            color: var(--accent-color);
-        }
-
-        .logo h1 {
-            font-size: 1.8rem;
-            font-weight: 600;
-            margin: 0;
-            background: linear-gradient(to right, #ffffff, #d1b3ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .back-btn {
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        }
-
-        .back-btn i {
-            margin-right: 10px;
-        }
-
-        .back-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
-        }
-
-        .result-header {
+        .sign-title {
+            font-size: 2.5rem;
             text-align: center;
-            margin-bottom: 40px;
-            position: relative;
-            animation: fadeInDown 1s ease;
-        }
-
-        .sign-icon {
-            font-size: 4rem;
-            margin-bottom: 15px;
-            color: var(--accent-color);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-
-        .result-title {
-            font-size: 3rem;
-            margin: 0;
-            padding: 0;
-            font-weight: 700;
-            background: linear-gradient(to right, #ffffff, #d1b3ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .date-display {
-            font-size: 1.2rem;
-            margin-top: 10px;
-            opacity: 0.8;
+            margin-bottom: 20px;
         }
 
         .language-selector {
             display: flex;
             justify-content: center;
             margin-bottom: 30px;
-            gap: 15px;
-            animation: fadeIn 1s ease 0.3s both;
         }
 
-        .lang-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            padding: 10px 25px;
-            border-radius: 30px;
+        .language-btn {
+            padding: 10px 30px;
+            margin: 0 10px;
+            border-radius: 50px;
+            border: none;
             cursor: pointer;
-            font-size: 1rem;
+            font-weight: bold;
             transition: all 0.3s ease;
         }
 
-        .lang-btn.active {
-            background: var(--accent-color);
-            border-color: var(--accent-color);
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(165, 94, 234, 0.4);
-        }
-
-        .lang-btn:hover:not(.active) {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-2px);
-        }
-
-        .result-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .result-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-            transition: all 0.5s ease;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 0.5s ease forwards;
-            backdrop-filter: blur(5px);
-        }
-
-        .result-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-            border-color: var(--accent-color);
-        }
-
-        .card-title {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-            font-size: 1.5rem;
-            color: var(--accent-color);
-        }
-
-        .card-title i {
-            margin-right: 15px;
-            font-size: 1.8rem;
-        }
-
-        .card-content {
-            font-size: 1.1rem;
-            line-height: 1.6;
-        }
-
-        .special-section {
-            margin-top: 40px;
-            text-align: center;
-            animation: fadeIn 1s ease 1s both;
-        }
-
-        .citation {
-            font-style: italic;
-            font-size: 1.3rem;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 25px;
-            border-radius: 15px;
-            margin: 30px auto;
-            max-width: 800px;
-            position: relative;
-            border-left: 5px solid var(--accent-color);
-        }
-
-        .citation::before {
-            content: '"';
-            font-size: 4rem;
-            color: var(--accent-color);
-            position: absolute;
-            top: -20px;
-            left: 10px;
-            opacity: 0.3;
-        }
-
-        .lucky-number {
-            font-size: 1.5rem;
-            margin: 30px 0;
-            font-weight: bold;
-            animation: fadeIn 1s ease 1.2s both;
-        }
-
-        .lucky-number span {
-            background: var(--accent-color);
+        .language-btn.active {
+            background-color: #ba4bff;
             color: white;
-            padding: 10px 20px;
-            border-radius: 50px;
-            margin-left: 15px;
-            box-shadow: 0 5px 15px rgba(165, 94, 234, 0.4);
         }
 
-        .clin-doeil {
-            background: rgba(255, 255, 255, 0.1);
+        .language-btn:not(.active) {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .prediction-section {
+            margin-bottom: 20px;
             padding: 20px;
             border-radius: 15px;
-            max-width: 800px;
-            margin: 30px auto;
-            font-size: 1.1rem;
-            position: relative;
-            border-top: 3px solid var(--accent-color);
-            animation: fadeIn 1s ease 1.4s both;
+            background-color: rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease;
         }
 
-        .clin-doeil i {
-            color: var(--accent-color);
-            margin-right: 10px;
-            font-size: 1.3rem;
-        }
-
-        .sign-selector {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(75, 52, 212, 0.8);
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
-            z-index: 10;
-        }
-
-        .sign-selector:hover {
-            transform: scale(1.1);
-            background: rgba(75, 52, 212, 1);
-        }
-
-        .sign-selector i {
-            font-size: 1.8rem;
-        }
-
-        .signs-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 100;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .signs-modal.active {
-            display: flex;
-            animation: fadeIn 0.3s forwards;
-        }
-
-        .modal-content {
-            background: linear-gradient(135deg, #4834d4 0%, #8145e5 100%);
-            border-radius: 20px;
-            padding: 30px;
-            max-width: 800px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-            position: relative;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-            animation: scaleIn 0.3s ease;
-        }
-
-        @keyframes scaleIn {
-            from { transform: scale(0.9); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            color: white;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .close-modal:hover {
-            background: rgba(255, 255, 255, 0.4);
-            transform: rotate(90deg);
-        }
-
-        .modal-title {
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 1.8rem;
-        }
-
-        .signs-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-            gap: 15px;
-        }
-
-        .sign-item {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 15px;
-            padding: 15px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .sign-item:hover {
-            background: rgba(255, 255, 255, 0.2);
+        .prediction-section:hover {
             transform: translateY(-5px);
         }
 
-        .sign-item i {
-            font-size: 2rem;
+        .prediction-title {
+            display: flex;
+            align-items: center;
             margin-bottom: 10px;
-            color: var(--accent-color);
+            font-size: 1.5rem;
         }
 
-        .sign-name {
-            font-size: 1rem;
-            margin: 0;
+        .prediction-title i {
+            margin-right: 10px;
+            font-size: 1.8rem;
         }
 
-        .loader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--bg-color);
+        .prediction-content {
+            line-height: 1.6;
+            font-size: 1.1rem;
+        }
+
+        .loading {
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
-            transition: opacity 0.5s ease;
+            height: 300px;
         }
 
-        .loader.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .spinner {
-            width: 80px;
-            height: 80px;
-            border: 8px solid rgba(255, 255, 255, 0.1);
-            border-top-color: var(--accent-color);
+        .loading-spinner {
+            border: 5px solid rgba(255, 255, 255, 0.1);
             border-radius: 50%;
+            border-top: 5px solid #ba4bff;
+            width: 50px;
+            height: 50px;
             animation: spin 1s linear infinite;
         }
 
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        .back-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background-color: #ba4bff;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
         }
 
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .back-btn:hover {
+            transform: scale(1.1);
         }
 
-        @keyframes fadeInUp {
-            to { opacity: 1; transform: translateY(0); }
+        .favorite-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #ba4bff;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
         }
 
-        /* Rendre le design responsive */
-        @media (max-width: 768px) {
-            .result-content {
-                grid-template-columns: 1fr;
-            }
+        .favorite-btn:hover {
+            transform: scale(1.1);
+        }
 
-            .header {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
-            }
+        .favorite-btn.active {
+            background-color: #ff4b8d;
+        }
 
-            .logo {
-                justify-content: center;
-            }
-
-            .result-title {
-                font-size: 2.5rem;
-            }
-
-            .sign-icon {
-                font-size: 3rem;
-            }
-
-            .citation {
-                font-size: 1.1rem;
-                padding: 15px;
-            }
+        .error-message {
+            color: #ff6b6b;
+            text-align: center;
+            font-size: 1.2rem;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <!-- Loader -->
-    <div class="loader">
-        <div class="spinner"></div>
-    </div>
+    <header>
+        <h1>Horoscope du Jour</h1>
+    </header>
 
-    <!-- Animation d'arrière-plan -->
-    <div class="stars"></div>
-    <div class="waves"></div>
-
-    <!-- En-tête -->
-    <div class="container">
-        <header class="header">
-            <a href="/index.html" class="logo">
-                <i class="fas fa-graduation-cap"></i>
-                <h1>Éducation Malagasy</h1>
-            </a>
-            <button class="back-btn" onclick="window.location.href='/index/divers/horoscope/horoscope.html'">
-                <i class="fas fa-arrow-left"></i> Retour
-            </button>
-        </header>
-
-        <!-- Contenu principal -->
-        <div class="result-header">
-            <div class="sign-icon">
-                <i id="main-sign-icon" class="fas fa-star"></i>
-            </div>
-            <h1 class="result-title" id="result-sign">Bélier</h1>
-            <div class="date-display" id="result-date">19 avril 2025</div>
+    <div class="container" id="horoscope-container">
+        <div class="loading" id="loading">
+            <div class="loading-spinner"></div>
         </div>
+        <div id="content" style="display: none;">
+            <h2 class="sign-title" id="sign-name"></h2>
 
-        <div class="language-selector">
-            <button class="lang-btn active" data-lang="fr">Français</button>
-            <button class="lang-btn" data-lang="mg">Malagasy</button>
-        </div>
+            <div class="language-selector">
+                <button class="language-btn active" id="fr-btn">Français</button>
+                <button class="language-btn" id="mg-btn">Malagasy</button>
+            </div>
 
-        <div class="result-content">
-            <div class="result-card" style="animation-delay: 0.1s;">
-                <div class="card-title">
-                    <i class="fas fa-heart"></i> Amour
+            <div class="prediction-section">
+                <div class="prediction-title">
+                    <i class="fas fa-heart"></i>
+                    <span>Amour</span>
                 </div>
-                <div class="card-content" id="result-amour"></div>
+                <p class="prediction-content" id="love-prediction"></p>
             </div>
 
-            <div class="result-card" style="animation-delay: 0.2s;">
-                <div class="card-title">
-                    <i class="fas fa-coins"></i> Argent
+            <div class="prediction-section">
+                <div class="prediction-title">
+                    <i class="fas fa-coins"></i>
+                    <span>Argent</span>
                 </div>
-                <div class="card-content" id="result-argent"></div>
+                <p class="prediction-content" id="money-prediction"></p>
             </div>
 
-            <div class="result-card" style="animation-delay: 0.3s;">
-                <div class="card-title">
-                    <i class="fas fa-heartbeat"></i> Santé
+            <div class="prediction-section">
+                <div class="prediction-title">
+                    <i class="fas fa-heartbeat"></i>
+                    <span>Santé</span>
                 </div>
-                <div class="card-content" id="result-sante"></div>
+                <p class="prediction-content" id="health-prediction"></p>
             </div>
 
-            <div class="result-card" style="animation-delay: 0.4s;">
-                <div class="card-title">
-                    <i class="fas fa-briefcase"></i> Travail
+            <div class="prediction-section">
+                <div class="prediction-title">
+                    <i class="fas fa-briefcase"></i>
+                    <span>Travail</span>
                 </div>
-                <div class="card-content" id="result-travail"></div>
+                <p class="prediction-content" id="work-prediction"></p>
             </div>
 
-            <div class="result-card" style="animation-delay: 0.5s;">
-                <div class="card-title">
-                    <i class="fas fa-home"></i> Famille
+            <div class="prediction-section">
+                <div class="prediction-title">
+                    <i class="fas fa-home"></i>
+                    <span>Famille</span>
                 </div>
-                <div class="card-content" id="result-famille"></div>
-            </div>
-
-            <div class="result-card" style="animation-delay: 0.6s;">
-                <div class="card-title">
-                    <i class="fas fa-users"></i> Vie Sociale
-                </div>
-                <div class="card-content" id="result-vie-sociale"></div>
-            </div>
-        </div>
-
-        <div class="special-section">
-            <div class="citation" id="result-citation"></div>
-
-            <div class="lucky-number">
-                <i class="fas fa-dice"></i> Nombre de chance: <span id="result-nombre"></span>
-            </div>
-
-            <div class="clin-doeil">
-                <i class="fas fa-lightbulb"></i> <span id="result-clin-doeil"></span>
+                <p class="prediction-content" id="family-prediction"></p>
             </div>
         </div>
     </div>
 
-    <!-- Bouton pour changer de signe -->
-    <div class="sign-selector" id="open-sign-selector">
-        <i class="fas fa-star"></i>
-    </div>
+    <button class="back-btn" id="back-btn">
+        <i class="fas fa-arrow-left"></i>
+    </button>
 
-    <!-- Modal pour sélectionner un signe -->
-    <div class="signs-modal" id="signs-modal">
-        <div class="modal-content">
-            <button class="close-modal" id="close-modal">
-                <i class="fas fa-times"></i>
-            </button>
-            <h2 class="modal-title">Choisir un signe du zodiaque</h2>
-            <div class="signs-grid">
-                <div class="sign-item" data-sign="bélier">
-                    <i class="fas fa-fire"></i>
-                    <p class="sign-name">Bélier</p>
-                </div>
-                <div class="sign-item" data-sign="taureau">
-                    <i class="fas fa-bullhorn"></i>
-                    <p class="sign-name">Taureau</p>
-                </div>
-                <div class="sign-item" data-sign="gémeaux">
-                    <i class="fas fa-user-friends"></i>
-                    <p class="sign-name">Gémeaux</p>
-                </div>
-                <div class="sign-item" data-sign="cancer">
-                    <i class="fas fa-water"></i>
-                    <p class="sign-name">Cancer</p>
-                </div>
-                <div class="sign-item" data-sign="lion">
-                    <i class="fas fa-crown"></i>
-                    <p class="sign-name">Lion</p>
-                </div>
-                <div class="sign-item" data-sign="vierge">
-                    <i class="fas fa-female"></i>
-                    <p class="sign-name">Vierge</p>
-                </div>
-                <div class="sign-item" data-sign="balance">
-                    <i class="fas fa-balance-scale"></i>
-                    <p class="sign-name">Balance</p>
-                </div>
-                <div class="sign-item" data-sign="scorpion">
-                    <i class="fas fa-spider"></i>
-                    <p class="sign-name">Scorpion</p>
-                </div>
-                <div class="sign-item" data-sign="sagittaire">
-                    <i class="fas fa-horse-head"></i>
-                    <p class="sign-name">Sagittaire</p>
-                </div>
-                <div class="sign-item" data-sign="capricorne">
-                    <i class="fas fa-mountain"></i>
-                    <p class="sign-name">Capricorne</p>
-                </div>
-                <div class="sign-item" data-sign="verseau">
-                    <i class="fas fa-tint"></i>
-                    <p class="sign-name">Verseau</p>
-                </div>
-                <div class="sign-item" data-sign="poissons">
-                    <i class="fas fa-fish"></i>
-                    <p class="sign-name">Poissons</p>
-                </div>
-            </div>
-        </div>
-    </div>
+    <button class="favorite-btn" id="favorite-btn">
+        <i class="far fa-star"></i>
+    </button>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Référence aux éléments DOM
-            const loader = document.querySelector('.loader');
-            const langButtons = document.querySelectorAll('.lang-btn');
-            const signSelector = document.getElementById('open-sign-selector');
-            const signsModal = document.getElementById('signs-modal');
-            const closeModal = document.getElementById('close-modal');
-            const signItems = document.querySelectorAll('.sign-item');
-            const mainSignIcon = document.getElementById('main-sign-icon');
-            
-            // Variables
-            let currentSigne = new URLSearchParams(window.location.search).get('signe') || 'bélier';
-            let currentLang = 'fr';
-            let currentHoroscope = null;
+            // Éléments DOM
+            const loading = document.getElementById('loading');
+            const content = document.getElementById('content');
+            const signName = document.getElementById('sign-name');
+            const lovePrediction = document.getElementById('love-prediction');
+            const moneyPrediction = document.getElementById('money-prediction');
+            const healthPrediction = document.getElementById('health-prediction');
+            const workPrediction = document.getElementById('work-prediction');
+            const familyPrediction = document.getElementById('family-prediction');
+            const frBtn = document.getElementById('fr-btn');
+            const mgBtn = document.getElementById('mg-btn');
+            const backBtn = document.getElementById('back-btn');
+            const favoriteBtn = document.getElementById('favorite-btn');
 
-            // Créer les étoiles d'arrière-plan
-            const starsContainer = document.querySelector('.stars');
-            for (let i = 0; i < 100; i++) {
-                const star = document.createElement('div');
-                star.classList.add('star');
-                star.style.top = `${Math.random() * 100}%`;
-                star.style.left = `${Math.random() * 100}%`;
-                star.style.animationDelay = `${Math.random() * 4}s`;
-                starsContainer.appendChild(star);
-            }
+            // Obtenir le signe du paramètre d'URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const sign = urlParams.get('signe');
 
-            // Charger l'horoscope
-            async function getHoroscope(signe) {
-                try {
-                    loader.classList.remove('hidden');
-                    const response = await fetch(`/api/horoscope/rechercher?signe=${signe}`);
-                    const data = await response.json();
-                    
-                    currentHoroscope = data;
-                    displayHoroscope(data, currentLang);
-                    updateSignIcon(signe);
-                    
-                    // Mettre à jour l'URL sans recharger la page
-                    const url = new URL(window.location);
-                    url.searchParams.set('signe', signe);
-                    history.pushState({}, '', url);
-                    
-                    setTimeout(() => {
-                        loader.classList.add('hidden');
-                    }, 600);
-                } catch (error) {
-                    console.error('Erreur:', error);
-                    alert('Une erreur est survenue lors de la récupération de l\'horoscope.');
-                    loader.classList.add('hidden');
+            // Variable pour stocker les prédictions
+            let predictions = null;
+
+            // Fonction pour charger l'horoscope
+            function loadHoroscope() {
+                if (!sign) {
+                    // Si aucun signe n'est spécifié, rediriger vers la page de sélection
+                    window.location.href = 'horoscope.html';
+                    return;
                 }
+
+                // Afficher le nom du signe
+                signName.textContent = formatSignName(sign);
+
+                // Afficher le chargement
+                loading.style.display = 'flex';
+                content.style.display = 'none';
+
+                // Appeler l'API
+                fetch(`/api/horoscope/${sign}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Erreur lors de la récupération des données');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        predictions = data;
+                        displayPredictions('fr');
+
+                        // Masquer le chargement, afficher le contenu
+                        loading.style.display = 'none';
+                        content.style.display = 'block';
+                    })
+                    .catch(error => {
+                        console.error('Erreur:', error);
+                        // Afficher un message d'erreur
+                        const container = document.getElementById('horoscope-container');
+                        loading.style.display = 'none';
+                        container.innerHTML += `
+                            <div class="error-message">
+                                Une erreur s'est produite lors du chargement de l'horoscope.<br>
+                                Veuillez réessayer plus tard.
+                            </div>
+                        `;
+                    });
             }
 
-            // Afficher l'horoscope
-            function displayHoroscope(data, lang) {
-                // Mettre à jour le titre et la date
-                document.getElementById('result-sign').textContent = currentSigne.charAt(0).toUpperCase() + currentSigne.slice(1);
-                document.getElementById('result-date').textContent = data.date;
-                
-                // Mettre à jour les sections avec la langue sélectionnée
-                document.getElementById('result-amour').textContent = data.amour[lang];
-                document.getElementById('result-argent').textContent = data.argent[lang];
-                document.getElementById('result-sante').textContent = data.sante[lang];
-                document.getElementById('result-travail').textContent = data.travail[lang];
-                document.getElementById('result-famille').textContent = data.famille[lang];
-                document.getElementById('result-vie-sociale').textContent = data.vie_sociale[lang];
-                document.getElementById('result-citation').textContent = data.citation_du_jour[lang];
-                document.getElementById('result-nombre').textContent = data.nombre_de_chance[lang];
-                document.getElementById('result-clin-doeil').textContent = data.clin_doeil[lang];
-                
-                // Animer les cartes
-                const cards = document.querySelectorAll('.result-card');
-                cards.forEach((card, index) => {
-                    setTimeout(() => {
-                        card.style.opacity = '1';
-                        card.style.transform = 'translateY(0)';
-                    }, 100 * index);
-                });
+            // Fonction pour afficher les prédictions dans la langue sélectionnée
+            function displayPredictions(lang) {
+                if (!predictions) return;
+
+                const predictionLang = lang === 'fr' ? 'fr' : 'mg';
+
+                lovePrediction.textContent = predictions[predictionLang].amour;
+                moneyPrediction.textContent = predictions[predictionLang].argent;
+                healthPrediction.textContent = predictions[predictionLang].sante;
+                workPrediction.textContent = predictions[predictionLang].travail;
+                familyPrediction.textContent = predictions[predictionLang].famille;
             }
 
-            // Mettre à jour l'icône du signe
-            function updateSignIcon(signe) {
-                const signIcons = {
-                    'bélier': 'fas fa-fire',
-                    'taureau': 'fas fa-bullhorn',
-                    'gémeaux': 'fas fa-user-friends',
-                    'cancer': 'fas fa-water',
-                    'lion': 'fas fa-crown',
-                    'vierge': 'fas fa-female',
-                    'balance': 'fas fa-balance-scale',
-                    'scorpion': 'fas fa-spider',
-                    'sagittaire': 'fas fa-horse-head',
-                    'capricorne': 'fas fa-mountain',
-                    'verseau': 'fas fa-tint',
-                    'poissons': 'fas fa-fish'
-                };
-                
-                if (signIcons[signe]) {
-                    mainSignIcon.className = signIcons[signe];
+            // Fonction pour formater le nom du signe
+            function formatSignName(signName) {
+                // Convertir première lettre en majuscule, reste en minuscule
+                return signName.charAt(0).toUpperCase() + signName.slice(1).toLowerCase();
+            }
+
+            // Événements pour les boutons de langue
+            frBtn.addEventListener('click', function() {
+                frBtn.classList.add('active');
+                mgBtn.classList.remove('active');
+                displayPredictions('fr');
+            });
+
+            mgBtn.addEventListener('click', function() {
+                mgBtn.classList.add('active');
+                frBtn.classList.remove('active');
+                displayPredictions('mg');
+            });
+
+            // Événement pour le bouton retour
+            backBtn.addEventListener('click', function() {
+                window.location.href = 'horoscope.html';
+            });
+
+            // Événement pour le bouton favori
+            favoriteBtn.addEventListener('click', function() {
+                this.classList.toggle('active');
+                const icon = this.querySelector('i');
+
+                if (this.classList.contains('active')) {
+                    icon.classList.remove('far');
+                    icon.classList.add('fas');
+                } else {
+                    icon.classList.remove('fas');
+                    icon.classList.add('far');
                 }
-            }
 
-            // Event Listeners
-            langButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    langButtons.forEach(btn => btn.classList.remove('active'));
-                    this.classList.add('active');
-                    
-                    currentLang = this.dataset.lang;
-                    if (currentHoroscope) {
-                        displayHoroscope(currentHoroscope, currentLang);
-                    }
-                });
+                // Ici, on pourrait implémenter la sauvegarde du signe favori
             });
 
-            signSelector.addEventListener('click', function() {
-                signsModal.classList.add('active');
-            });
-
-            closeModal.addEventListener('click', function() {
-                signsModal.classList.remove('active');
-            });
-
-            signsModal.addEventListener('click', function(e) {
-                if (e.target === signsModal) {
-                    signsModal.classList.remove('active');
-                }
-            });
-
-            signItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    const signe = this.dataset.sign;
-                    currentSigne = signe;
-                    getHoroscope(signe);
-                    signsModal.classList.remove('active');
-                });
-            });
-
-            // Charger l'horoscope initial
-            getHoroscope(currentSigne);
+            // Charger l'horoscope au chargement de la page
+            loadHoroscope();
         });
     </script>
 </body>
