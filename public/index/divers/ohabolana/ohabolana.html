@@ -788,7 +788,6 @@
                 <button class="pagination-button" id="prevPage" disabled>
                     <i class="fas fa-chevron-left"></i> Précédent
                 </button>
-                <div class="page-info" id="pageInfo">Page 1</div>
                 <button class="pagination-button" id="nextPage">
                     Suivant <i class="fas fa-chevron-right"></i>
                 </button>
@@ -808,7 +807,6 @@
             const pagination = document.getElementById('pagination');
             const prevPageBtn = document.getElementById('prevPage');
             const nextPageBtn = document.getElementById('nextPage');
-            const pageInfo = document.getElementById('pageInfo');
             
             let currentPage = 1;
             let currentSearchTerm = '';
@@ -930,8 +928,7 @@
             
             // Fonction pour mettre à jour l'UI de pagination avec animation
             function updatePaginationUI() {
-                // Afficher clairement le numéro de page sur le nombre total de pages
-                pageInfo.textContent = `Page ${currentPage} sur ${totalPages}`;
+                // Mettre à jour l'état des boutons de pagination
                 prevPageBtn.disabled = currentPage <= 1;
                 nextPageBtn.disabled = currentPage >= totalPages;
                 
