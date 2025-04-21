@@ -249,16 +249,36 @@ app.get('/index/cours/2nde/malagasy/malagasy2nde.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index', 'cours', '2nde', 'malagasy', 'malagasy2nde.html'));
 });
 
-// Route pour servir les fichiers PDF des cours
+// Route pour servir les fichiers PDF des cours avec les bons en-têtes
 app.get('/Attachement/index/cours/:niveau/malagasy/:filename', (req, res) => {
   const niveau = req.params.niveau;
   const filename = req.params.filename;
+  
+  // Ajouter les en-têtes appropriés pour le téléchargement
+  res.setHeader('Content-Type', 'application/pdf');
+  res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  
   res.sendFile(path.join(__dirname, 'Attachement', 'index', 'cours', niveau, 'malagasy', filename));
 });
 
 // Route pour la page physique-chimie 3ème
 app.get('/index/cours/3eme/physique3e/physique3e.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index', 'cours', '3eme', 'physique3e', 'physique3e.html'));
+});
+
+// Route pour servir les fichiers PDF de physique
+app.get('/Attachement/index/cours/3eme/physique3e/:filename', (req, res) => {
+  const filename = req.params.filename;
+  
+  // Ajouter les en-têtes appropriés pour le téléchargement
+  res.setHeader('Content-Type', 'application/pdf');
+  res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  
+  res.sendFile(path.join(__dirname, 'Attachement', 'index', 'cours', '3eme', 'physique3e', filename));
 });
 
 
