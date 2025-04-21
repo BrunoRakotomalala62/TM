@@ -432,10 +432,10 @@
                 essentiels, notamment l'électricité, la mécanique, la chimie et l'optique. Parfait pour réviser avant les examens 
                 et synthétiser vos connaissances.
             </p>
-            <a href="/Attachement/index/cours/3eme/physique3e/Resume_physique_3eme.pdf" class="download-button" download>
+            <a href="/Attachement/index/cours/3eme/physique3e/Resume_physique_3eme.pdf" class="download-button" download="Resume_physique_3eme.pdf">
                 <i class="fas fa-download"></i> Télécharger le PDF
             </a>
-            <p class="mobile-hint">Sur mobile : maintenir votre doigt sur le bouton puis sélectionner "Enregistrer le lien"</p>
+            <p class="mobile-hint">Un clic simple suffit pour télécharger le fichier</p>
         </div>
 
         <div class="pdf-card">
@@ -453,10 +453,10 @@
                 essentiels sur les circuits électriques, les dangers de l'électricité, les dispositifs de sécurité et les 
                 applications dans la vie quotidienne. Un support indispensable pour comprendre les notions clés.
             </p>
-            <a href="/Attachement/index/cours/3eme/physique3e/resume_electricite_maison.pdf" class="download-button" download>
+            <a href="/Attachement/index/cours/3eme/physique3e/resume_electricite_maison.pdf" class="download-button" download="resume_electricite_maison.pdf">
                 <i class="fas fa-download"></i> Télécharger le PDF
             </a>
-            <p class="mobile-hint">Sur mobile : maintenir votre doigt sur le bouton puis sélectionner "Enregistrer le lien"</p>
+            <p class="mobile-hint">Un clic simple suffit pour télécharger le fichier</p>
         </div>
 
         <div class="pdf-card">
@@ -474,10 +474,10 @@
                 de Physique-Chimie de 3ème. Avec des exercices de difficulté progressive et leurs corrections détaillées, 
                 vous pourrez vous préparer efficacement aux examens.
             </p>
-            <a href="/Attachement/index/cours/3eme/physique3e/exercice_revision_physique.pdf" class="download-button" download>
+            <a href="/Attachement/index/cours/3eme/physique3e/exercice_revision_physique.pdf" class="download-button" download="exercice_revision_physique.pdf">
                 <i class="fas fa-download"></i> Télécharger le PDF
             </a>
-            <p class="mobile-hint">Sur mobile : maintenir votre doigt sur le bouton puis sélectionner "Enregistrer le lien"</p>
+            <p class="mobile-hint">Un clic simple suffit pour télécharger le fichier</p>
         </div>
 
         <p class="footer-note">
@@ -539,12 +539,36 @@
                     this.style.transform = '';
                 });
                 
-                button.addEventListener('click', function() {
+                button.addEventListener('click', function(e) {
                     // Effet visuel lors du clic
                     this.style.transform = 'scale(0.95)';
-                    setTimeout(() => {
-                        this.style.transform = '';
-                    }, 200);
+                    
+                    // Forcer le téléchargement
+                    const href = this.getAttribute('href');
+                    const downloadName = this.getAttribute('download');
+                    
+                    // Solution de secours pour les navigateurs mobiles
+                    if (navigator.userAgent.match(/Android|iPhone|iPad|iPod/i)) {
+                        e.preventDefault(); // Empêcher le comportement par défaut
+                        
+                        // Créer un lien temporaire avec les propriétés de téléchargement
+                        const tempLink = document.createElement('a');
+                        tempLink.href = href;
+                        tempLink.download = downloadName;
+                        tempLink.style.display = 'none';
+                        document.body.appendChild(tempLink);
+                        tempLink.click();
+                        
+                        // Nettoyer
+                        setTimeout(() => {
+                            document.body.removeChild(tempLink);
+                            this.style.transform = '';
+                        }, 200);
+                    } else {
+                        setTimeout(() => {
+                            this.style.transform = '';
+                        }, 200);
+                    }
                 });
             });
         });
